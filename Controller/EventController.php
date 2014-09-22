@@ -1,6 +1,9 @@
 <?php
 namespace controller;
 
-class AddEventController{
+class EventController{
+    public function __construct(){}
+
+
 
 }

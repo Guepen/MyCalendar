@@ -10,7 +10,7 @@ $htmlView = new view\HtmlView();
 $calendarView = new view\CalendarView();
 $errorView = new view\ErrorView();
 
-$eventController = new controller\AddEventController();
+$eventController = new controller\EventController();
 
 try {
     $htmlView->echoHTML($calendarView->renderCalendar());

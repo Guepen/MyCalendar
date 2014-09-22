@@ -12,6 +12,7 @@ class HtmlView{
 				<!DOCTYPE html>
 				<html>
 				<head>
+				<link href='./Style/Style.css' rel='stylesheet' type='text/css'>
 				<meta charset=\"utf-8\">
 				</head>
 				<body>
