@@ -3,10 +3,15 @@
 namespace view;
 
 class CalendarView{
-    private $month = 9;
-    private $year = 2014;
+    private $month;
+    private $year;
+    private $htmlMonth;
 
-    public function __construct(){}
+    public function __construct(){
+        $this->month = date("n");
+        $this->year = date("Y");
+        $this->htmlMonth = date("F");
+    }
 
     public function renderCalendar(){
         $numberOfDays = cal_days_in_month(CAL_GREGORIAN, $this->month, $this->year);
@@ -22,6 +27,7 @@ class CalendarView{
         $html = "
         <div id='Container'>
             <h1 class='center'>MyCalendar</h1>
+            <p class='center'>$this->htmlMonth $this->year</p>
             $dateBox
         </div>
         ";
