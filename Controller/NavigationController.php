@@ -20,6 +20,6 @@ class NavigationController{
                 return $controller->render();
                 break;
         }
-        return false;
+        return null;
     }
 }
