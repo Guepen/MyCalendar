@@ -1,8 +1,9 @@
 <?php
 
-require_once("Controller/CalendarController.php");
+require_once("./ImportFiles.php");
 
 session_start();
 
-$eventController = new controller\CalendarController();
-$eventController->doController();
+$htmlView = new \view\HtmlView();
+$navigationController = new \controller\NavigationController();
+$htmlView->echoHTML($navigationController->renderView());
