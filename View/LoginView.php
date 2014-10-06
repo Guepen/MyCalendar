@@ -9,24 +9,55 @@ class LoginView{
     private $keepMeInput = "keepMeInput";
     private $submitInput = "submitInput";
 
+    #region Messages
+    public function setRegistrationSuccesMessae(){
+        $this->message = "Registrering av ny användare lyckades";
+    }
+
+    public function setLoggedOutMessage(){
+        $this->message = "Du är nu utloggad";
+    }
+
+    public function setWrongInformationInCookieMessage(){
+        $this->message = "Fel information i cookies";
+    }
+
+    public function setMissingUsernameMessage(){
+        $this->message = "Användarnamn saknas";
+    }
+
+    public function setMissingPasswordMessage(){
+        $this->message = "Lösenord saknas";
+    }
+
+    public function setWrongUserinformationMessage(){
+        $this->message = "Felaktigt användarnamn och/eller lösenord";
+    }
+    #endregion
+
+    /**
+     * @return string with HTML for login form
+     */
     public function showLoginForm(){
+
         $html = "
               <div class='center'>
                 <h3>Logga in</h3>
 
-                <form method='post'>
+                <form action='?action=".NavigationView::$actionLogin."' method='post'>
                    <legend class='center'>Skriv in användarnamn och lösenord</legend>
                    <fieldset>
                    <p>$this->message</p>
 
                    <div class='formGroup'>
                       <label>Användarnamn: </label>
-                      <input placeholder='Skriv in ditt användarnamn' type='text' name=$this->usernameInput>
+                      <input placeholder='Skriv in ditt användarnamn' type='text' value='".$this->getUsername()."'
+                       name=$this->usernameInput>
                    </div>
 
                      <div class='formGroup'>
                       <label>Lösenord: </label>
-                      <input placeholder='Skriv in ditt lösenord' type='text' name=$this->passwordInput>
+                      <input placeholder='Skriv in ditt lösenord' type='password' name=$this->passwordInput>
                    </div>
 
                      <div class='formGroup'>
@@ -44,4 +75,34 @@ class LoginView{
 
         return $html;
     }
+
+    #region Posts
+    public function getUsername(){
+        if(isset($_POST[$this->usernameInput]) === true){
+            return $_POST[$this->usernameInput];
+        }
+        return false;
+    }
+
+    public function getPassword(){
+        if(isset($_POST[$this->passwordInput]) === true){
+            return $_POST[$this->passwordInput];
+        }
+        return false;
+    }
+
+    public function hasUserCheckedKeepMe(){
+        if(isset($_POST[$this->keepMeInput]) === true){
+            return true;
+        }
+        return false;
+    }
+
+    public function hasUserPressedLogin(){
+        if(isset($_POST[$this->submitInput]) === true){
+            return true;
+        }
+        return false;
+    }
+    #endregion
 }

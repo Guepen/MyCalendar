@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use view\LoginView;
 use view\NavigationView;
 
 class NavigationController{
@@ -10,7 +11,7 @@ class NavigationController{
         $controller = null;
 
         switch(NavigationView::getAction()){
-            case NavigationView::$actionLogin;
+            case NavigationView::$actionShowLoginForm;
                 $controller = new LoginController();
                 return $controller->showLogInForm();
                 break;
@@ -19,6 +20,10 @@ class NavigationController{
                 $controller = new CalendarController();
                 return $controller->render();
                 break;
+
+            case NavigationView::$actionLogin;
+                $controller = new LoginController();
+               return $controller->isInputValid();
         }
         return null;
     }
