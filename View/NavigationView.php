@@ -27,4 +27,10 @@ class NavigationView{
     public static function redirectToCalendar(){
         header('location: /' . \Settings::$rootPath. '/?'.self::$action.'='.self::$actionShowCalendar);
     }
+
+    public static function redirectToCalendarAndModal($day){
+        $day = urlencode($day);
+        header('location: /' . \Settings::$rootPath. '/?'.self::$action.'='.self::$actionShowCalendar.
+            '&'.self::$actionCalendarDay.'='.$day);
+    }
 }

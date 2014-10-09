@@ -13,6 +13,7 @@ require_once("./Controller/LoginController.php");
 require_once("./Controller/NavigationController.php");
 
 //Models
+require_once("./Model/CalendarModel.php");
 require_once("./Model/LoginModel.php");
 require_once("./model/UserModel.php");
 require_once ('./model/DAO/Repository.php');
@@ -28,6 +29,11 @@ require_once("./common/Exceptions/ProhibitedCharacterInUsernameException.php");
 require_once("./common/Exceptions/MissingPasswordException.php");
 require_once("./common/Exceptions/MissingUsernameException.php");
 require_once("./common/Exceptions/WrongUserinformationException.php");
+require_once("./common/Exceptions/WrongTimeFormatException.php");
+require_once("./common/Exceptions/WrongMonthFormatException.php");
+require_once("./common/Exceptions/WrongDayFormatException.php");
+require_once("./common/Exceptions/EmptyDescriptionException.php");
+require_once("./common/Exceptions/EmptyTitleException.php");
 
 //Settings
 require_once("./Settings.php");

@@ -21,6 +21,7 @@ class CalendarView{
         $this->year = date("Y");
         $this->dayOfTheWeek = 1;
         $this->month = date("n");
+        var_dump($this->month);
         $this->htmlMonth = date("F");
         $this->firstDayInMonth = date('w',mktime(0,0,0,$this->month,0,$this->year));
     }
@@ -217,8 +218,8 @@ class CalendarView{
     }
 
     public function getDay(){
-        if(isset($_POST[$this->startTimeInput])){
-            return $_POST[$this->startTimeInput];
+        if(isset($_POST[$this->dayInput])){
+            return $_POST[$this->dayInput];
         }
         return false;
     }
