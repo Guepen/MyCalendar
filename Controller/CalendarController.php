@@ -5,6 +5,7 @@ namespace controller;
 use Model\CalendarModel;
 use model\EmptyDescriptionException;
 use model\EmptyTitleException;
+use Model\Event;
 use model\WrongDayFormatException;
 use model\WrongMonthFormatException;
 use model\WrongTimeFormatException;
@@ -30,10 +31,13 @@ class CalendarController{
              if($this->calendarModel->validateInput($this->calendarView->getTitle(), $this->calendarView->getMonth(),
                 $this->calendarView->getDay(), $this->calendarView->getStartTime(),
                 $this->calendarView->getEndTime(), $this->calendarView->getDescription()) === true){
-                 var_dump("Good values");
+                 $event = new Event();
 
              }
         } catch (EmptyTitleException $e) {
+            $this->calendarView->setMissingTitleMessage();
+            $this->calendarModel->setMessage($this->calendarView->getMessage());
+            $this->calendarView->setMessage();
 
         } catch(EmptyDescriptionException $e){
 

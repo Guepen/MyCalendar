@@ -3,6 +3,8 @@
 namespace view;
 
 
+use Model\CalendarModel;
+
 class CalendarView{
     private $month;
     private $year;
@@ -16,14 +18,18 @@ class CalendarView{
     private $startTimeInput = "startTimeInput";
     private $endTimeInput = "endTimeInput";
     private $dayInput = "dayInput";
+    private $errorMessage;
+
+    private $calendarModel;
 
     public function __construct(){
         $this->year = date("Y");
         $this->dayOfTheWeek = 1;
         $this->month = date("n");
-        var_dump($this->month);
         $this->htmlMonth = date("F");
         $this->firstDayInMonth = date('w',mktime(0,0,0,$this->month,0,$this->year));
+
+        $this->calendarModel = new CalendarModel();
     }
 
 
@@ -101,6 +107,7 @@ class CalendarView{
 
     public function renderCalendar(){
         $modal="";
+        //if user has clicked a date
         if(isset($_GET[NavigationView::$actionCalendarDay]) === true){
             $modal = $this->renderModal();
         }
@@ -117,8 +124,6 @@ class CalendarView{
         $calendar.= '</tr>';
         $calendar.= '</table>';
 
-        //if user has clicked a date
-
         $html = '
             <p class="centerMonth">'.$this->htmlMonth. $this->year.'</p>'.
             $calendar.
@@ -129,6 +134,7 @@ class CalendarView{
     }
 
     public function renderModal(){
+        $message = $this->calendarModel->getMessage();
         $day = $_GET[NavigationView::$actionCalendarDay];
         $modal = "
                  <div class='modal'>
@@ -138,6 +144,7 @@ class CalendarView{
                       </div>
                       <div class='modalBody'>
                       <h3>Lägg till händelse</h3>
+                      <p>$message</p>
                         <form action='?action=".NavigationView::$actionAddEvent."' method='post'>
 
                          <div class='formGroup, hidden'>
@@ -226,5 +233,14 @@ class CalendarView{
 
     public function getMonth(){
         return $this->month;
+    }
+
+    public function getMessage(){
+        return $this->errorMessage;
+    }
+
+    public function setMissingTitleMessage(){
+        $this->errorMessage = "Titel får inte lämnas tomt!";
+
     }
 }
