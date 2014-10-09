@@ -11,12 +11,13 @@ class CalendarController{
         $this->calendarView = new CalendarView();
     }
 
-    public function renderModal(){
-        var_dump("grerds");
-    }
-
     public function render(){
         return $this->calendarView->renderCalendar();
+    }
+
+
+    public function checkIfInputIsValid(){
+
     }
 
 }

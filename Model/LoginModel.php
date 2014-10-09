@@ -45,6 +45,10 @@ class LoginModel{
         }
     }
 
+    public function getUserName(){
+        return $_SESSION[$this->sessionUser];
+    }
+
     public function isUserLoggedIn(){
         if(isset($_SESSION[$this->sessionUser]) === true){
             return true;

@@ -8,7 +8,6 @@ namespace model;
  * This code is taken from https://github.com/dntoll/1dv408-HT14/blob/master/Portfolio/src/model/Repository.php
  */
 abstract class Repository{
-
     protected  $dbConnection;
     protected  $dbTable;
 

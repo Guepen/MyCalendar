@@ -5,7 +5,6 @@ namespace controller;
 use model\LoginModel;
 use model\MissingPasswordException;
 use model\MissingUsernameException;
-use model\SessionModel;
 use model\UserRepository;
 use model\WrongUserInformationException;
 use view\LoginView;
@@ -28,7 +27,6 @@ class LoginController{
 
     /**
      * Checks if the input from the login form is valid
-     * if it is valid, check after the user in db
      * else @return string with HTML for the login form
      */
     public function isInputValid(){

@@ -14,7 +14,7 @@ require_once("./Controller/NavigationController.php");
 
 //Models
 require_once("./Model/LoginModel.php");
-require_once("./model/User.php");
+require_once("./model/UserModel.php");
 require_once ('./model/DAO/Repository.php');
 require_once("./model/DAO/UserRepository.php");
 

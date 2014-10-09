@@ -2,6 +2,7 @@
 
 namespace view;
 
+
 class CalendarView{
     private $month;
     private $year;
@@ -9,13 +10,21 @@ class CalendarView{
     private $firstDayInMonth;
     private $dayOfTheWeek;
 
+    private $submitEvent = "submitEvent";
+    private $titleInput = "titleInput";
+    private $descriptionInput = "descriptionInput";
+    private $startTimeInput = "startTimeInput";
+    private $endTimeInput = "endTimeInput";
+    private $dayInput = "dayInput";
+
     public function __construct(){
-        $this->month = date("n");
         $this->year = date("Y");
-        $this->htmlMonth = date("F");
-        $this->firstDayInMonth = date('w',mktime(0,0,0,$this->month,1,$this->year));
         $this->dayOfTheWeek = 1;
+        $this->month = date("n");
+        $this->htmlMonth = date("F");
+        $this->firstDayInMonth = date('w',mktime(0,0,0,$this->month,0,$this->year));
     }
+
 
     /**
      * @return string HTML td columns with the days of a week
@@ -65,7 +74,7 @@ class CalendarView{
             $ret.= '
                     <td class="calendarDay">
                      <a href="?action='.NavigationView::$actionShowCalendar.'&'.
-                                        NavigationView::$actionCalendarDay.'='.$i.'">
+                NavigationView::$actionCalendarDay.'='.$i .'">
 
                     <div class="dayNumber">'.$i.'</div>
                     </a>
@@ -75,9 +84,12 @@ class CalendarView{
             //new row in table if we are on the last day
             //and reset day variables
             if($this->firstDayInMonth === 6){
-                $ret .= '<tr class="calendar-row">';
-                $this->firstDayInMonth = -1;
-                $this->dayOfTheWeek = 0;
+                $ret .= '</tr>';
+                if($dayCounter + 1 !== $numberOfDays){
+                    $ret .= '<tr class="row">';
+                    $this->firstDayInMonth = -1;
+                    $this->dayOfTheWeek = 0;
+                }
             }
             $this->dayOfTheWeek++;
             $this->firstDayInMonth++;
@@ -87,6 +99,10 @@ class CalendarView{
     }
 
     public function renderCalendar(){
+        $modal="";
+        if(isset($_GET[NavigationView::$actionCalendarDay]) === true){
+            $modal = $this->renderModal();
+        }
 
         $calendar = "<table cellpadding='0' cellspacing='0' class='calendar'>";
         $calendar .= '<tr class="row">'.$this->getCalendarDays().'</tr>';
@@ -94,34 +110,120 @@ class CalendarView{
         $calendar .= $this->getDates();
 
         if($this->dayOfTheWeek < 8){
-          $calendar .= $this->getRemainingDays();
+            $calendar .= $this->getRemainingDays();
         }
 
         $calendar.= '</tr>';
         $calendar.= '</table>';
 
         //if user has clicked a date
-        if(isset($_GET[NavigationView::$actionCalendarDay]) === true){
-            $this->renderModal();
-        }
 
         $html = '
             <p class="centerMonth">'.$this->htmlMonth. $this->year.'</p>'.
-            $calendar.'
+            $calendar.
+            $modal.'
         ';
 
         return $html;
     }
 
     public function renderModal(){
+        $day = $_GET[NavigationView::$actionCalendarDay];
         $modal = "
                  <div class='modal'>
-                    <div class='day'>
-                      <p>dag</p>
+                    <div class='modalHeader'>
+                     <a class='right' href='?action=".NavigationView::$actionShowCalendar."'>Tillbaka till kalendern</a>
+                      <p>$day $this->htmlMonth $this->year</p>
+                      </div>
+                      <div class='modalBody'>
+                      <h3>Lägg till händelse</h3>
+                        <form action='?action=".NavigationView::$actionAddEvent."' method='post'>
+
+                         <div class='formGroup, hidden'>
+                             <input placeholder='Ex. 18.00' type='text' value='$day'
+                             name=$this->dayInput>
+                           </div>
+
+                             <div class='formGroup'>
+                             <p><label>Titel: </label></p>
+                             <input placeholder='Ex. Kalas' type='text' value=''
+                             name=$this->titleInput>
+                           </div>
+
+                           <div class='formGroup'>
+                             <p><label>Starttid: </label></p>
+                             <input placeholder='Ex. 18.00' type='text' value=''
+                             name=$this->startTimeInput>
+                           </div>
+
+                            <div class='formGroup'>
+                             <p><label>Sluttid: </label></p>
+                             <input placeholder='Ex. 19.30' type='text' value=''
+                             name=$this->endTimeInput>
+                           </div>
+
+                            <div class='formGroup'>
+                             <p><label>Beskrivning: </label></p>
+                             <textarea rows='5' placeholder='Ex. Kalas hos kalle' type='text' value=''
+                             name=$this->descriptionInput></textarea>
+                           </div>
+
+                            <div class='formGroup'>
+                             <input type='submit' value='Lägg till'
+                             name=$this->submitEvent>
+                           </div>
+
+                        </form>
                       </div>
                       </div>
         ";
 
         return $modal;
+    }
+
+    public function hasUserPressedAddEvent(){
+        if(isset($_POST[$this->submitEvent])){
+            return true;
+        }
+        return false;
+    }
+
+    public function getTitle(){
+        if(isset($_POST[$this->titleInput])){
+            return $_POST[$this->titleInput];
+        }
+        return false;
+    }
+
+    public function getStartTime(){
+        if(isset($_POST[$this->startTimeInput])){
+            return $_POST[$this->startTimeInput];
+        }
+        return false;
+    }
+
+    public function getEndTime(){
+        if(isset($_POST[$this->endTimeInput])){
+            return $_POST[$this->endTimeInput];
+        }
+        return false;
+    }
+
+    public function getDescription(){
+        if(isset($_POST[$this->descriptionInput])){
+            return $_POST[$this->descriptionInput];
+        }
+        return false;
+    }
+
+    public function getDay(){
+        if(isset($_POST[$this->startTimeInput])){
+            return $_POST[$this->startTimeInput];
+        }
+        return false;
+    }
+
+    public function getMonth(){
+        return $this->month;
     }
 }

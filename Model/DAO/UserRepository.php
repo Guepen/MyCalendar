@@ -16,8 +16,7 @@ class UserRepository extends Repository{
     private static $password = 'password';
     private $db;
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->dbTable = 'user';
         $this->db = $this->connection();
     }

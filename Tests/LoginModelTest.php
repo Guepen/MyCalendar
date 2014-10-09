@@ -39,6 +39,7 @@ class LoginModelTest extends \PHPUnit_Framework_TestCase {
     public function testDoLoginWithCorrectValues(){
         $loginModel = new LoginModel();
         $this->assertTrue($loginModel->doLogIn("username", "password", "username", "password"));
+        $this->assertTrue($loginModel->isUserLoggedIn());
     }
 
     /**
@@ -63,12 +64,6 @@ class LoginModelTest extends \PHPUnit_Framework_TestCase {
     public function testDoLoginWithIncorrectValues(){
         $loginModel = new LoginModel();
         $loginModel->doLogIn("Username", "Password", "username", "password");
-    }
-
-    public function checkThatUserIsLoggedIn(){
-        $_SESSION['user'] = "user";
-        $loginModel = new LoginModel();
-        $this->assertTrue($loginModel->isUserLoggedIn());
     }
 
     public function checkThatUserIsNotLoggedIn(){
