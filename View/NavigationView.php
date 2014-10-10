@@ -6,7 +6,8 @@ class NavigationView{
     private static $action = "action";
 
     public static $actionShowCalendar = "calendar";
-    public static $actionCalendarDay = "day";
+    public static $actionShowModal = "modal";
+    public static $actionCalendarEvent = "Event";
 
     public static $actionAddEvent ="addEvent";
 

@@ -42,7 +42,7 @@ class CalendarModel {
         if(!preg_match('/(?:[01][0-9]|2[0-3])(.)[0-5][0-9]$/',$endTime)){
             throw new WrongTimeFormatException($day);
         }
-
+        $this->deleteMessage();
         return true;
     }
 
@@ -53,6 +53,14 @@ class CalendarModel {
     public function getMessage(){
         if (isset($_SESSION['message'])) {
             return $_SESSION['message'];
+        }
+        return false;
+    }
+
+    public function deleteMessage(){
+        if(isset($_SESSION['message'])){
+            var_dump("dfds");
+            unset($_SESSION['message']);
         }
     }
 } 

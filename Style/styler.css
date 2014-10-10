@@ -7,7 +7,7 @@
 
 
 h1{
-    margin-left: 360px;
+    margin-left: 420px;
 }
 
 .right{
@@ -19,10 +19,10 @@ h1{
 }
 
 .centerMonth{
+    width: 100px;
     padding: 5px;
-    width: 90px;
     font-weight: bold;
-    margin-left: 400px;
+    margin-left: 445px;
 }
 
 .calendar{
@@ -31,12 +31,12 @@ h1{
 }
 
 .calendarDay{
-    min-height:180px;
+    min-height:10px;
     font-size:11px;
     background-color: #5e5e5e;
 }
 
-.dayNumber:hover, .calendarDay:hover{
+.calendarDay:hover{
     background:grey;
 }
 
@@ -65,7 +65,7 @@ h1{
 }
 
 .dayNumber{
-    background:#5e5e5e;
+    background: inherit;
     padding:5px;
     color:#f5f5f5;
     font-weight:bold;
@@ -82,13 +82,15 @@ h1{
 }
 
 .modal{
-    border: 3px solid #000000;
+    -webkit-box-shadow: 17px 7px 5px 0 rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    17px 7px 5px 0 rgba(50, 50, 50, 0.75);
+    box-shadow:         17px 10px 5px 0 rgba(50, 50, 50, 0.75);
     background-color:#ffffff ;
     width: 550px;
     z-index: 10;
     position: fixed;
     top:170px;
-    left: 720px;
+    left: 38%;
 }
 
 .modalBody, .modalHeader{

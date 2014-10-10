@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use Model\CalendarModel;
 use model\LoginModel;
 use view\LoginView;
 use view\NavigationView;
@@ -11,6 +12,7 @@ class NavigationController{
     public function renderView(){
         $controller = null;
         $loginModel = new LoginModel();
+        $calendarModel = new CalendarModel();
 
         switch(NavigationView::getAction()){
             case NavigationView::$actionShowLoginForm;

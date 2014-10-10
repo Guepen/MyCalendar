@@ -11,6 +11,7 @@ class CalendarView{
     private $htmlMonth;
     private $firstDayInMonth;
     private $dayOfTheWeek;
+    private $days;
 
     private $submitEvent = "submitEvent";
     private $titleInput = "titleInput";
@@ -19,6 +20,7 @@ class CalendarView{
     private $endTimeInput = "endTimeInput";
     private $dayInput = "dayInput";
     private $errorMessage;
+    private $events;
 
     private $calendarModel;
 
@@ -28,6 +30,7 @@ class CalendarView{
         $this->month = date("n");
         $this->htmlMonth = date("F");
         $this->firstDayInMonth = date('w',mktime(0,0,0,$this->month,0,$this->year));
+        $this->days = array("Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag");
 
         $this->calendarModel = new CalendarModel();
     }
@@ -37,11 +40,11 @@ class CalendarView{
      * @return string HTML td columns with the days of a week
      */
     public function getCalendarDays(){
-        $days = array("Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag");
+        //$days = array("Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag");
         $ret="";
 
-        for($i = 0; $i < count($days); $i++){
-            $ret .= '<td class="day">'.$days[$i].'</td>';
+        for($i = 0; $i < count($this->days); $i++){
+            $ret .= '<td class="day">'.$this->days[$i].'</td>';
         }
         return $ret;
     }
@@ -76,31 +79,37 @@ class CalendarView{
         $numberOfDays = cal_days_in_month(CAL_GREGORIAN, $this->month, $this->year);
         $dayCounter = 0;
         $ret="";
-
-        for($i = 1; $i <= $numberOfDays; $i++){
-            $ret.= '
+        $eventBox="";
+        for($i = 1; $i <= $numberOfDays; $i++) {
+            foreach ($this->events as $event) {
+                //var_dump($event->getDay());
+                if($event->getDay() == $i){
+                   $eventBox .= "<div><a href='?action=".NavigationView::$actionShowCalendar."&".
+                                                         NavigationView::$actionCalendarEvent."=".$event->getTitle()."'>
+                           <h4>'".$event->getTitle()."'</h4></a></div>";
+                }
+            }
+                $ret .= '
                     <td class="calendarDay">
-                     <a href="?action='.NavigationView::$actionShowCalendar.'&'.
-                NavigationView::$actionCalendarDay.'='.$i .'">
-
-                    <div class="dayNumber">'.$i.'</div>
+                    <div class="dayNumber">' . $i .$eventBox.'</div>
                     </a>
                     </td>
                     ';
+            $eventBox ="";
 
-            //new row in table if we are on the last day
-            //and reset day variables
-            if($this->firstDayInMonth === 6){
-                $ret .= '</tr>';
-                if($dayCounter + 1 !== $numberOfDays){
-                    $ret .= '<tr class="row">';
-                    $this->firstDayInMonth = -1;
-                    $this->dayOfTheWeek = 0;
+                //new row in table if we are on the last day
+                //and reset day variables
+                if ($this->firstDayInMonth === 6) {
+                    $ret .= '</tr>';
+                    if ($dayCounter + 1 !== $numberOfDays) {
+                        $ret .= '<tr class="row">';
+                        $this->firstDayInMonth = -1;
+                        $this->dayOfTheWeek = 0;
+                    }
                 }
-            }
-            $this->dayOfTheWeek++;
-            $this->firstDayInMonth++;
-            $dayCounter++;
+                $this->dayOfTheWeek++;
+                $this->firstDayInMonth++;
+                $dayCounter++;
         }
         return $ret;
     }
@@ -108,7 +117,7 @@ class CalendarView{
     public function renderCalendar(){
         $modal="";
         //if user has clicked a date
-        if(isset($_GET[NavigationView::$actionCalendarDay]) === true){
+        if(isset($_GET[NavigationView::$actionShowModal]) === true){
             $modal = $this->renderModal();
         }
 
@@ -125,7 +134,15 @@ class CalendarView{
         $calendar.= '</table>';
 
         $html = '
-            <p class="centerMonth">'.$this->htmlMonth. $this->year.'</p>'.
+           <div class="centerMonth">
+           <a class="btn btn-default" href="?action='.NavigationView::$actionShowCalendar.'&'.NavigationView::$actionShowModal.'">
+           Lägg till händelse
+           </a>
+           <div>
+            <label>'.$this->year.'</label>'.'
+             <label>'.$this->htmlMonth.'</label>'.'
+             </div>
+             </div>'.
             $calendar.
             $modal.'
         ';
@@ -135,21 +152,21 @@ class CalendarView{
 
     public function renderModal(){
         $message = $this->calendarModel->getMessage();
-        $day = $_GET[NavigationView::$actionCalendarDay];
+        //$day = $_GET[NavigationView::$actionCalendarDay];
         $modal = "
                  <div class='modal'>
                     <div class='modalHeader'>
                      <a class='right' href='?action=".NavigationView::$actionShowCalendar."'>Tillbaka till kalendern</a>
-                      <p>$day $this->htmlMonth $this->year</p>
+                      <p>$this->htmlMonth $this->year</p>
                       </div>
                       <div class='modalBody'>
                       <h3>Lägg till händelse</h3>
                       <p>$message</p>
                         <form action='?action=".NavigationView::$actionAddEvent."' method='post'>
 
-                         <div class='formGroup, hidden'>
-                             <input placeholder='Ex. 18.00' type='text' value='$day'
-                             name=$this->dayInput>
+                         <div class='formGroup'>
+                             <label>Dag:</label>
+                             <input type='text' name=$this->dayInput>
                            </div>
 
                              <div class='formGroup'>
@@ -189,6 +206,7 @@ class CalendarView{
         return $modal;
     }
 
+    #region posts
     public function hasUserPressedAddEvent(){
         if(isset($_POST[$this->submitEvent])){
             return true;
@@ -230,6 +248,7 @@ class CalendarView{
         }
         return false;
     }
+    #endregion
 
     public function getMonth(){
         return $this->month;
@@ -241,6 +260,23 @@ class CalendarView{
 
     public function setMissingTitleMessage(){
         $this->errorMessage = "Titel får inte lämnas tomt!";
+
+    }
+
+    public function setMissingDescriptionMessage(){
+        $this->errorMessage = "Beskrivning får inte lämnas tomt!";
+    }
+
+    public function setWrongTimeFormatMessage(){
+        $this->errorMessage = "Fel format på tiden! Exempel på godkänt format: 16.00";
+    }
+
+    public function setUnexpectedErrorMessag(){
+        $this->errorMessage = "Ett oväntat fel inträffade! Försök igen";
+    }
+
+    public function setEvents($events){
+        $this->events = $events;
 
     }
 }

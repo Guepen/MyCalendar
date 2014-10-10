@@ -14,6 +14,7 @@ use model\UserExistsException;
 class UserRepository extends Repository{
     private static $username = 'username';
     private static $password = 'password';
+    private static $userId = 'userId';
     private $db;
 
     public function __construct(){
@@ -45,5 +46,27 @@ class UserRepository extends Repository{
             throw new DbException();
         }
     }
+
+    public function getUserId($username){
+        try {
+
+            $sql = "SELECT ".self::$userId." FROM ". $this->dbTable." WHERE " . self::$username . " =?";
+            $params = array($username);
+
+            $query = $this->db->prepare($sql);
+            $query->execute($params);
+
+            $result = $query->fetch();
+
+            if($result){
+                return $result[self::$userId];
+            }
+
+            return null;
+
+        } catch (\PDOException $e) {
+            throw new \Exception($e->getMessage());
+        }
+}
 }
 
