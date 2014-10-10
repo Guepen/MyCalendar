@@ -27,6 +27,12 @@ class EventRepository extends Repository {
         $this->eventList = array();
     }
 
+    /**
+     * tries to add an event belonging the user
+     * @param Event $event An EventObject
+     * @param $userId string containing the users ID
+     * @throws DbException if something goes wrong
+     */
     public function add(Event $event, $userId){
         try{
 
@@ -41,14 +47,17 @@ class EventRepository extends Repository {
             $query->execute($params);
 
         }catch (\PDOException $e){
-            var_dump($e->getMessage());
             throw new DbException();
         }
     }
 
+    /**
+     * tries to get all the users events
+     * @param $userId string containing the users ID
+     * @throws DbException
+     */
     public function getEvents($userId){
         try {
-            //var_dump($userId);
 
             $sql = "SELECT * FROM ". $this->dbTable." WHERE " . self::$userId . " =?";
             $params = array($userId);
@@ -70,7 +79,8 @@ class EventRepository extends Repository {
             return $this->eventList;
 
         } catch (\PDOException $e) {
-            die("Ett oväntat fel inträffade");
+            throw new DbException();
+
         }
     }
 } 

@@ -25,19 +25,10 @@ h1{
     margin-left: 445px;
 }
 
-.calendar{
-    border-left:1px solid #999;
-    z-index: 1;
-}
-
 .calendarDay{
-    min-height:10px;
-    font-size:11px;
     background-color: #5e5e5e;
-}
-
-.calendarDay:hover{
-    background:grey;
+    height: 80px;
+    width: auto;
 }
 
 .emptyDay{
@@ -69,11 +60,12 @@ h1{
     padding:5px;
     color:#f5f5f5;
     font-weight:bold;
-    font-size: 15px;
+    font-size: 14px;
     float:left;
-    width:120px;
-    height: 80px;
+    width:130px;
+    height: 110px;
     text-align:left;
+    overflow-y: auto;
 }
 
 
@@ -109,3 +101,31 @@ h1{
     margin: 7px;
     z-index: 1;
 }
+
+
+.eventBox {
+    background-color: #f5f5f5;
+}
+.addEvent{
+    background-color:#44c767;
+    color:#ffffff;
+    width: 150px;
+    padding: 5px;
+    text-decoration:none;
+}
+.event {
+    text-shadow:1px 2px 3px #2b542c;
+    text-align: center;
+    font-weight: bold;
+    background-color:#449d44;
+    color:#ffffff;
+    width: auto;
+    font-size:15px;
+    text-decoration:none;
+
+}
+.event:hover {
+    background-color:#ffffff;
+    color:#449d44;
+}
+

@@ -2,9 +2,7 @@
 
 namespace controller;
 
-use Model\CalendarModel;
 use model\LoginModel;
-use view\LoginView;
 use view\NavigationView;
 
 class NavigationController{
@@ -12,12 +10,23 @@ class NavigationController{
     public function renderView(){
         $controller = null;
         $loginModel = new LoginModel();
-        $calendarModel = new CalendarModel();
 
         switch(NavigationView::getAction()){
             case NavigationView::$actionShowLoginForm;
                 $controller = new LoginController();
                 return $controller->showLogInForm();
+                break;
+
+            case NavigationView::$actionCalendarEvent;
+                $controller = new CalendarController();
+                $eventController = new EventController();
+                return $controller->render().$eventController->renderEvent();
+            break;
+
+            case NavigationView::$actionShowModal;
+                $controller = new CalendarController();
+                $modalController = new ModalController();
+                return $controller->render().$modalController->renderModal();
                 break;
 
             case NavigationView::$actionShowCalendar;
@@ -31,10 +40,10 @@ class NavigationController{
 
             case NavigationView::$actionLogin;
                 $controller = new LoginController();
-               return $controller->isInputValid();
+                return $controller->isInputValid();
 
             case NavigationView::$actionAddEvent;
-                $controller = new CalendarController();
+                $controller = new ModalController();
                 return $controller->checkIfInputIsValid();
         }
         return null;

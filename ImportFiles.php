@@ -6,10 +6,14 @@ require_once("./View/NavigationView.php");
 require_once("./View/LoginView.php");
 require_once("./View/CalendarView.php");
 require_once("./View/ErrorView.php");
+require_once("./View/ModalView.php");
+require_once("./View/EventView.php");
 
 //Controllers
 require_once("./Controller/CalendarController.php");
+require_once("./Controller/ModalController.php");
 require_once("./Controller/LoginController.php");
+require_once("./Controller/EventController.php");
 require_once("./Controller/NavigationController.php");
 
 //Models

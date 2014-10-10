@@ -7,13 +7,17 @@ class NavigationView{
 
     public static $actionShowCalendar = "calendar";
     public static $actionShowModal = "modal";
-    public static $actionCalendarEvent = "Event";
+    public static $actionCalendarEvent = "event";
+    public static $actionShowEvent = "title";
 
     public static $actionAddEvent ="addEvent";
 
     public static $actionShowLoginForm = "loginForm";
     public static $actionLogin = "login";
 
+    /**
+     * @return string with the actionURL
+     */
     public static function getAction(){
         if(isset($_GET[self::$action])){
             return $_GET[self::$action];
@@ -29,9 +33,8 @@ class NavigationView{
         header('location: /' . \Settings::$rootPath. '/?'.self::$action.'='.self::$actionShowCalendar);
     }
 
-    public static function redirectToCalendarAndModal($day){
-        $day = urlencode($day);
+    public static function redirectToCalendarAndModal(){
         header('location: /' . \Settings::$rootPath. '/?'.self::$action.'='.self::$actionShowCalendar.
-            '&'.self::$actionCalendarDay.'='.$day);
+            '&'.self::$actionShowModal);
     }
 }
