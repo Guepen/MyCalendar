@@ -14,8 +14,10 @@ class EventRepository extends Repository {
     private static $title = 'title';
     private static $month = 'month';
     private static $day = 'day';
-    private static $startTime = 'startTime';
-    private static $endTime = 'endTime';
+    private static $startHour = 'startHour';
+    private static $startMinute = 'startMinute';
+    private static $endHour = 'endHour';
+    private static $endMinute = 'endMinute';
     private static $description = 'description';
 
     private $db;
@@ -36,12 +38,14 @@ class EventRepository extends Repository {
     public function add(Event $event, $userId){
         try{
 
-            $sql = "INSERT INTO $this->dbTable (" . self::$userId . ", " . self::$title .", ".
+            $sql = "INSERT INTO ". $this->dbTable." (" . self::$userId . ", " . self::$title .", ".
                                                     self::$month . ", ".self::$day .", ".
-                                                    self::$startTime .", ".  self::$endTime. ", ".
-                                                    self::$description .") VALUES (?,?,?,?,?,?,?)";
+                                                    self::$startHour .", ". self::$startMinute .", ".
+                                                    self::$endHour. ", ". self::$endMinute .", ".
+                                                    self::$description .") VALUES (?,?,?,?,?,?,?,?,?)";
             $params = array($userId, $event->getTitle(), $event->getMonth(), $event->getDay(),
-                                     $event->getStartTime(), $event->getEndTime(), $event->getDescription());
+                                     $event->getStartHour(), $event->getStartMinute(),
+                                     $event->getEndHour(), $event->getEndMinute(), $event->getDescription());
 
             $query = $this->db->prepare($sql);
             $query->execute($params);
@@ -69,11 +73,14 @@ class EventRepository extends Repository {
                 $title  = $event[self::$title];
                 $month = $event[self::$month];
                 $day = $event[self::$day];
-                $startTime = $event[self::$startTime];
-                $endTime = $event[self::$endTime];
+                $startHour = $event[self::$startHour];
+                $startMinute = $event[self::$startMinute];
+                $endHour = $event[self::$endHour];
+                $endMinute = $event[self::$endMinute];
                 $description = $event[self::$description];
 
-                $this->eventList[] = new Event($title, $month, $day, $startTime, $endTime, $description);
+                $this->eventList[] = new Event($title, $month, $day, $startHour, $startMinute,
+                                               $endHour, $endMinute, $description);
             }
 
             return $this->eventList;

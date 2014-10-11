@@ -17,7 +17,7 @@ require_once("./Controller/EventController.php");
 require_once("./Controller/NavigationController.php");
 
 //Models
-require_once("./Model/CalendarModel.php");
+require_once("./Model/ModalModel.php");
 require_once("./Model/EventModel.php");
 require_once("./Model/LoginModel.php");
 require_once("./model/UserModel.php");

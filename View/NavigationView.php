@@ -6,10 +6,11 @@ class NavigationView{
     private static $action = "action";
 
     public static $actionShowCalendar = "calendar";
-    public static $actionShowModal = "modal";
-    public static $actionCalendarEvent = "event";
+    public static $actionShowAddEventForm = "modal";
     public static $actionShowEvent = "title";
+    public static $actionShowErrorPage = "error";
 
+    public static $actionCalendarEvent = "event";
     public static $actionAddEvent ="addEvent";
 
     public static $actionShowLoginForm = "loginForm";
@@ -29,12 +30,15 @@ class NavigationView{
         header('location: /' . \Settings::$rootPath. '/?'.self::$action.'='.self::$actionShowLoginForm);
     }
 
+    public static function redirectToErrorPage(){
+        header('location: /' . \Settings::$rootPath. '/?'.self::$action.'='.self::$actionShowErrorPage);
+    }
+
     public static function redirectToCalendar(){
         header('location: /' . \Settings::$rootPath. '/?'.self::$action.'='.self::$actionShowCalendar);
     }
 
-    public static function redirectToCalendarAndModal(){
-        header('location: /' . \Settings::$rootPath. '/?'.self::$action.'='.self::$actionShowCalendar.
-            '&'.self::$actionShowModal);
+    public static function redirectToModal(){
+        header('location: /' . \Settings::$rootPath. '/?'.self::$action.'='.self::$actionShowAddEventForm);
     }
 }

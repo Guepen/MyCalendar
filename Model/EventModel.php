@@ -13,16 +13,20 @@ class Event {
     private $title;
     private $month;
     private $day;
-    private $startTime;
-    private $endTime;
+    private $startHour;
+    private $startMinute;
+    private $endHour;
+    private $endMinute;
     private $description;
 
-    public function __construct($title, $month, $day, $startTime, $endTime, $description){
+    public function __construct($title, $month, $day, $startHour, $startMinute, $endHour, $endMinute, $description){
         $this->title = $title;
         $this->month = $month;
         $this->day = $day;
-        $this->startTime = $startTime;
-        $this->endTime = $endTime;
+        $this->startHour = $startHour;
+        $this->startMinute = $startMinute;
+        $this->endHour = $endHour;
+        $this->endMinute = $endMinute;
         $this->description = $description;
 
     }
@@ -31,12 +35,20 @@ class Event {
        return $this->title;
     }
 
-    public function getStartTime(){
-        return $this->startTime;
+    public function getStartHour(){
+        return $this->startHour;
     }
 
-    public function getEndTime(){
-       return $this->endTime;
+    public function getStartMinute(){
+        return $this->startMinute;
+    }
+
+    public function getEndHour(){
+       return $this->endHour;
+    }
+
+    public function getEndMinute(){
+        return $this->endMinute;
     }
 
     public function getDescription(){

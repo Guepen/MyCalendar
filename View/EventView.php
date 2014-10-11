@@ -20,11 +20,13 @@ class EventView {
             if ($event->getTitle() === $title) {
                 $ret = "
                 <div class='modal'>
-                 <a class='right' href='?action=" . NavigationView::$actionShowCalendar . "'>Tillbaka till kalendern</a>
+                 <a class='right, addEvent' href='?action=" .
+                    NavigationView::$actionShowCalendar . "'>Tillbaka till kalendern</a>
                   <h3 class='center'>" . $event->getTitle() . "</h3>
                   <p class='center'>" . $event->getDescription() . "</p>
                   <p class='center'>Händelsen inträffar den " . $event->getDay() . " " . date("F") . "</p>
-                  <p class='center'>Pågår mellan " . $event->getStartTime() . "-" . $event->getEndTime() . "</p>
+                  <p class='center'>Pågår mellan " . $event->getStartHour().":".$event->getStartMinute()
+                  . "-" . $event->getEndHour() .":".$event->getEndMinute(). "</p>
                 </div>
                 ";
             }
@@ -39,6 +41,9 @@ class EventView {
 
     }
 
+    /**
+     * @return mixed The title of chosen event
+     */
     public function getTitle(){
         return $_GET[NavigationView::$actionShowEvent];
     }

@@ -9,7 +9,7 @@
 namespace Controller;
 
 
-use Model\CalendarModel;
+use Model\ModalModel;
 use model\DbException;
 use model\EmptyDescriptionException;
 use model\EmptyTitleException;
@@ -32,7 +32,7 @@ class ModalController {
 
     public function __construct(){
         $this->modalView = new ModalView();
-        $this->calendarModel = new CalendarModel();
+        $this->calendarModel = new ModalModel();
         $this->userRepository = new UserRepository();
         $this->loginModel = new LoginModel();
         $this->eventRepository = new EventRepository();
@@ -42,9 +42,9 @@ class ModalController {
      * if user has pressed the add event link @return string the modal/popup
      * else @return bool false
      */
-    public function renderModal(){
+    public function hasUserPressedShowAddEventForm(){
         if ($this->modalView->hasUserPressedShowAddEventForm()) {
-            return $this->modalView->renderModal();
+            return $this->modalView->renderAddEventForm();
         }
         return false;
     }
@@ -55,9 +55,10 @@ class ModalController {
      */
     public function checkIfInputIsValid(){
         try {
-            if($this->calendarModel->validateInput($this->modalView->getTitle(), $this->modalView->getMonth(),
-                    $this->modalView->getDay(), $this->modalView->getStartTime(),
-                    $this->modalView->getEndTime(), $this->modalView->getDescription()) === true){
+            if($this->calendarModel->validateInput($this->modalView->getTitle(),
+                    $this->modalView->getMonth(), $this->modalView->getDay(), $this->modalView->getStartHour(),
+                    $this->modalView->getStartMinute(), $this->modalView->getEndHour(),
+                    $this->modalView->getEndMinute(), $this->modalView->getDescription()) === true){
                 $this->addEvent();
                 return;
 
@@ -79,7 +80,7 @@ class ModalController {
 
         }
         $this->calendarModel->setMessage($this->modalView->getMessage());
-        NavigationView::redirectToCalendarAndModal();
+        NavigationView::redirectToModal();
     }
 
     /**
@@ -89,14 +90,16 @@ class ModalController {
     public function addEvent(){
 
         $event = new Event($this->modalView->getTitle(), $this->modalView->getMonth(),
-            $this->modalView->getDay(), $this->modalView->getStartTime(),
-            $this->modalView->getEndTime(), $this->modalView->getDescription());
+            $this->modalView->getDay(), $this->modalView->getStartHour(),
+            $this->modalView->getStartMinute(), $this->modalView->getEndHour(),
+            $this->modalView->getEndMinute(), $this->modalView->getDescription());
 
         try {
             $userId = $this->userRepository->getUserId($this->loginModel->getUserName());
             $this->eventRepository->add($event, $userId);
             NavigationView::redirectToCalendar();
         } catch (DbException $e) {
+            NavigationView::redirectToErrorPage();
 
         }
 

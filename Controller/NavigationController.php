@@ -3,6 +3,7 @@
 namespace controller;
 
 use model\LoginModel;
+use view\ErrorView;
 use view\NavigationView;
 
 class NavigationController{
@@ -23,10 +24,10 @@ class NavigationController{
                 return $controller->render().$eventController->renderEvent();
             break;
 
-            case NavigationView::$actionShowModal;
+            case NavigationView::$actionShowAddEventForm;
                 $controller = new CalendarController();
                 $modalController = new ModalController();
-                return $controller->render().$modalController->renderModal();
+                return $controller->render().$modalController->hasUserPressedShowAddEventForm();
                 break;
 
             case NavigationView::$actionShowCalendar;
@@ -45,6 +46,10 @@ class NavigationController{
             case NavigationView::$actionAddEvent;
                 $controller = new ModalController();
                 return $controller->checkIfInputIsValid();
+
+            case NavigationView::$actionShowErrorPage;
+                $controller = new ErrorView();
+                return $controller->renderErrorPage();
         }
         return null;
     }

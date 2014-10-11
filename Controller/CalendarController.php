@@ -2,7 +2,6 @@
 
 namespace controller;
 
-use Model\CalendarModel;
 use model\EmptyDescriptionException;
 use model\EmptyTitleException;
 use Model\Event;
@@ -20,7 +19,6 @@ use view\NavigationView;
 class CalendarController{
     private $calendarView;
     private $modalView;
-    private $calendarModel;
     private $userRepository;
     private $eventRepository;
     private $loginModel;
@@ -28,7 +26,6 @@ class CalendarController{
     public function __construct(){
         $this->calendarView = new CalendarView();
         $this->modalView = new ModalView();
-        $this->calendarModel = new CalendarModel();
         $this->userRepository = new UserRepository();
         $this->eventRepository = new EventRepository();
         $this->loginModel = new LoginModel();

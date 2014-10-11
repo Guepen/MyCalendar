@@ -15,8 +15,6 @@ class CalendarView
     private $days;
     private $events;
 
-    private $calendarModel;
-
     public function __construct(){
         $this->year = date("Y");
         $this->dayOfTheWeek = 1;
@@ -24,7 +22,6 @@ class CalendarView
         $this->htmlMonth = date("F");
         $this->firstDayInMonth = date('w', mktime(0, 0, 0, $this->month, 0, $this->year));
         $this->days = array("Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag");
-        $this->calendarModel = new CalendarModel();
     }
 
 
@@ -117,7 +114,7 @@ class CalendarView
         $calendar .= '</table>';
 
         $html = '
-           <a class="addEvent" href="?action='.NavigationView::$actionShowModal . '">
+           <a class="addEvent" href="?action='.NavigationView::$actionShowAddEventForm . '">
            Lägg till händelse
            </a>
            <div class="centerMonth">
@@ -137,7 +134,8 @@ class CalendarView
         foreach ($this->events as $event) {
             //var_dump($event->getDay());
             if ($event->getDay() == $currentDay) {
-                $eventBox .= "<div class='eventBox'><a class='event' href='?action=" .NavigationView::$actionCalendarEvent . "&".
+                $eventBox .= "<div class='eventBox'><a class='event' href='?action="
+                    .NavigationView::$actionCalendarEvent . "&".
                     NavigationView::$actionShowEvent ."=". $event->getTitle() . "'>
                            <h4 class='event'>'" . $event->getTitle() . "'</h4></a></div>";
             }
