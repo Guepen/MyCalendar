@@ -131,6 +131,11 @@ class EventView {
         $days = $this->getDays();
         $hours = $this->getHours();
         $minutes = $this->getMinutes();
+        $date = $event->getDay();
+        $startHour = $event->getStartHour();
+        $startMinute = $event->getStartMinute();
+        $endHour = $event->getEndHour();
+        $endMinute = $event->getEndMinute();
         $message = $this->eventModel->getMessage();
         $modal = "
                  <div class='modal'>
@@ -158,6 +163,7 @@ class EventView {
                              <div class='formGroup'>
                              <label>Datum:</label>
                              <select name=$this->dayInput>
+                             <option selected='selected' value='$date'>$date</option>
                                $days
                              </select>
                            </div>
@@ -166,10 +172,12 @@ class EventView {
                              <p>Starttid:</p>
                              <label>Timme: </label>
                              <select name=$this->startHourInput>
+                              <option selected='selected' value='$startHour'>$startHour</option>
                                $hours
                              </select>
                               <label>Minut: </label>
                              <select name=$this->startMinuteInput>
+                              <option selected='selected' value='$startMinute'>$startMinute</option>
                                $minutes
                              </select>
                            </div>
@@ -178,10 +186,12 @@ class EventView {
                              <p>Sluttid:</p>
                              <label>Timme: </label>
                              <select name=$this->endHourInput>
+                              <option selected='selected' value='$endHour'>$endHour</option>
                                $hours
                              </select>
                               <label>Minut: </label>
                              <select name=$this->endMinuteInput>
+                              <option selected='selected' value='$endMinute'>$endMinute</option>
                                $minutes
                              </select>
                            </div>
