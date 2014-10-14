@@ -226,8 +226,10 @@ class EventView {
                   <p class='center'>Pågår mellan " . $event->getStartHour().":".$event->getStartMinute()
                     . "-" . $event->getEndHour() .":".$event->getEndMinute(). "</p>
 
-                    <a href='?action=".NavigationView::$actionAlterEvent . "&".
+                    <a class='addEvent' href='?action=".NavigationView::$actionAlterEvent . "&".
                     NavigationView::$actionShowEvent ."=". $event->getTitle() ."'>Ändra Händelsen</a>
+                     <a class='right' href='?action=".NavigationView::$actionDeleteEvent."&".
+                    NavigationView::$actionShowEvent."=".$event->getTitle()."'>Ta bort Händelse</a>
                 </div>
                 ";
             }
@@ -259,9 +261,14 @@ class EventView {
         foreach ($this->events as $event ) {
             $ret .= "
             <p>
-                 <a class='right, addEvent' href='?action=" .
-                NavigationView::$actionAlterEvent . "&".
-                NavigationView::$actionShowEvent ."=". $event->getTitle() ."'>".$event->getTitle()."</a>
+                 <li>".$event->getTitle()."
+                 <a href='?action=".NavigationView::$actionAlterEvent."&".
+                NavigationView::$actionShowEvent."=".$event->getTitle()."'>Ändra händele</a>
+
+                 <a href='?action=".NavigationView::$actionDeleteEvent."&".
+                NavigationView::$actionShowEvent."=".$event->getTitle()."'>Ta bort Händelse</a>
+
+                 </li>
                 </p>";
         }
         return $ret;

@@ -56,6 +56,11 @@ class EventRepository extends Repository {
         }
     }
 
+    /**
+     * tries to update an event
+     * @param Event $event the event to be updated
+     * @throws \model\DbException if something goes wrong
+     */
     public function Update(Event $event){
         try{
 
@@ -65,8 +70,6 @@ class EventRepository extends Repository {
                     self::$startMinute. "=?". ",". self::$endHour. "=?".
                     ",". self::$endMinute. "=?". ",". self::$month. "=?".
                     " WHERE ". self::$eventId. "=?";
-
-            var_dump($sql);
 
             $params = array($event->getDay(), $event->getDescription(), $event->getTitle(),
                 $event->getStartHour(), $event->getStartMinute(),
@@ -83,7 +86,7 @@ class EventRepository extends Repository {
     /**
      * tries to get all the users events
      * @param $userId string containing the users ID
-     * @throws DbException
+     * @throws DbException if something goes wrong
      */
     public function getEvents($userId){
         try {
@@ -117,25 +120,16 @@ class EventRepository extends Repository {
         }
     }
 
-    public function getEventId($eventTitle){
+    public function deleteEvent($eventTitle){
         try {
-            $sql = "SELECT ".self::$eventId." FROM ". $this->dbTable." WHERE " . self::$title . " =?";
+            $sql = "DELETE FROM " . $this->dbTable . " WHERE " . self::$title . " =?";
             $params = array($eventTitle);
 
             $query = $this->db->prepare($sql);
             $query->execute($params);
 
-            $result = $query->fetch();
-
-            if($result){
-                return $result[self::$eventId];
-            }
-
-            return null;
-
         } catch (\PDOException $e) {
-            throw new \Exception($e->getMessage());
+            throw new DbException();
         }
-
     }
 } 

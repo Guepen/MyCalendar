@@ -3,7 +3,6 @@
 namespace controller;
 
 use Model\EventModel;
-use model\LoginModel;
 use view\ErrorView;
 use view\NavigationView;
 
@@ -11,9 +10,7 @@ class NavigationController{
 
     public function renderView(){
         $controller = null;
-        $loginModel = new LoginModel();
         $eventModel = new EventModel();
-
         switch(NavigationView::getAction()){
             case NavigationView::$actionShowLoginForm;
                 $controller = new LoginController();
@@ -24,27 +21,33 @@ class NavigationController{
                 $eventController = new EventController();
                 $controller = new CalendarController();
                 return $controller->render() . $eventController->renderEventList();
-            break;
+                break;
 
             case NavigationView::$actionAlterEvent;
                 $controller = new EventController();
                 $calendarController = new CalendarController();
                 return $calendarController->render() . $controller->renderAlterEventForm();
-            break;
+                break;
 
             case NavigationView::$actionSubmitAlteredEvent;
                 $controller = new EventController();
-                return $controller->checkIfInputIsValid();
+                $controller->checkIfInputIsValid();
                 break;
 
             case NavigationView::$actionCalendarEvent;
                 $controller = new CalendarController();
                 $eventController = new EventController();
                 return $controller->render().$eventController->renderEvent();
-            break;
+                break;
+
+           case NavigationView::$actionDeleteEvent;
+                $controller = new EventController();
+                $controller->deleteEvent();
+                break;
+
             case NavigationView::$actionLogout;
                 $controller = new LoginController();
-                return $controller->doLogOut();
+                $controller->doLogOut();
                 break;
 
             case NavigationView::$actionShowAddEventForm;
@@ -54,22 +57,20 @@ class NavigationController{
                 break;
 
             case NavigationView::$actionShowCalendar;
-                if ($loginModel->isUserLoggedIn() === true) {
-                    $controller = new CalendarController();
-                    $eventModel->deleteMessage();
-                    return $controller->render();
-                } else{
-                    NavigationView::redirectToLoginForm();
-                }
+                $controller = new CalendarController();
+                $eventModel->deleteMessage();
+                return $controller->render();
                 break;
 
             case NavigationView::$actionLogin;
                 $controller = new LoginController();
                 return $controller->isInputValid();
+                break;
 
             case NavigationView::$actionAddEvent;
                 $controller = new EventController();
-                return $controller->checkIfInputIsValid();
+                $controller->checkIfInputIsValid();
+                break;
 
             case NavigationView::$actionShowErrorPage;
                 $controller = new ErrorView();
@@ -77,4 +78,5 @@ class NavigationController{
         }
         return null;
     }
+
 }

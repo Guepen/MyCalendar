@@ -15,6 +15,7 @@ class NavigationView{
     public static $actionAddEvent = "addEvent";
     public static $actionAlterEvent = "alterEvent";
     public static $actionSubmitAlteredEvent = "submitAlter";
+    public static $actionDeleteEvent = "deleteEvent";
 
     public static $actionShowLoginForm = "loginForm";
     public static $actionLogin = "login";

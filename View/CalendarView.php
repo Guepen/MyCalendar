@@ -109,11 +109,12 @@ class CalendarView {
         $calendar .= '</table>';
 
         $html = '
-        <a href="?action=logOut">Logga Ut</a>
+        <a class="right" href="?action=logOut">Logga Ut</a>
            <a class="addEvent" href="?action='.NavigationView::$actionShowAddEventForm . '">
            Lägg till händelse
            </a>
            <a href="?action='.NavigationView::$actionShowEventList.'">Ändra en händelse</a>
+           <a href="?action='.NavigationView::$actionShowEventList.'">Ta bort en händelse</a>
            <div class="centerMonth">
            <div>
             <label>' . $this->year . '</label>' . '
