@@ -19,6 +19,7 @@ abstract class Repository{
 
             return $this->dbConnection;
         }
+        return null;
     }
 
 }

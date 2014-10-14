@@ -8,13 +8,17 @@ class NavigationView{
     public static $actionShowCalendar = "calendar";
     public static $actionShowAddEventForm = "modal";
     public static $actionShowEvent = "title";
+    public static $actionShowEventList = "eventList";
     public static $actionShowErrorPage = "error";
 
     public static $actionCalendarEvent = "event";
-    public static $actionAddEvent ="addEvent";
+    public static $actionAddEvent = "addEvent";
+    public static $actionAlterEvent = "alterEvent";
+    public static $actionSubmitAlteredEvent = "submitAlter";
 
     public static $actionShowLoginForm = "loginForm";
     public static $actionLogin = "login";
+    public static $actionLogout = "logOut";
 
     /**
      * @return string with the actionURL

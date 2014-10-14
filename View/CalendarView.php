@@ -2,17 +2,13 @@
 
 namespace view;
 
+class CalendarView {
 
-use Model\CalendarModel;
-
-class CalendarView
-{
     private $month;
     private $year;
     private $htmlMonth;
     private $firstDayInMonth;
     private $dayOfTheWeek;
-    private $days;
     private $events;
 
     public function __construct(){
@@ -21,19 +17,18 @@ class CalendarView
         $this->month = date("n");
         $this->htmlMonth = date("F");
         $this->firstDayInMonth = date('w', mktime(0, 0, 0, $this->month, 0, $this->year));
-        $this->days = array("Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag");
     }
 
 
     /**
      * @return string HTML td columns with the days of a week
      */
-    public function getCalendarDays(){
-        //$days = array("Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag");
+    private function getWeekDays(){
+        $days = array("Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag");
         $ret = "";
 
-        for ($i = 0; $i < count($this->days); $i++) {
-            $ret .= '<td class="day">' . $this->days[$i] . '</td>';
+        for ($i = 0; $i < count($days); $i++) {
+            $ret .= '<td class="day">' . $days[$i] . '</td>';
         }
         return $ret;
     }
@@ -41,7 +36,7 @@ class CalendarView
     /**
      * @return string HTML td columns for first days without a date
      */
-    public function getEmptyDays(){
+    private function getEmptyDays(){
         $ret = "";
         for ($i = 0; $i < $this->firstDayInMonth; $i++) {
             $ret .= '<td class="emptyDay"> </td>';
@@ -53,7 +48,7 @@ class CalendarView
     /**
      * @return string HTML td columns for last days without a date
      */
-    public function getRemainingDays(){
+    private function getRemainingDays(){
         $ret = "";
         for ($i = 1; $i <= (8 - $this->dayOfTheWeek); $i++) {
             $ret .= '<td class="emptyDay"> </td>';
@@ -64,7 +59,7 @@ class CalendarView
     /**
      * @return string HTML with date columns/td and date boxes/div
      */
-    public function getDates(){
+    private function getDates(){
         $numberOfDays = cal_days_in_month(CAL_GREGORIAN, $this->month, $this->year);
         $dayCounter = 0;
         $ret = "";
@@ -102,7 +97,7 @@ class CalendarView
     public function renderCalendar(){
 
         $calendar = "<table class='table'>";
-        $calendar .= '<tr class="row">' . $this->getCalendarDays() . '</tr>';
+        $calendar .= '<tr class="row">' . $this->getWeekDays() . '</tr>';
         $calendar .= '<tr class="row">' . $this->getEmptyDays();
         $calendar .= $this->getDates();
 
@@ -114,9 +109,11 @@ class CalendarView
         $calendar .= '</table>';
 
         $html = '
+        <a href="?action=logOut">Logga Ut</a>
            <a class="addEvent" href="?action='.NavigationView::$actionShowAddEventForm . '">
            Lägg till händelse
            </a>
+           <a href="?action='.NavigationView::$actionShowEventList.'">Ändra en händelse</a>
            <div class="centerMonth">
            <div>
             <label>' . $this->year . '</label>' . '
@@ -129,7 +126,7 @@ class CalendarView
         return $html;
     }
 
-    public function getEvents($currentDay){
+    private function getEvents($currentDay){
         $eventBox = "";
         foreach ($this->events as $event) {
             //var_dump($event->getDay());

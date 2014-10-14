@@ -45,6 +45,10 @@ class LoginModel{
         }
     }
 
+    public function doLogout(){
+        unset($_SESSION[$this->sessionUser]);
+    }
+
     public function getUserName(){
         return $_SESSION[$this->sessionUser];
     }

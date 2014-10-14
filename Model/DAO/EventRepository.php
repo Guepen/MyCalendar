@@ -11,6 +11,7 @@ namespace model;
 
 class EventRepository extends Repository {
     private static $userId = 'userId';
+    private static $eventId = 'eventId';
     private static $title = 'title';
     private static $month = 'month';
     private static $day = 'day';
@@ -55,6 +56,30 @@ class EventRepository extends Repository {
         }
     }
 
+    public function Update(Event $event){
+        try{
+
+            $sql = "UPDATE ". $this->dbTable." SET ".
+                    self::$day. "=?". ",". self::$description. "=?". ",".
+                    self::$title. "=?". ",". self::$startHour. "=?". ",".
+                    self::$startMinute. "=?". ",". self::$endHour. "=?".
+                    ",". self::$endMinute. "=?". ",". self::$month. "=?".
+                    " WHERE ". self::$eventId. "=?";
+
+            var_dump($sql);
+
+            $params = array($event->getDay(), $event->getDescription(), $event->getTitle(),
+                $event->getStartHour(), $event->getStartMinute(),
+                $event->getEndHour(), $event->getEndMinute(), $event->getMonth(), $event->getEventId());
+
+            $query = $this->db->prepare($sql);
+            $query->execute($params);
+
+        }catch (\PDOException $e){
+            throw new DbException();
+        }
+    }
+
     /**
      * tries to get all the users events
      * @param $userId string containing the users ID
@@ -78,9 +103,10 @@ class EventRepository extends Repository {
                 $endHour = $event[self::$endHour];
                 $endMinute = $event[self::$endMinute];
                 $description = $event[self::$description];
+                $eventId = $event[self::$eventId];
 
                 $this->eventList[] = new Event($title, $month, $day, $startHour, $startMinute,
-                                               $endHour, $endMinute, $description);
+                                               $endHour, $endMinute, $description, $eventId);
             }
 
             return $this->eventList;
@@ -89,5 +115,27 @@ class EventRepository extends Repository {
             throw new DbException();
 
         }
+    }
+
+    public function getEventId($eventTitle){
+        try {
+            $sql = "SELECT ".self::$eventId." FROM ". $this->dbTable." WHERE " . self::$title . " =?";
+            $params = array($eventTitle);
+
+            $query = $this->db->prepare($sql);
+            $query->execute($params);
+
+            $result = $query->fetch();
+
+            if($result){
+                return $result[self::$eventId];
+            }
+
+            return null;
+
+        } catch (\PDOException $e) {
+            throw new \Exception($e->getMessage());
+        }
+
     }
 } 

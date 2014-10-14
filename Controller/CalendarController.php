@@ -13,19 +13,16 @@ use model\WrongDayFormatException;
 use model\WrongMonthFormatException;
 use model\WrongTimeFormatException;
 use view\CalendarView;
-use View\ModalView;
 use view\NavigationView;
 
 class CalendarController{
     private $calendarView;
-    private $modalView;
     private $userRepository;
     private $eventRepository;
     private $loginModel;
 
     public function __construct(){
         $this->calendarView = new CalendarView();
-        $this->modalView = new ModalView();
         $this->userRepository = new UserRepository();
         $this->eventRepository = new EventRepository();
         $this->loginModel = new LoginModel();

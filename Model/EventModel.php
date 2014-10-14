@@ -2,65 +2,82 @@
 /**
  * Created by PhpStorm.
  * User: Tobias
- * Date: 2014-10-09
- * Time: 21:33
+ * Date: 2014-10-12
+ * Time: 20:09
  */
 
 namespace Model;
 
 
-class Event {
-    private $title;
-    private $month;
-    private $day;
-    private $startHour;
-    private $startMinute;
-    private $endHour;
-    private $endMinute;
-    private $description;
+class EventModel {
 
-    public function __construct($title, $month, $day, $startHour, $startMinute, $endHour, $endMinute, $description){
-        $this->title = $title;
-        $this->month = $month;
-        $this->day = $day;
-        $this->startHour = $startHour;
-        $this->startMinute = $startMinute;
-        $this->endHour = $endHour;
-        $this->endMinute = $endMinute;
-        $this->description = $description;
+    private $errorMessage = "errorMessage";
 
+    /**
+     * @param $title
+     * @param $month
+     * @param $day
+     * @param $startHour
+     * @param $startMinute
+     * @param $endHour
+     * @param $endMinute
+     * @param $description
+     * @return bool
+     * @throws EmptyDescriptionException
+     * @throws EmptyTitleException
+     * @throws WrongDayFormatException
+     * @throws WrongMonthFormatException
+     * @throws WrongTimeFormatException
+     */
+    public function validateInput($title, $month, $day, $startHour, $startMinute, $endHour, $endMinute, $description){
+        if(empty($title)){
+            throw new EmptyTitleException();
+        }
+
+        if(empty($description)){
+            throw new EmptyDescriptionException();
+        }
+
+        if(!preg_match('/^([1-9]|1[012])$/', $month)){
+            throw new WrongMonthFormatException();
+        }
+
+        if(!preg_match('/^([1-9]|[1-2][0-9]|3[0-1])$/', $day)){
+            throw new WrongDayFormatException();
+        }
+
+        if(!preg_match('/^(0[0-9]|1[0-9]|2[0-3])$/',$startHour)){
+            throw new WrongTimeFormatException();
+        }
+        if(!preg_match('/^(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])$/',$startMinute)){
+            var_dump($startMinute);
+            throw new WrongTimeFormatException();
+        }
+        if(!preg_match('/^(0[0-9]|1[0-9]|2[0-3])$/',$endHour)){
+            throw new WrongTimeFormatException();
+        }
+        if(!preg_match('/^(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])$/',$endMinute)){
+            throw new WrongTimeFormatException();
+        }
+        $this->deleteMessage();
+        return true;
     }
 
-    public function getTitle(){
-       return $this->title;
+    public function setMessage($message){
+        $_SESSION[$this->errorMessage] = $message;
     }
 
-    public function getStartHour(){
-        return $this->startHour;
+    public function getMessage(){
+        if (isset($_SESSION[$this->errorMessage])) {
+            return $_SESSION[$this->errorMessage];
+        }
+        return false;
     }
 
-    public function getStartMinute(){
-        return $this->startMinute;
-    }
-
-    public function getEndHour(){
-       return $this->endHour;
-    }
-
-    public function getEndMinute(){
-        return $this->endMinute;
-    }
-
-    public function getDescription(){
-       return $this->description;
-    }
-
-    public function getDay(){
-      return $this->day;
-    }
-
-    public function getMonth(){
-        return $this->month;
+    public function deleteMessage(){
+        if(isset($_SESSION[$this->errorMessage])){
+            unset($_SESSION[$this->errorMessage]);
+        }
     }
 
 } 

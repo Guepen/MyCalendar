@@ -54,4 +54,9 @@ class LoginController{
 
         }
     }
+
+    public function doLogOut(){
+        $this->loginModel->doLogout();
+        NavigationView::redirectToLoginForm();
+    }
 }
