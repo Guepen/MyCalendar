@@ -12,10 +12,10 @@ class CalendarView {
     private $events;
 
     public function __construct(){
+        setlocale(LC_ALL, "sve");
         $this->dayOfTheWeek = 1;
         $this->setMonth();
         $this->setYear();
-        $this->htmlMonth = date("F");
         $this->firstDayInMonth = date('w', mktime(0, 0, 0, $this->month, 0, $this->year));
     }
 
@@ -45,6 +45,9 @@ class CalendarView {
     private function setMonth(){
         if(isset($_GET[NavigationView::$actionMonthToShow])){
             $this->month = $_GET[NavigationView::$actionMonthToShow];
+            //$this->htmlMonth = date("F",mktime(0,0,0,$this->month));
+            $this->htmlMonth = strftime("%B",mktime(0,0,0,$this->month));
+            $this->htmlMonth = ucfirst($this->htmlMonth);
         } else{
             $this->month = date("n");
         }
