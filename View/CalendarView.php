@@ -14,11 +14,42 @@ class CalendarView {
     public function __construct(){
         $this->year = date("Y");
         $this->dayOfTheWeek = 1;
-        $this->month = date("n");
+        $this->setMonth();
         $this->htmlMonth = date("F");
         $this->firstDayInMonth = date('w', mktime(0, 0, 0, $this->month, 0, $this->year));
     }
 
+    private function setMonth(){
+        if(isset($_GET[NavigationView::$actionMonthToShow])){
+            $this->month = $_GET[NavigationView::$actionMonthToShow];
+            if ($this->month <= 12){
+                var_dump($this->month);
+            } else{
+                var_dump("esfdx");
+                $this->month = 1;
+            }
+        } else{
+            $this->month = date("n");
+        }
+    }
+
+    private function getNextMonth(){
+        if ($this->month <= 12) {
+            return $this->month + 1;
+        } else {
+            $this->year = date("Y",strtotime("+1 year"));
+            var_dump($this->year);
+            return 1;
+        }
+    }
+
+    private function getPreviousMonth(){
+        if($this->month > 1){
+            return $this->month - 1;
+        } else{
+            return 12;
+        }
+    }
 
     /**
      * @return string HTML td columns with the days of a week
@@ -115,6 +146,10 @@ class CalendarView {
            </a>
            <a href="?action='.NavigationView::$actionShowEventList.'">Ändra en händelse</a>
            <a href="?action='.NavigationView::$actionShowEventList.'">Ta bort en händelse</a>
+            <a href="?action='.NavigationView::$actionShowCalendar."&".
+                               NavigationView::$actionMonthToShow."=".$this->getNextMonth().'">Nästa månad</a>
+                               <a href="?action='.NavigationView::$actionShowCalendar."&".
+            NavigationView::$actionPreviousMonth."=".$this->getPreviousMonth().'">Nästa månad</a>
            <div class="centerMonth">
            <div>
             <label>' . $this->year . '</label>' . '

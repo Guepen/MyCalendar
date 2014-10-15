@@ -15,7 +15,6 @@ class NavigationController{
             case NavigationView::$actionShowLoginForm;
                 $controller = new LoginController();
                 return $controller->showLogInForm();
-                break;
 
             case NavigationView::$actionShowEventList;
                 $eventController = new EventController();

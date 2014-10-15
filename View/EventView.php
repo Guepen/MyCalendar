@@ -66,7 +66,6 @@ class EventView {
         $modal = "
                       <div class='modalBody'>
                       <p>$message</p>
-                        <form action='?action=".NavigationView::$actionAddEvent."' method='post'>
 
                              <div class='formGroup'>
                              <label>Titel: </label>
@@ -113,16 +112,9 @@ class EventView {
                             <div class='formGroup'>
                             <p></p>
                              <label class='description'>Beskrivning: </label>
-                             <textarea rows='5' placeholder='Ex. Kalas hos kalle' type='text' value=''
+                             <textarea rows='5' placeholder='Ex. Kalas hos kalle'
                              name=$this->descriptionInput>$descriptionValue</textarea>
                            </div>
-
-                            <div class='formGroup'>
-                             <input type='submit' value='Lägg till'
-                             name=$this->submitEvent>
-                           </div>
-
-                        </form>
                       </div>
         ";
 
@@ -138,9 +130,19 @@ class EventView {
         $modal="<div class='modal'>
                 <a class='right, addEvent' href='?action=".NavigationView::$actionShowCalendar."'>
                      Tillbaka till kalendern</a>
-                <h3>Ändra händelse</h3>";
+                <h3>Ändra händelse</h3>
+            <form action='?action=".NavigationView::$actionSubmitAlteredEvent."' method='post'>";
         $modal .= $this->getEventForm();
-        $modal .= "</div>";
+        $modal .= "<div class='hidden'>
+                     <input type='hidden' value='".$this->getEventIdValue()."'
+                             name='$this->eventIdInput'
+                   </div></div>
+
+                   <div class='formGroup'>
+                     <input type='submit' value='Uppdatera'
+                             name=$this->submitAlterEvent>
+                   </div>";
+        $modal .= "</form></div>";
 
 
         return $modal;
@@ -154,9 +156,14 @@ class EventView {
         $modal = "<div class='modal'>
                   <a class='right, addEvent' href='?action=".NavigationView::$actionShowCalendar."'>
                      Tillbaka till kalendern</a>
-                  <h3>Lägg till händelse</h3>";
+                  <h3>Lägg till händelse</h3>
+                   <form action='?action=".NavigationView::$actionAddEvent."' method='post'>";
         $modal .=$this->getEventForm();
-        $modal .= "</div>";
+        $modal .= "<div class='formGroup'>
+                             <input type='submit' value='Lägg till'
+                             name=$this->submitEvent>
+                           </div>";
+        $modal .= "</form></div>";
 
         return $modal;
     }
@@ -228,6 +235,18 @@ class EventView {
     }
 
     #region default values for eventForm
+
+    private function getEventIdValue(){
+        $ret="";
+
+        foreach($this->events as $event){
+            if($this->getEventTitle() === $event->getTitle()){
+                $ret = $event->getEventId();
+            }
+        }
+
+        return $ret;
+    }
 
     /**
      * @return string Default value for title input in eventForm
