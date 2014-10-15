@@ -6,7 +6,7 @@ class NavigationView{
     private static $action = "action";
 
     public static $actionShowCalendar = "calendar";
-    public static $actionShowAddEventForm = "modal";
+    public static $actionShowEventForm = "modal";
     public static $actionShowEvent = "title";
     public static $actionShowEventList = "eventList";
     public static $actionShowErrorPage = "error";
@@ -44,6 +44,6 @@ class NavigationView{
     }
 
     public static function redirectToModal(){
-        header('location: /' . \Settings::$rootPath. '/?'.self::$action.'='.self::$actionShowAddEventForm);
+        header('location: /' . \Settings::$rootPath. '/?'.self::$action.'='.self::$actionShowEventForm);
     }
 }

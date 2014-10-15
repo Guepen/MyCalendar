@@ -110,7 +110,7 @@ class CalendarView {
 
         $html = '
         <a class="right" href="?action=logOut">Logga Ut</a>
-           <a class="addEvent" href="?action='.NavigationView::$actionShowAddEventForm . '">
+           <a class="addEvent" href="?action='.NavigationView::$actionShowEventForm . '">
            Lägg till händelse
            </a>
            <a href="?action='.NavigationView::$actionShowEventList.'">Ändra en händelse</a>

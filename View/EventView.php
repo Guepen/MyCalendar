@@ -38,43 +38,47 @@ class EventView {
         $this->month = date("n");
     }
 
-    public function hasUserPressedShowAddEventForm(){
-        if(isset(NavigationView::$actionShowAddEventForm) === true){
+    public function hasUserPressedShowEventForm(){
+        if(isset(NavigationView::$actionShowEventForm) === true){
             return true;
         }
         return false;
     }
 
+    #region The eventForm
     /**
-     * @return string with HTML for the add event form
+     * @return string with HTML for common values between addEventForm and alterEventForm
      */
-    public function renderAddEventForm(){
-        $days = $this->getDays();
+    private function getEventForm(){
+        $titleValue = $this->getTitleValue();
+        $dayValue = $this->getDateValue();
+        $startHourValue = $this->getStartHourValue();
+        $endHourValue = $this->getEndHourValue();
+        $startMinuteValue = $this->getStartMinuteValue();
+        $endMinuteValue = $this->getEndMinuteValue();
+        $descriptionValue = $this->getDescriptionValue();
+
+        $dates = $this->getDates();
         $hours = $this->getHours();
         $minutes = $this->getMinutes();
+
         $message = $this->eventModel->getMessage();
         $modal = "
-                 <div class='modal'>
-                    <div class='modalHeader'>
-                     <a class='right, addEvent' href='?action=".NavigationView::$actionShowCalendar."'>
-                     Tillbaka till kalendern</a>
-                      <p>$this->htmlMonth $this->year</p>
-                      </div>
                       <div class='modalBody'>
-                      <h3>Lägg till händelse</h3>
                       <p>$message</p>
                         <form action='?action=".NavigationView::$actionAddEvent."' method='post'>
 
                              <div class='formGroup'>
                              <label>Titel: </label>
-                             <input placeholder='Ex. Kalas' type='text' value=''
+                             <input type='text' value='$titleValue'
                              name=$this->titleInput>
                            </div>
                            <p></p>
                              <div class='formGroup'>
                              <label>Datum:</label>
                              <select name=$this->dayInput>
-                               $days
+                             <option selected='selected' value='$dayValue'>$dayValue</option>
+                               $dates
                              </select>
                            </div>
 
@@ -82,10 +86,12 @@ class EventView {
                              <p>Starttid:</p>
                              <label>Timme: </label>
                              <select name=$this->startHourInput>
+                             <option selected='selected' value='$startHourValue'>$startHourValue</option>
                                $hours
                              </select>
                               <label>Minut: </label>
                              <select name=$this->startMinuteInput>
+                             <option selected='selected' value='$startMinuteValue'>$startMinuteValue</option>
                                $minutes
                              </select>
                            </div>
@@ -94,10 +100,12 @@ class EventView {
                              <p>Sluttid:</p>
                              <label>Timme: </label>
                              <select name=$this->endHourInput>
+                             <option value='$endHourValue' selected='selected'>$endHourValue</option>
                                $hours
                              </select>
                               <label>Minut: </label>
                              <select name=$this->endMinuteInput>
+                             <option selected='selected' value='$endMinuteValue'>$endMinuteValue</option>
                                $minutes
                              </select>
                            </div>
@@ -106,7 +114,7 @@ class EventView {
                             <p></p>
                              <label class='description'>Beskrivning: </label>
                              <textarea rows='5' placeholder='Ex. Kalas hos kalle' type='text' value=''
-                             name=$this->descriptionInput></textarea>
+                             name=$this->descriptionInput>$descriptionValue</textarea>
                            </div>
 
                             <div class='formGroup'>
@@ -116,107 +124,42 @@ class EventView {
 
                         </form>
                       </div>
-                      </div>
         ";
 
         return $modal;
     }
 
+    #endregion
+
     /**
-     * TODO This form is the same as add event form except the default values. We should reuse that form
      * @return string With HTML for alter event form
      */
     public function renderAlterEventForm(){
-        $event = $this->getEvent();
-        $days = $this->getDays();
-        $hours = $this->getHours();
-        $minutes = $this->getMinutes();
-        $date = $event->getDay();
-        $startHour = $event->getStartHour();
-        $startMinute = $event->getStartMinute();
-        $endHour = $event->getEndHour();
-        $endMinute = $event->getEndMinute();
-        $message = $this->eventModel->getMessage();
-        $modal = "
-                 <div class='modal'>
-                    <div class='modalHeader'>
-                     <a class='right, addEvent' href='?action=".
-            NavigationView::$actionShowCalendar."'>Tillbaka till kalendern</a>
-                      <p>$this->htmlMonth $this->year</p>
-                      </div>
-                      <div class='modalBody'>
-                      <h3>Ändra händelse</h3>
-                      <p>$message</p>
-                        <form action='?action=".NavigationView::$actionSubmitAlteredEvent."' method='post'>
+        $modal="<div class='modal'>
+                <a class='right, addEvent' href='?action=".NavigationView::$actionShowCalendar."'>
+                     Tillbaka till kalendern</a>
+                <h3>Ändra händelse</h3>";
+        $modal .= $this->getEventForm();
+        $modal .= "</div>";
 
-                        <div class='hidden'>
-                             <input type='text' value='".$event->getEventId()."'
-                             name=$this->eventIdInput>
-                           </div>
-
-                             <div class='formGroup'>
-                             <label>Titel: </label>
-                             <input placeholder='Ex. Kalas' type='text' value='".$event->getTitle()."'
-                             name=$this->titleInput>
-                           </div>
-                           <p></p>
-                             <div class='formGroup'>
-                             <label>Datum:</label>
-                             <select name=$this->dayInput>
-                             <option selected='selected' value='$date'>$date</option>
-                               $days
-                             </select>
-                           </div>
-
-                           <div class='formGroup'>
-                             <p>Starttid:</p>
-                             <label>Timme: </label>
-                             <select name=$this->startHourInput>
-                              <option selected='selected' value='$startHour'>$startHour</option>
-                               $hours
-                             </select>
-                              <label>Minut: </label>
-                             <select name=$this->startMinuteInput>
-                              <option selected='selected' value='$startMinute'>$startMinute</option>
-                               $minutes
-                             </select>
-                           </div>
-
-                            <div class='formGroup'>
-                             <p>Sluttid:</p>
-                             <label>Timme: </label>
-                             <select name=$this->endHourInput>
-                              <option selected='selected' value='$endHour'>$endHour</option>
-                               $hours
-                             </select>
-                              <label>Minut: </label>
-                             <select name=$this->endMinuteInput>
-                              <option selected='selected' value='$endMinute'>$endMinute</option>
-                               $minutes
-                             </select>
-                           </div>
-
-                            <div class='formGroup'>
-                            <p></p>
-                             <label class='description'>Beskrivning: </label>
-                             <textarea rows='5' type='text'
-                             name=$this->descriptionInput>".$event->getDescription()."</textarea>
-                           </div>
-
-                            <div class='formGroup'>
-                             <input type='submit' value='Uppdatera'
-                             name=$this->submitAlterEvent>
-                           </div>
-
-                        </form>
-                      </div>
-                      </div>
-        ";
 
         return $modal;
 
     }
 
+    /**
+     * @return string with HTML for add event form
+     */
+    public function renderAddEventForm(){
+        $modal = "<div class='modal'>
+                  <a class='right, addEvent' href='?action=".NavigationView::$actionShowCalendar."'>
+                     Tillbaka till kalendern</a>
+                  <h3>Lägg till händelse</h3>";
+        $modal .=$this->getEventForm();
+        $modal .= "</div>";
+
+        return $modal;
+    }
 
     /**
      * @return string with HTML for chosen event
@@ -284,21 +227,115 @@ class EventView {
         return $ret;
     }
 
+    #region default values for eventForm
+
     /**
-     * @return object event if it is found in the array
+     * @return string Default value for title input in eventForm
      */
-    private function getEvent(){
+    private function getTitleValue(){
         $eventTitle = $this->getEventTitle();
-        $ret = null;
+        $ret = "";
 
         foreach($this->events as $event){
             if($eventTitle === $event->getTitle()){
-                $ret = $event;
+                $ret = $event->getTitle();
             }
         }
         return $ret;
-
     }
+
+    /**
+     * @return string Default value for date input in eventForm
+     */
+    private function getDateValue(){
+        $ret="Välj datum";
+
+        foreach($this->events as $event){
+            if($this->getEventTitle() === $event->getTitle()){
+                $ret = $event->getDay();
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * @return string Default value for start hour input in eventForm
+     */
+    private function getStartHourValue(){
+        $ret="Ange starttimme";
+
+        foreach($this->events as $event){
+            if($this->getEventTitle() === $event->getTitle()){
+                $ret = $event->getStartHour();
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * @return string Default value for end hour input in eventForm
+     */
+    private function getEndHourValue(){
+        $ret="Ange sluttimme";
+
+        foreach($this->events as $event){
+            if($this->getEventTitle() === $event->getTitle()){
+                $ret = $event->getEndHour();
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * @return string Default value for start minute input in eventForm
+     */
+    private function getStartMinuteValue(){
+        $ret="Ange startminut";
+
+        foreach($this->events as $event){
+            if($this->getEventTitle() === $event->getTitle()){
+                $ret = $event->getStartMinute();
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * @return string Default value for end minute input in eventForm
+     */
+    private function getEndMinuteValue(){
+        $ret="Ange slutminut";
+
+        foreach($this->events as $event){
+            if($this->getEventTitle() === $event->getTitle()){
+                $ret = $event->getEndMinute();
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * @return string Default value for description input in eventForm
+     */
+    private function getDescriptionValue(){
+        $ret="";
+
+        foreach($this->events as $event){
+            if($this->getEventTitle() === $event->getTitle()){
+                $ret = $event->getDescription();
+            }
+        }
+
+        return $ret;
+    }
+
+    #endregion
+
 
     public function setEvents(Array $events){
         $this->events = $events;
@@ -319,10 +356,12 @@ class EventView {
         return $this->month;
     }
 
+    #region form dropdown options
+
     /**
-     * @return string with HTML options for dropdown list containing all dates in the month
+     * @return string with HTML options for dropDown list containing all dates in the month for EventForm
      */
-    public function getDays(){
+    public function getDates(){
         $days = cal_days_in_month(CAL_GREGORIAN, $this->month, $this->year);
         $ret="";
 
@@ -332,7 +371,9 @@ class EventView {
         return $ret;
     }
 
-
+    /**
+     * @return string with HTML options for dropDown list containing all possible hours for eventForm
+     */
     public function getHours(){
         $ret="";
         for($x = 0; $x <= 9; $x++){
@@ -345,6 +386,9 @@ class EventView {
         return $ret;
     }
 
+    /**
+     * @return string HTML options for dropDown list containing all possible minutes for eventForm
+     */
     public function getMinutes(){
         $ret="";
         for($x = 0; $x <= 9; $x++){
@@ -357,6 +401,7 @@ class EventView {
         return $ret;
     }
 
+    #endregion
 
     #region posts
     public function hasUserPressedAddEvent(){

@@ -63,8 +63,8 @@ class EventController {
      * if user has pressed the add event link @return string the modal/popup
      * else @return bool false
      */
-    public function hasUserPressedShowAddEventForm(){
-        if ($this->eventView->hasUserPressedShowAddEventForm() && $this->loginModel->isUserLoggedIn() === true) {
+    public function hasUserPressedShowEventForm(){
+        if ($this->eventView->hasUserPressedShowEventForm() && $this->loginModel->isUserLoggedIn() === true) {
             $this->getEvents();
             return $this->eventView->renderAddEventForm();
         }
@@ -109,6 +109,7 @@ class EventController {
             }
             $this->eventModel->setMessage($this->eventView->getMessage());
             NavigationView::redirectToModal();
+            return;
         }
         NavigationView::redirectToLoginForm();
     }

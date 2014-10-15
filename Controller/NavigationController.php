@@ -50,10 +50,10 @@ class NavigationController{
                 $controller->doLogOut();
                 break;
 
-            case NavigationView::$actionShowAddEventForm;
+            case NavigationView::$actionShowEventForm;
                 $controller = new CalendarController();
                 $eventController = new EventController();
-                return $controller->render().$eventController->hasUserPressedShowAddEventForm();
+                return $controller->render().$eventController->hasUserPressedShowEventForm();
                 break;
 
             case NavigationView::$actionShowCalendar;
