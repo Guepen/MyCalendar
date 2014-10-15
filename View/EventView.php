@@ -178,7 +178,7 @@ class EventView {
             if ($event->getTitle() === $title) {
                 $ret = "
                 <div class='modal'>
-                 <a class='right, addEvent' href='?action=" .
+                 <a class='right, green' href='?action=" .
                     NavigationView::$actionShowCalendar . "'>Tillbaka till kalendern</a>
                   <h3 class='center'>" . $event->getTitle() . "</h3>
                   <p class='center'>" . $event->getDescription() . "</p>
@@ -186,9 +186,9 @@ class EventView {
                   <p class='center'>Pågår mellan " . $event->getStartHour().":".$event->getStartMinute()
                     . "-" . $event->getEndHour() .":".$event->getEndMinute(). "</p>
 
-                    <a class='addEvent' href='?action=".NavigationView::$actionAlterEvent . "&".
+                    <a class='green' href='?action=".NavigationView::$actionAlterEvent . "&".
                     NavigationView::$actionShowEvent ."=". $event->getTitle() ."'>Ändra Händelsen</a>
-                     <a class='right' href='?action=".NavigationView::$actionDeleteEvent."&".
+                     <a class='right, red' href='?action=".NavigationView::$actionDeleteEvent."&".
                     NavigationView::$actionShowEvent."=".$event->getTitle()."'>Ta bort Händelse</a>
                 </div>
                 ";

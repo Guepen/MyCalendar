@@ -12,33 +12,48 @@ class CalendarView {
     private $events;
 
     public function __construct(){
-        $this->year = date("Y");
         $this->dayOfTheWeek = 1;
         $this->setMonth();
+        $this->setYear();
         $this->htmlMonth = date("F");
         $this->firstDayInMonth = date('w', mktime(0, 0, 0, $this->month, 0, $this->year));
     }
 
+    private function setYear(){
+        if(isset($_GET[NavigationView::$actionYearToShow])){
+            $this->year = $_GET[NavigationView::$actionYearToShow];
+        } else{
+            $this->year = date("Y");
+        }
+    }
+
+    private function getNextYear(){
+        if ($this->month == 12) {
+            return $this->year + 1;
+        }
+        return $this->year;
+    }
+
+    private function getPreviousYear(){
+        if($this->month == 1){
+            return $this->year - 1;
+        }
+        return $this->year;
+    }
+
+
     private function setMonth(){
         if(isset($_GET[NavigationView::$actionMonthToShow])){
             $this->month = $_GET[NavigationView::$actionMonthToShow];
-            if ($this->month <= 12){
-                var_dump($this->month);
-            } else{
-                var_dump("esfdx");
-                $this->month = 1;
-            }
         } else{
             $this->month = date("n");
         }
     }
 
     private function getNextMonth(){
-        if ($this->month <= 12) {
+        if ($this->month < 12) {
             return $this->month + 1;
         } else {
-            $this->year = date("Y",strtotime("+1 year"));
-            var_dump($this->year);
             return 1;
         }
     }
@@ -107,7 +122,7 @@ class CalendarView {
 
             //new row in table if we are on the last day
             //and reset day variables
-            if ($this->firstDayInMonth === 6) {
+            if ($this->firstDayInMonth >= 6) {
                 $ret .= '</tr>';
                 if ($dayCounter + 1 !== $numberOfDays) {
                     $ret .= '<tr class="row">';
@@ -147,9 +162,13 @@ class CalendarView {
            <a href="?action='.NavigationView::$actionShowEventList.'">Ändra en händelse</a>
            <a href="?action='.NavigationView::$actionShowEventList.'">Ta bort en händelse</a>
             <a href="?action='.NavigationView::$actionShowCalendar."&".
-                               NavigationView::$actionMonthToShow."=".$this->getNextMonth().'">Nästa månad</a>
-                               <a href="?action='.NavigationView::$actionShowCalendar."&".
-            NavigationView::$actionPreviousMonth."=".$this->getPreviousMonth().'">Nästa månad</a>
+            NavigationView::$actionMonthToShow."=".$this->getNextMonth()."&".
+            NavigationView::$actionYearToShow."=".$this->getNextYear().'">Nästa månad</a>
+
+                <a href="?action='.NavigationView::$actionShowCalendar."&".
+            NavigationView::$actionMonthToShow."=".$this->getPreviousMonth()."&".
+            NavigationView::$actionYearToShow."=".$this->getPreviousYear().
+            '">Föregående månad</a>
            <div class="centerMonth">
            <div>
             <label>' . $this->year . '</label>' . '
@@ -166,7 +185,7 @@ class CalendarView {
         $eventBox = "";
         foreach ($this->events as $event) {
             //var_dump($event->getDay());
-            if ($event->getDay() == $currentDay) {
+            if ($event->getDay() == $currentDay && $event->getMonth() == $this->month) {
                 $eventBox .= "<div class='eventBox'><a class='event' href='?action="
                     .NavigationView::$actionCalendarEvent . "&".
                     NavigationView::$actionShowEvent ."=". $event->getTitle() . "'>
