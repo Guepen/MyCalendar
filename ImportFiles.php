@@ -25,6 +25,7 @@ require_once("./model/DAO/EventRepository.php");
 
 //Exceptions
 require_once("./common/Exceptions/UsernameAndPasswordToShortException.php");
+require_once("./common/Exceptions/DbException.php");
 require_once("./common/Exceptions/PasswordToShortException.php");
 require_once("./common/Exceptions/UsernameToShortException.php");
 require_once("./common/Exceptions/PasswordsDontMatchException.php");

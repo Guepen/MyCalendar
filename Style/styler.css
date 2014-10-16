@@ -5,6 +5,53 @@
     z-index: 0;
 }
 
+#menu{
+    margin: auto 0;
+    width: 1070px;
+    height: 30px;
+    background-color:#44c767;;
+}
+
+#menu a{
+    margin: 5px;
+    color:#ffffff;
+    width: 150px;
+    text-align: center;
+    text-decoration:none;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-shadow:1px 3px 1px #2b542c;
+
+}
+
+#menu a:hover{
+    background-color:#44a767;
+    text-shadow:1px 2px 3px #2b542c;
+}
+
+#navigation{
+    margin: auto 0;
+    width: 1070px;
+    height: 30px;
+}
+
+#navigation a{
+    margin-top: 7px;
+    margin-left: 145px;
+    color: #000000;
+    font-weight:bold;
+    width: 150px;
+    text-align: center;
+    text-decoration:none;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+#navigation a:hover{
+    color:#f5f5f5;
+}
 
 h1{
     margin-left: 420px;
@@ -24,10 +71,10 @@ textarea{
 }
 
 .centerMonth{
-    width: 100px;
+    width: 120px;
     padding: 5px;
     font-weight: bold;
-    margin-left: 445px;
+    margin-left: 480px;
 }
 
 .calendarDay{
@@ -41,7 +88,14 @@ textarea{
     opacity: 0.9;
 }
 
-.calendarDay, .emptyDay{
+.currentDay{
+    background-color: #5e5e5e;
+    height: 80px;
+    width: auto;
+    box-shadow: inset 0 0 0 10px orange;
+}
+
+.calendarDay, .emptyDay, .currentDay{
     width:120px;
     height: 100px;
     padding:5px;
@@ -86,7 +140,7 @@ textarea{
     width: 550px;
     position: absolute;
     z-index: 10;
-    top:170px;
+    top:210px;
     left: 38%;
 }
 

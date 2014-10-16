@@ -13,6 +13,7 @@ class EventRepository extends Repository {
     private static $userId = 'userId';
     private static $eventId = 'eventId';
     private static $title = 'title';
+    private static $year = 'year';
     private static $month = 'month';
     private static $day = 'day';
     private static $startHour = 'startHour';
@@ -40,11 +41,11 @@ class EventRepository extends Repository {
         try{
 
             $sql = "INSERT INTO ". $this->dbTable." (" . self::$userId . ", " . self::$title .", ".
-                                                    self::$month . ", ".self::$day .", ".
+                                                    self::$month . ", ".self::$year.",".self::$day .", ".
                                                     self::$startHour .", ". self::$startMinute .", ".
                                                     self::$endHour. ", ". self::$endMinute .", ".
-                                                    self::$description .") VALUES (?,?,?,?,?,?,?,?,?)";
-            $params = array($userId, $event->getTitle(), $event->getMonth(), $event->getDay(),
+                                                    self::$description .") VALUES (?,?,?,?,?,?,?,?,?,?)";
+            $params = array($userId, $event->getTitle(), $event->getMonth(),$event->getYear(), $event->getDay(),
                                      $event->getStartHour(), $event->getStartMinute(),
                                      $event->getEndHour(), $event->getEndMinute(), $event->getDescription());
 
@@ -52,7 +53,9 @@ class EventRepository extends Repository {
             $query->execute($params);
 
         }catch (\PDOException $e){
+            //var_dump($e->getMessage());
             throw new DbException();
+
         }
     }
 
@@ -69,11 +72,12 @@ class EventRepository extends Repository {
                     self::$title. "=?". ",". self::$startHour. "=?". ",".
                     self::$startMinute. "=?". ",". self::$endHour. "=?".
                     ",". self::$endMinute. "=?". ",". self::$month. "=?".
+                    ",". self::$year. "=?".
                     " WHERE ". self::$eventId. "=?";
 
             $params = array($event->getDay(), $event->getDescription(), $event->getTitle(),
                 $event->getStartHour(), $event->getStartMinute(),
-                $event->getEndHour(), $event->getEndMinute(), $event->getMonth(), $event->getEventId());
+                $event->getEndHour(), $event->getEndMinute(), $event->getMonth(), $event->getYear(), $event->getEventId());
 
             $query = $this->db->prepare($sql);
             $query->execute($params);
@@ -100,6 +104,7 @@ class EventRepository extends Repository {
             foreach($result = $query->fetchAll() as $event ){
                 $title  = $event[self::$title];
                 $month = $event[self::$month];
+                $year = $event[self::$year];
                 $day = $event[self::$day];
                 $startHour = $event[self::$startHour];
                 $startMinute = $event[self::$startMinute];
@@ -108,7 +113,7 @@ class EventRepository extends Repository {
                 $description = $event[self::$description];
                 $eventId = $event[self::$eventId];
 
-                $this->eventList[] = new Event($title, $month, $day, $startHour, $startMinute,
+                $this->eventList[] = new Event($title, $month, $year, $day, $startHour, $startMinute,
                                                $endHour, $endMinute, $description, $eventId);
             }
 
@@ -120,10 +125,10 @@ class EventRepository extends Repository {
         }
     }
 
-    public function deleteEvent($eventTitle){
+    public function deleteEvent($eventTitle, $userId){
         try {
-            $sql = "DELETE FROM " . $this->dbTable . " WHERE " . self::$title . " =?";
-            $params = array($eventTitle);
+            $sql = "DELETE FROM " . $this->dbTable . " WHERE " . self::$title . " =? AND ".self::$userId. "=?";
+            $params = array($eventTitle, $userId);
 
             $query = $this->db->prepare($sql);
             $query->execute($params);

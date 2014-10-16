@@ -12,6 +12,7 @@ namespace Model;
 class Event {
     private $title;
     private $month;
+    private $year;
     private $day;
     private $startHour;
     private $startMinute;
@@ -20,10 +21,11 @@ class Event {
     private $description;
     private $eventId;
 
-    public function __construct($title, $month, $day, $startHour, $startMinute,
+    public function __construct($title, $month, $year, $day, $startHour, $startMinute,
                                 $endHour, $endMinute, $description, $eventId = null){
         $this->title = $title;
         $this->month = $month;
+        $this->year = $year;
         $this->day = $day;
         $this->startHour = $startHour;
         $this->startMinute = $startMinute;
@@ -60,6 +62,10 @@ class Event {
 
     public function getDay(){
       return $this->day;
+    }
+
+    public function getYear(){
+        return $this->year;
     }
 
     public function getMonth(){

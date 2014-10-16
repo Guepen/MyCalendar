@@ -15,8 +15,10 @@ class EventView {
     private $events;
 
     private $eventModel;
+
     private $submitEvent = "submitEvent";
     private $submitAlterEvent = "submitAlterEvent";
+
     private $titleInput = "titleInput";
     private $descriptionInput = "descriptionInput";
     private $startHourInput = "startHourInput";
@@ -25,15 +27,15 @@ class EventView {
     private $endMinuteInput = "endMinuteInput";
     private $dayInput = "dayInput";
     private $eventIdInput = "eventIdInput";
+    private $monthInput = "monthInput";
+    private $yearInput = "yearInput";
 
     private $errorMessage;
     private $year;
     private $month;
-    private $htmlMonth;
 
     public function __construct(){
         $this->eventModel = new EventModel();
-        $this->htmlMonth = date("F");
         $this->year = date("Y");
         $this->month = date("n");
     }
@@ -51,6 +53,8 @@ class EventView {
      */
     private function getEventForm(){
         $titleValue = $this->getTitleValue();
+        $yearValue = $this->getYearValue();
+        $monthValue = $this->getMonthValue();
         $dayValue = $this->getDateValue();
         $startHourValue = $this->getStartHourValue();
         $endHourValue = $this->getEndHourValue();
@@ -58,6 +62,8 @@ class EventView {
         $endMinuteValue = $this->getEndMinuteValue();
         $descriptionValue = $this->getDescriptionValue();
 
+        $years = $this->getYears();
+        $months = $this->getMonths();
         $dates = $this->getDates();
         $hours = $this->getHours();
         $minutes = $this->getMinutes();
@@ -72,6 +78,25 @@ class EventView {
                              <input type='text' value='$titleValue'
                              name=$this->titleInput>
                            </div>
+
+                            <p></p>
+                           <div class='formGroup'>
+                             <label>År: </label>
+                             <select name='$this->yearInput'>
+                              <option selected='selected' value='$yearValue'>$yearValue</option>
+                               $years
+                             </select>
+                           </div>
+
+                           <p></p>
+                           <div class='formGroup'>
+                             <label>Månad: </label>
+                             <select name='$this->monthInput'>
+                              <option selected='selected' value='$monthValue'>$monthValue</option>
+                               $months
+                             </select>
+                           </div>
+
                            <p></p>
                              <div class='formGroup'>
                              <label>Datum:</label>
@@ -175,6 +200,8 @@ class EventView {
         $ret = "";
         $title = $this->getEventTitle();
         foreach ($this->events as $event) {
+            $htmlMonth = strftime("%B",mktime(0,0,0,$event->getMonth()));
+            $htmlMonth = ucfirst($htmlMonth);
             if ($event->getTitle() === $title) {
                 $ret = "
                 <div class='modal'>
@@ -182,7 +209,7 @@ class EventView {
                     NavigationView::$actionShowCalendar . "'>Tillbaka till kalendern</a>
                   <h3 class='center'>" . $event->getTitle() . "</h3>
                   <p class='center'>" . $event->getDescription() . "</p>
-                  <p class='center'>Händelsen inträffar den " . $event->getDay() . " " . date("F") . "</p>
+                  <p class='center'>Händelsen inträffar den " . $event->getDay() . " " . $htmlMonth . "</p>
                   <p class='center'>Pågår mellan " . $event->getStartHour().":".$event->getStartMinute()
                     . "-" . $event->getEndHour() .":".$event->getEndMinute(). "</p>
 
@@ -260,6 +287,28 @@ class EventView {
                 $ret = $event->getTitle();
             }
         }
+        return $ret;
+    }
+
+    private function getYearValue(){
+        $ret=$this->year;
+        foreach($this->events as $event){
+            if($this->getEventTitle() === $event->getTitle()){
+                $ret = $event->getYear();
+            }
+        }
+
+        return $ret;
+    }
+
+    private function getMonthValue(){
+        $ret=$this->month;
+        foreach($this->events as $event){
+            if($this->getEventTitle() === $event->getTitle()){
+                $ret = $event->getMonth();
+            }
+        }
+
         return $ret;
     }
 
@@ -371,8 +420,12 @@ class EventView {
         return false;
     }
 
-    public function getMonth(){
-        return $this->month;
+    public function getCurrentMonth(){
+        return date("n");
+    }
+
+    public function getCurrentDay(){
+        return date("j");
     }
 
     #region form dropdown options
@@ -385,6 +438,25 @@ class EventView {
         $ret="";
 
         for($i = 1; $i <= $days; $i++){
+            $ret .= "<option value='$i'>$i</option>";
+        }
+        return $ret;
+    }
+
+    private function getYears(){
+        $ret="";
+        $endYear = $this->year + 5;
+
+        for($this->year; $this->year <= $endYear; $this->year++){
+            $ret .= "<option value='$this->year'>$this->year</option>";
+        }
+        return $ret;
+    }
+
+    public function getMonths(){
+        $ret="";
+
+        for($i = 1; $i <= 12; $i++){
             $ret .= "<option value='$i'>$i</option>";
         }
         return $ret;
@@ -433,6 +505,20 @@ class EventView {
     public function getEventId(){
         if(isset($_POST[$this->eventIdInput])){
             return $_POST[$this->eventIdInput];
+        }
+        return false;
+    }
+
+    public function getYear(){
+        if (isset($_POST[$this->yearInput])) {
+            return $_POST[$this->yearInput];
+        }
+        return false;
+    }
+
+    public function getMonth(){
+        if (isset($_POST[$this->monthInput])) {
+            return $_POST[$this->monthInput];
         }
         return false;
     }
