@@ -7,6 +7,8 @@ require_once("./View/LoginView.php");
 require_once("./View/CalendarView.php");
 require_once("./View/ErrorView.php");
 require_once("./View/EventView.php");
+require_once("./View/EventListView.php");
+require_once("./View/EventFormView.php");
 
 //Controllers
 require_once("./Controller/CalendarController.php");

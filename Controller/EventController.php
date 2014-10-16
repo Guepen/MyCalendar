@@ -20,6 +20,9 @@ use model\UserRepository;
 use model\WrongDayFormatException;
 use model\WrongMonthFormatException;
 use model\WrongTimeFormatException;
+use view\CalendarView;
+use view\EventFormView;
+use View\EventListView;
 use View\EventView;
 use view\NavigationView;
 
@@ -27,20 +30,26 @@ class EventController {
     private $userRepository;
     private $loginModel;
     private $eventRepository;
-    private $eventView;
+    private $eventFormView;
+    private $calendarView;
     private $eventModel;
+    private $eventListView;
+    private $eventView;
 
     public function __construct(){
         $this->userRepository = new UserRepository();
         $this->loginModel = new LoginModel();
         $this->eventRepository = new EventRepository();
+        $this->eventFormView = new EventFormView();
+        $this->calendarView = new CalendarView();
+        $this->eventListView = new EventListView();
         $this->eventView = new EventView();
         $this->eventModel = new EventModel();
     }
 
     public function renderEvent(){
         if ($this->loginModel->isUserLoggedIn() === true) {
-            $this->getEvents();
+            $this->eventView->setEvents($this->getEvents());
             return $this->eventView->renderEvent();
         }
          NavigationView::redirectToLoginForm();
@@ -48,15 +57,15 @@ class EventController {
 
     public function renderEventList(){
         if ($this->loginModel->isUserLoggedIn() === true) {
-            $this->getEvents();
-            return $this->eventView->renderEventList();
+            $this->eventListView->setEvents($this->getEvents());
+            return $this->eventListView->renderEventList();
         }
         NavigationView::redirectToLoginForm();
     }
 
     public function renderAlterEventForm(){
-        $this->getEvents();
-        return $this->eventView->renderAlterEventForm();
+        $this->setEvents();
+        return $this->eventFormView->renderAlterEventForm();
     }
 
     /**
@@ -64,9 +73,9 @@ class EventController {
      * else @return bool false
      */
     public function hasUserPressedShowEventForm(){
-        if ($this->eventView->hasUserPressedShowEventForm() && $this->loginModel->isUserLoggedIn() === true) {
-            $this->getEvents();
-            return $this->eventView->renderAddEventForm();
+        if ($this->eventFormView->hasUserPressedShowEventForm() && $this->loginModel->isUserLoggedIn() === true) {
+            $this->setEvents();
+            return $this->eventFormView->renderAddEventForm();
         }
         NavigationView::redirectToLoginForm();
         return false;
@@ -78,54 +87,59 @@ class EventController {
     public function checkIfInputIsValid(){
         if ($this->loginModel->isUserLoggedIn() === true) {
             try {
-                if ($this->eventModel->validateInput($this->eventView->getTitle(),
-                        $this->eventView->getMonth(), $this->eventView->getCurrentMonth(), $this->eventView->getDay(),
-                        $this->eventView->getCurrentDay(), $this->eventView->getStartHour(),
-                        $this->eventView->getStartMinute(), $this->eventView->getEndHour(),
-                        $this->eventView->getEndMinute(), $this->eventView->getDescription()) === true
+                if ($this->eventModel->validateInput($this->eventFormView->getTitle(),
+                        $this->eventFormView->getMonth(), $this->eventFormView->getCurrentMonth(), $this->eventFormView->getDay(),
+                        $this->eventFormView->getCurrentDay(), $this->eventFormView->getStartHour(),
+                        $this->eventFormView->getStartMinute(), $this->eventFormView->getEndHour(),
+                        $this->eventFormView->getEndMinute(), $this->eventFormView->getDescription()) === true
                 ) {
-                    if ($this->eventView->hasUserPressedAddEvent()) {
+                    if ($this->eventFormView->hasUserPressedAddEvent()) {
                         $this->addEvent();
                     } else {
                         $this->alterEvent();
                     }
-                    return;
 
                 }
             } catch (EmptyTitleException $e) {
-                $this->eventView->setMissingTitleMessage();
+                $this->eventFormView->setMissingTitleMessage();
 
             } catch (EmptyDescriptionException $e) {
-                $this->eventView->setMissingDescriptionMessage();
+                $this->eventFormView->setMissingDescriptionMessage();
 
             } catch (WrongDayFormatException $e) {
-                $this->eventView->setUnexpectedErrorMessage();
+                $this->eventFormView->setUnexpectedErrorMessage();
 
             } catch (WrongTimeFormatException $e) {
-                $this->eventView->setWrongTimeFormatMessage();
+                $this->eventFormView->setWrongTimeFormatMessage();
 
             } catch (WrongMonthFormatException $e) {
-                $this->eventView->setUnexpectedErrorMessage();
+                $this->eventFormView->setUnexpectedErrorMessage();
 
             }
-            $this->eventModel->setMessage($this->eventView->getMessage());
-            NavigationView::redirectToModal();
-            return;
+            $this->setEvents();
+            $this->eventModel->setMessage($this->eventFormView->getMessage());
+
+            if ($this->eventFormView->hasUserPressedAddEvent() == true) {
+                return $this->calendarView->renderCalendar() . $this->eventFormView->renderAddEventForm();
+            }
+            return $this->calendarView->renderCalendar() . $this->eventFormView->renderAlterEventForm();
         }
         NavigationView::redirectToLoginForm();
     }
 
     public function alterEvent(){
-        $event = new Event($this->eventView->getTitle(), $this->eventView->getMonth(),
-            $this->eventView->getYear(), $this->eventView->getDay(), $this->eventView->getStartHour(),
-            $this->eventView->getStartMinute(), $this->eventView->getEndHour(),
-            $this->eventView->getEndMinute(), $this->eventView->getDescription(),
-            $this->eventView->getEventId());
+        $event = new Event($this->eventFormView->getTitle(), $this->eventFormView->getMonth(),
+            $this->eventFormView->getYear(), $this->eventFormView->getDay(), $this->eventFormView->getStartHour(),
+            $this->eventFormView->getStartMinute(), $this->eventFormView->getEndHour(),
+            $this->eventFormView->getEndMinute(), $this->eventFormView->getDescription(),
+            $this->eventFormView->getEventId());
         try{
             $this->eventRepository->Update($event);
             NavigationView::redirectToCalendar();
+            return;
         } catch(DbException $e){
             NavigationView::redirectToErrorPage();
+            return;
         }
 
     }
@@ -136,17 +150,19 @@ class EventController {
      */
     private  function addEvent(){
 
-        $event = new Event($this->eventView->getTitle(), $this->eventView->getMonth(), $this->eventView->getYear(),
-                           $this->eventView->getDay(), $this->eventView->getStartHour(),
-                           $this->eventView->getStartMinute(), $this->eventView->getEndHour(),
-                           $this->eventView->getEndMinute(), $this->eventView->getDescription());
+        $event = new Event($this->eventFormView->getTitle(), $this->eventFormView->getMonth(), $this->eventFormView->getYear(),
+                           $this->eventFormView->getDay(), $this->eventFormView->getStartHour(),
+                           $this->eventFormView->getStartMinute(), $this->eventFormView->getEndHour(),
+                           $this->eventFormView->getEndMinute(), $this->eventFormView->getDescription());
 
         try {
             $userId = $this->userRepository->getUserId($this->loginModel->getUserName());
             $this->eventRepository->add($event, $userId);
             NavigationView::redirectToCalendar();
+            return;
         } catch (DbException $e) {
             NavigationView::redirectToErrorPage();
+            return;
 
         }
 
@@ -155,7 +171,7 @@ class EventController {
     public function deleteEvent(){
         try {
             $userId = $this->userRepository->getUserId($this->loginModel->getUserName());
-            $title = $this->eventView->getEventTitle();
+            $title = $this->eventFormView->getEventTitle();
             $this->eventRepository->deleteEvent($title, $userId);
             NavigationView::redirectToCalendar();
 
@@ -165,14 +181,20 @@ class EventController {
 
     }
 
-    public function getEvents(){
+    private function getEvents(){
         try {
             $userId = $this->userRepository->getUserId($this->loginModel->getUserName());
             $events = $this->eventRepository->getEvents($userId);
-            $this->eventView->setEvents($events);
+            return $events;
         } catch (DbException $e) {
             NavigationView::redirectToErrorPage();
         }
+        return false;
+    }
+
+    private function setEvents(){
+        $this->calendarView->setEvents($this->getEvents());
+        $this->eventFormView->setEvents($this->getEvents());
     }
 
 

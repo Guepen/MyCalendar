@@ -68,7 +68,7 @@ class NavigationController{
 
             case NavigationView::$actionAddEvent;
                 $controller = new EventController();
-                $controller->checkIfInputIsValid();
+                return $controller->checkIfInputIsValid();
                 break;
 
             case NavigationView::$actionShowErrorPage;

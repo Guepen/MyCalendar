@@ -13,26 +13,20 @@ class EventModel {
 
     private $errorMessage = "errorMessage";
 
-    /**
-     * @param $title
-     * @param $month
-     * @param $day
-     * @param $startHour
-     * @param $startMinute
-     * @param $endHour
-     * @param $endMinute
-     * @param $description
-     * @return bool
-     * @throws EmptyDescriptionException
-     * @throws EmptyTitleException
-     * @throws WrongDayFormatException
-     * @throws WrongMonthFormatException
-     * @throws WrongTimeFormatException
-     */
-    public function validateInput($title, $month, $day, $startHour, $startMinute, $endHour, $endMinute, $description){
+
+    public function validateInput($title, $month, $currentMonth, $day, $currentDay, $startHour,
+                                  $startMinute, $endHour, $endMinute, $description){
         if(empty($title)){
             throw new EmptyTitleException();
+
+        } else if(mb_strlen($title) > 20){
+            throw new TitleToLongException();
+
+        } else if(preg_match('/[^a-z0-9]+/i', $title)){
+            $title = preg_replace('/[^a-z0-9]+/i', "", $title);
+            throw new ProhibitedCharacterInTitleException($title);
         }
+
 
         if(empty($description)){
             throw new EmptyDescriptionException();
