@@ -115,15 +115,15 @@ class CalendarView {
         $ret = "";
         for ($i = 1; $i <= $numberOfDays; $i++) {
             $eventBox = $this->getEvents($i);
-          if($i == $this->currentDay && $this->month == date("n")){
-              $ret .= '<td class="currentDay">
+            if($i == $this->currentDay && $this->month == date("n")){
+                $ret .= '<td class="currentDay">
                     <div class="dayNumber">' . $i . '
                       <p class="event">'.$eventBox . '</p>
                     </div>
                     </a>
                     </td>';
-          } else {
-              $ret .= '
+            } else {
+                $ret .= '
                     <td class="calendarDay">
                     <div class="dayNumber">' . $i . '
                       <p class="event">' . $eventBox . '</p>
@@ -131,7 +131,7 @@ class CalendarView {
                     </a>
                     </td>
                     ';
-          }
+            }
 
             //new row in table if we are on the last day
             //and reset day variables

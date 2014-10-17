@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use model\DbException;
 use model\EmptyDescriptionException;
 use model\EmptyTitleException;
 use Model\Event;
@@ -13,6 +14,7 @@ use model\WrongDayFormatException;
 use model\WrongMonthFormatException;
 use model\WrongTimeFormatException;
 use view\CalendarView;
+use View\EventView;
 use view\NavigationView;
 
 class CalendarController{
@@ -26,20 +28,25 @@ class CalendarController{
         $this->userRepository = new UserRepository();
         $this->eventRepository = new EventRepository();
         $this->loginModel = new LoginModel();
+        $this->getEvents();
     }
 
     public function render(){
         if ($this->loginModel->isUserLoggedIn() === true) {
-            $this->getEvents();
             return $this->calendarView->renderCalendar();
         }
         NavigationView::redirectToLoginForm();
     }
 
     public function getEvents(){
-        $userId = $this->userRepository->getUserId($this->loginModel->getUserName());
-        $events = $this->eventRepository->getEvents($userId);
-        $this->calendarView->setEvents($events);
+        try {
+            $userId = $this->userRepository->getUserId($this->loginModel->getUserName());
+            $events = $this->eventRepository->getEvents($userId);
+            $this->calendarView->setEvents($events);
+
+        } catch (DbException $e) {
+            NavigationView::redirectToErrorPage();
+        }
     }
 
 

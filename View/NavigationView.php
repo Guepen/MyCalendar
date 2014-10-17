@@ -15,7 +15,7 @@ class NavigationView{
 
     public static $actionCalendarEvent = "event";
     public static $actionAddEvent = "addEvent";
-    public static $actionAlterEvent = "alterEvent";
+    public static $actionAlterEventForm = "alterEvent";
     public static $actionSubmitAlteredEvent = "submitAlter";
     public static $actionDeleteEvent = "deleteEvent";
 

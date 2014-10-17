@@ -64,15 +64,6 @@ class EventFormView {
      */
     private function getEventForm(){
         $this->setDefaultValues();
-       /* $titleValue = $this->getTitleValue();
-        $yearValue = $this->getYearValue();
-        $monthValue = $this->getMonthValue();
-        $dayValue = $this->getDateValue();
-        $startHourValue = $this->getStartHourValue();
-        $endHourValue = $this->getEndHourValue();
-        $startMinuteValue = $this->getStartMinuteValue();
-        $endMinuteValue = $this->getEndMinuteValue();
-        //$descriptionValue = $this->getDescriptionValue();*/
 
         $years = $this->getYears();
         $months = $this->getMonths();
@@ -80,10 +71,10 @@ class EventFormView {
         $hours = $this->getHours();
         $minutes = $this->getMinutes();
 
-        $message = $this->eventModel->getMessage();
+        //$message = $this->eventModel->getMessage();
         $modal = "
                       <div class='modalBody'>
-                      <p>$message</p>
+                      <p>$this->errorMessage</p>
 
                              <div class='formGroup'>
                              <label>Titel: </label>
@@ -106,7 +97,7 @@ class EventFormView {
                            <div class='formGroup'>
                              <label>Månad: </label>
                              <select name='$this->monthInput'>
-                              <option selected='selected' value='$$this->defaultMonthValue'>
+                              <option selected='selected' value='$this->defaultMonthValue'>
                               $this->defaultMonthValue
                               </option>
                                $months
@@ -229,6 +220,7 @@ class EventFormView {
         $this->defaultStartHourValue = "Ange Starttimme";
         $this->defaultEndMinuteValue = "Ange Slutminut";
         $this->defaultEndHourValue = "Ange Sluttimme";
+        $this->defaultDayValue = "Ange Datum";
 
         if($this->hasUserPressedAddEvent() === true){
             $this->setPostValuesAsDefault();
@@ -259,8 +251,9 @@ class EventFormView {
         $this->defaultStartMinuteValue = $_POST[$this->startMinuteInput];
         $this->defaultMonthValue = $_POST[$this->monthInput];
         $this->defaultYearValue = $_POST[$this->yearInput];
-        $this->defaultEventIdValue = $_POST[$this->eventIdInput];
     }
+
+    #endregion
 
     /**
      * TODO put this in a base class?
@@ -436,10 +429,6 @@ class EventFormView {
     #endregion
 
     #region messages
-    public function getMessage(){
-        return $this->errorMessage;
-    }
-
     public function setMissingTitleMessage(){
         $this->errorMessage = "Titel får inte lämnas tomt!";
 
@@ -457,4 +446,4 @@ class EventFormView {
         $this->errorMessage = "Ett oväntat fel inträffade! Försök igen";
     }
     #endregion
-} 
+}

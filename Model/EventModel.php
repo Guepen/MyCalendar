@@ -11,9 +11,6 @@ namespace Model;
 
 class EventModel {
 
-    private $errorMessage = "errorMessage";
-
-
     public function validateInput($title, $month, $currentMonth, $day, $currentDay, $startHour,
                                   $startMinute, $endHour, $endMinute, $description){
         if(empty($title)){
@@ -22,11 +19,7 @@ class EventModel {
         } else if(mb_strlen($title) > 20){
             throw new TitleToLongException();
 
-        } else if(preg_match('/[^a-z0-9]+/i', $title)){
-            $title = preg_replace('/[^a-z0-9]+/i', "", $title);
-            throw new ProhibitedCharacterInTitleException($title);
         }
-
 
         if(empty($description)){
             throw new EmptyDescriptionException();
@@ -53,25 +46,7 @@ class EventModel {
         if(!preg_match('/^(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])$/',$endMinute)){
             throw new WrongTimeFormatException();
         }
-        $this->deleteMessage();
         return true;
-    }
-
-    public function setMessage($message){
-        $_SESSION[$this->errorMessage] = $message;
-    }
-
-    public function getMessage(){
-        if (isset($_SESSION[$this->errorMessage])) {
-            return $_SESSION[$this->errorMessage];
-        }
-        return false;
-    }
-
-    public function deleteMessage(){
-        if(isset($_SESSION[$this->errorMessage])){
-            unset($_SESSION[$this->errorMessage]);
-        }
     }
 
 } 

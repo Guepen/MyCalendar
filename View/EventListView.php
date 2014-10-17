@@ -31,7 +31,7 @@ class EventListView {
             $ret .= "
             <p>
                  <li>".$event->getTitle()."
-                 <a href='?action=".NavigationView::$actionAlterEvent."&".
+                 <a href='?action=".NavigationView::$actionAlterEventForm."&".
                 NavigationView::$actionShowEvent."=".$event->getTitle()."'>Ändra händele</a>
 
                  <a href='?action=".NavigationView::$actionDeleteEvent."&".
@@ -52,4 +52,4 @@ class EventListView {
 
     }
 
-} 
+}

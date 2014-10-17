@@ -30,7 +30,7 @@ class EventView{
                   <p class='center'>Pågår mellan " . $event->getStartHour() . ":" . $event->getStartMinute()
                     . "-" . $event->getEndHour() . ":" . $event->getEndMinute() . "</p>
 
-                    <a class='green' href='?action=" . NavigationView::$actionAlterEvent . "&" .
+                    <a class='green' href='?action=" . NavigationView::$actionAlterEventForm . "&" .
                     NavigationView::$actionShowEvent . "=" . $event->getTitle() . "'>Ändra Händelsen</a>
                      <a class='right, red' href='?action=" . NavigationView::$actionDeleteEvent . "&" .
                     NavigationView::$actionShowEvent . "=" . $event->getTitle() . "'>Ta bort Händelse</a>

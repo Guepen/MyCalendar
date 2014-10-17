@@ -47,12 +47,27 @@ class EventController {
         $this->eventModel = new EventModel();
     }
 
+    public function userPressedAlterEvent(){
+        if($this->InputIsValid()){
+            $this->alterEvent();
+        }
+        return $this->calendarView->renderCalendar() . $this->eventFormView->renderAlterEventForm();
+    }
+
+    public function userPressedAddEvent(){
+        if($this->InputIsValid()){
+            $this->addEvent();
+        }
+
+        return $this->calendarView->renderCalendar() . $this->eventFormView->renderAddEventForm();
+    }
+
     public function renderEvent(){
         if ($this->loginModel->isUserLoggedIn() === true) {
             $this->eventView->setEvents($this->getEvents());
             return $this->eventView->renderEvent();
         }
-         NavigationView::redirectToLoginForm();
+        NavigationView::redirectToLoginForm();
     }
 
     public function renderEventList(){
@@ -84,20 +99,17 @@ class EventController {
     /**
      * checks if input from the add event form or update event form is valid
      */
-    public function checkIfInputIsValid(){
+    public function InputIsValid(){
         if ($this->loginModel->isUserLoggedIn() === true) {
             try {
                 if ($this->eventModel->validateInput($this->eventFormView->getTitle(),
-                        $this->eventFormView->getMonth(), $this->eventFormView->getCurrentMonth(), $this->eventFormView->getDay(),
-                        $this->eventFormView->getCurrentDay(), $this->eventFormView->getStartHour(),
-                        $this->eventFormView->getStartMinute(), $this->eventFormView->getEndHour(),
-                        $this->eventFormView->getEndMinute(), $this->eventFormView->getDescription()) === true
-                ) {
-                    if ($this->eventFormView->hasUserPressedAddEvent()) {
-                        $this->addEvent();
-                    } else {
-                        $this->alterEvent();
-                    }
+                        $this->eventFormView->getMonth(), $this->eventFormView->getCurrentMonth(),
+                        $this->eventFormView->getDay(), $this->eventFormView->getCurrentDay(),
+                        $this->eventFormView->getStartHour(), $this->eventFormView->getStartMinute(),
+                        $this->eventFormView->getEndHour(), $this->eventFormView->getEndMinute(),
+                        $this->eventFormView->getDescription()) === true){
+
+                    return true;
 
                 }
             } catch (EmptyTitleException $e) {
@@ -117,12 +129,8 @@ class EventController {
 
             }
             $this->setEvents();
-            $this->eventModel->setMessage($this->eventFormView->getMessage());
+            return false;
 
-            if ($this->eventFormView->hasUserPressedAddEvent() == true) {
-                return $this->calendarView->renderCalendar() . $this->eventFormView->renderAddEventForm();
-            }
-            return $this->calendarView->renderCalendar() . $this->eventFormView->renderAlterEventForm();
         }
         NavigationView::redirectToLoginForm();
     }
@@ -151,9 +159,9 @@ class EventController {
     private  function addEvent(){
 
         $event = new Event($this->eventFormView->getTitle(), $this->eventFormView->getMonth(), $this->eventFormView->getYear(),
-                           $this->eventFormView->getDay(), $this->eventFormView->getStartHour(),
-                           $this->eventFormView->getStartMinute(), $this->eventFormView->getEndHour(),
-                           $this->eventFormView->getEndMinute(), $this->eventFormView->getDescription());
+            $this->eventFormView->getDay(), $this->eventFormView->getStartHour(),
+            $this->eventFormView->getStartMinute(), $this->eventFormView->getEndHour(),
+            $this->eventFormView->getEndMinute(), $this->eventFormView->getDescription());
 
         try {
             $userId = $this->userRepository->getUserId($this->loginModel->getUserName());
@@ -198,4 +206,4 @@ class EventController {
     }
 
 
-} 
+}
