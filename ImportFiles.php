@@ -41,6 +41,8 @@ require_once("./Common/Exceptions/WrongMonthFormatException.php");
 require_once("./Common/Exceptions/WrongDayFormatException.php");
 require_once("./Common/Exceptions/EmptyDescriptionException.php");
 require_once("./Common/Exceptions/EmptyTitleException.php");
+require_once("./Common/Exceptions/TitleToLongException.php");
+require_once("./Common/Exceptions/ProhibitedCharacterInTitleException.php");
 
 //Settings
 require_once("./Settings.php");

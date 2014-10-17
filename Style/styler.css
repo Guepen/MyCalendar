@@ -62,12 +62,33 @@ textarea{
     max-width: 200px;
 }
 
+.error {
+    color: red;
+    font-weight: bold;
+    font-size: 18px;
+    padding:3px;
+    width: 250px;
+}
+
 .right{
     float: right;
 }
 
 .left{
     float: left;
+}
+
+.quickAdd{
+    background-color:#449d44;
+    color:#000000;
+    font-weight: bold;
+    text-align: center;
+    text-decoration:none;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    font-size: 16px;
+    text-shadow:1px 2px 3px #2b542c;
 }
 
 .centerMonth{

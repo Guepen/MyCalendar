@@ -115,9 +115,14 @@ class CalendarView {
         $ret = "";
         for ($i = 1; $i <= $numberOfDays; $i++) {
             $eventBox = $this->getEvents($i);
-            if($i == $this->currentDay && $this->month == date("n")){
+            if($i == $this->currentDay && $this->month == date("n") && $this->year == date("Y")){
                 $ret .= '<td class="currentDay">
                     <div class="dayNumber">' . $i . '
+
+                    <label class="right">
+                       <a class="quickAdd" href="?action='.NavigationView::$actionShowEventForm.'&date='.$i.'">+</a>
+                    </label>
+
                       <p class="event">'.$eventBox . '</p>
                     </div>
                     </a>
@@ -125,7 +130,10 @@ class CalendarView {
             } else {
                 $ret .= '
                     <td class="calendarDay">
-                    <div class="dayNumber">' . $i . '
+                    <div class="dayNumber">
+                    <label class="right"><a class="quickAdd" href="?action='.NavigationView::$actionShowEventForm.'">+</a>
+                    </label>
+                    ' . $i . '
                       <p class="event">' . $eventBox . '</p>
                     </div>
                     </a>

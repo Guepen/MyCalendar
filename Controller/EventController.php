@@ -16,6 +16,8 @@ use Model\Event;
 use Model\EventModel;
 use model\EventRepository;
 use model\LoginModel;
+use model\ProhibitedCharacterInTitleException;
+use model\TitleToLongException;
 use model\UserRepository;
 use model\WrongDayFormatException;
 use model\WrongMonthFormatException;
@@ -115,6 +117,12 @@ class EventController {
             } catch (EmptyTitleException $e) {
                 $this->eventFormView->setMissingTitleMessage();
 
+            } catch (TitleToLongException $e){
+                $this->eventFormView->setTitleToLongMessage();
+
+            } catch(ProhibitedCharacterInTitleException $e){
+                $this->eventFormView->setProhibitedCharacterInTitleMessage();
+
             } catch (EmptyDescriptionException $e) {
                 $this->eventFormView->setMissingDescriptionMessage();
 
@@ -158,7 +166,8 @@ class EventController {
      */
     private  function addEvent(){
 
-        $event = new Event($this->eventFormView->getTitle(), $this->eventFormView->getMonth(), $this->eventFormView->getYear(),
+        $event = new Event($this->eventFormView->getTitle(), $this->eventFormView->getMonth(),
+            $this->eventFormView->getYear(),
             $this->eventFormView->getDay(), $this->eventFormView->getStartHour(),
             $this->eventFormView->getStartMinute(), $this->eventFormView->getEndHour(),
             $this->eventFormView->getEndMinute(), $this->eventFormView->getDescription());

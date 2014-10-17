@@ -19,6 +19,8 @@ class EventModel {
         } else if(mb_strlen($title) > 20){
             throw new TitleToLongException();
 
+        } else if(preg_match('/[^a-z0-9-_]+/i', $title)){
+            throw new ProhibitedCharacterInTitleException();
         }
 
         if(empty($description)){

@@ -74,10 +74,10 @@ class EventFormView {
         //$message = $this->eventModel->getMessage();
         $modal = "
                       <div class='modalBody'>
-                      <p>$this->errorMessage</p>
+                      <p class='error'>$this->errorMessage</p>
 
                              <div class='formGroup'>
-                             <label>Titel: </label>
+                             <label class='center'>Titel: </label>
                              <input  placeholder='Ex. Kalas hos kalle' type='text' value='$this->defaultTitleValue'
                              name=$this->titleInput>
                            </div>
@@ -220,7 +220,7 @@ class EventFormView {
         $this->defaultStartHourValue = "Ange Starttimme";
         $this->defaultEndMinuteValue = "Ange Slutminut";
         $this->defaultEndHourValue = "Ange Sluttimme";
-        $this->defaultDayValue = "Ange Datum";
+        $this->defaultDayValue = $this->getDate();
 
         if($this->hasUserPressedAddEvent() === true){
             $this->setPostValuesAsDefault();
@@ -273,6 +273,13 @@ class EventFormView {
             return $_GET[NavigationView::$actionShowEvent];
         }
         return false;
+    }
+
+    public function getDate(){
+        if(isset($_GET["date"])){
+            return $_GET["date"];
+        }
+        return "Ange datum";
     }
 
     public function getCurrentMonth(){
@@ -434,6 +441,13 @@ class EventFormView {
 
     }
 
+    public function setTitleToLongMessage(){
+        $this->errorMessage = "Titeln får max vara 20 tecken!";
+    }
+
+    public function setProhibitedCharacterInTitleMessage(){
+        $this->errorMessage = "Otillåtna tecken hittade i titeln!";
+    }
     public function setMissingDescriptionMessage(){
         $this->errorMessage = "Beskrivning får inte lämnas tomt!";
     }
