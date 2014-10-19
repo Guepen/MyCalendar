@@ -10,9 +10,16 @@ class NavigationController{
     public function renderView(){
         $controller = null;
         switch(NavigationView::getAction()){
-            case NavigationView::$actionShowLoginForm;
-                $controller = new LoginController();
-                return $controller->showLogInForm();
+
+            case NavigationView::$actionShowRegisterForm;
+                $controller = new RegisterController();
+                return $controller->renderRegisterForm();
+                break;
+
+            case NavigationView::$actionSubmitRegisterForm;
+                $controller = new RegisterController();
+                return $controller->isInputValid();
+                break;
 
             case NavigationView::$actionShowEventList;
                 $eventController = new EventController();
@@ -71,6 +78,10 @@ class NavigationController{
             case NavigationView::$actionShowErrorPage;
                 $controller = new ErrorView();
                 return $controller->renderErrorPage();
+
+            default:
+                $controller = new LoginController();
+                return $controller->showLogInForm();
         }
         return null;
     }

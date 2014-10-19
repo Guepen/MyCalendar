@@ -2,6 +2,7 @@
 
 //Views
 require_once("./View/EventView.php");
+require_once("./View/RegisterView.php");
 require_once("./Common/HtmlView.php");
 require_once("./View/NavigationView.php");
 require_once("./View/LoginView.php");
@@ -12,12 +13,14 @@ require_once("./View/EventFormView.php");
 
 //Controllers
 require_once("./Controller/CalendarController.php");
+require_once("./Controller/RegisterController.php");
 require_once("./Controller/LoginController.php");
 require_once("./Controller/EventController.php");
 require_once("./Controller/NavigationController.php");
 
 //Models
 require_once("./Model/EventModel.php");
+require_once("./Model/RegisterModel.php");
 require_once("./Model/Event.php");
 require_once("./Model/LoginModel.php");
 require_once("./Model/User.php");

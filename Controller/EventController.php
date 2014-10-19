@@ -50,14 +50,14 @@ class EventController {
     }
 
     public function userPressedAlterEvent(){
-        if($this->InputIsValid()){
+        if($this->isInputValid()){
             $this->alterEvent();
         }
         return $this->calendarView->renderCalendar() . $this->eventFormView->renderAlterEventForm();
     }
 
     public function userPressedAddEvent(){
-        if($this->InputIsValid()){
+        if($this->isInputValid()){
             $this->addEvent();
         }
 
@@ -101,11 +101,11 @@ class EventController {
     /**
      * checks if input from the add event form or update event form is valid
      */
-    public function InputIsValid(){
+    public function isInputValid(){
         if ($this->loginModel->isUserLoggedIn() === true) {
             try {
                 if ($this->eventModel->validateInput($this->eventFormView->getTitle(),
-                        $this->eventFormView->getMonth(), $this->eventFormView->getCurrentMonth(),
+                        $this->eventFormView->getMonthInput(), $this->eventFormView->getCurrentMonth(),
                         $this->eventFormView->getDay(), $this->eventFormView->getCurrentDay(),
                         $this->eventFormView->getStartHour(), $this->eventFormView->getStartMinute(),
                         $this->eventFormView->getEndHour(), $this->eventFormView->getEndMinute(),
@@ -144,7 +144,7 @@ class EventController {
     }
 
     public function alterEvent(){
-        $event = new Event($this->eventFormView->getTitle(), $this->eventFormView->getMonth(),
+        $event = new Event($this->eventFormView->getTitle(), $this->eventFormView->getMonthInput(),
             $this->eventFormView->getYear(), $this->eventFormView->getDay(), $this->eventFormView->getStartHour(),
             $this->eventFormView->getStartMinute(), $this->eventFormView->getEndHour(),
             $this->eventFormView->getEndMinute(), $this->eventFormView->getDescription(),
@@ -166,7 +166,7 @@ class EventController {
      */
     private  function addEvent(){
 
-        $event = new Event($this->eventFormView->getTitle(), $this->eventFormView->getMonth(),
+        $event = new Event($this->eventFormView->getTitle(), $this->eventFormView->getMonthInput(),
             $this->eventFormView->getYear(),
             $this->eventFormView->getDay(), $this->eventFormView->getStartHour(),
             $this->eventFormView->getStartMinute(), $this->eventFormView->getEndHour(),

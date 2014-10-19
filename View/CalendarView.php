@@ -46,7 +46,6 @@ class CalendarView {
     private function setMonth(){
         if(isset($_GET[NavigationView::$actionMonthToShow])){
             $this->month = $_GET[NavigationView::$actionMonthToShow];
-            //$this->htmlMonth = date("F",mktime(0,0,0,$this->month));
         } else{
             $this->month = date("n");
         }
@@ -116,30 +115,24 @@ class CalendarView {
         for ($i = 1; $i <= $numberOfDays; $i++) {
             $eventBox = $this->getEvents($i);
             if($i == $this->currentDay && $this->month == date("n") && $this->year == date("Y")){
-                $ret .= '<td class="currentDay">
-                    <div class="dayNumber">' . $i . '
+                $ret .= '<td class="currentDay">';
 
-                    <label class="right">
-                       <a class="quickAdd" href="?action='.NavigationView::$actionShowEventForm.'&date='.$i.'">+</a>
-                    </label>
-
-                      <p class="event">'.$eventBox . '</p>
-                    </div>
-                    </a>
-                    </td>';
             } else {
                 $ret .= '
-                    <td class="calendarDay">
-                    <div class="dayNumber">
-                    <label class="right"><a class="quickAdd" href="?action='.NavigationView::$actionShowEventForm.'">+</a>
+                    <td class="calendarDay">';
+            }
+
+            $ret .=  '<div class="dayNumber">
+                    <label class="right"><a class="quickAdd" href="?action='.NavigationView::$actionShowEventForm.
+                       '&'.NavigationView::$actionDateToShow.'='.$i.'&'.NavigationView::$actionMonthToShow.'='.$this->month.
+                       '&'.NavigationView::$actionYearToShow.'='.$this->year.'">+</a>
                     </label>
-                    ' . $i . '
+            ' . $i . '
                       <p class="event">' . $eventBox . '</p>
                     </div>
                     </a>
                     </td>
-                    ';
-            }
+            ';
 
             //new row in table if we are on the last day
             //and reset day variables
@@ -184,9 +177,11 @@ class CalendarView {
            <a href="?action='.NavigationView::$actionShowEventList.'">Ändra en händelse</a>
 
            <a href="?action='.NavigationView::$actionShowEventList.'">Ta bort en händelse</a>
-           <p></p>
-           </div>
-           <div id="navigation">
+             <label class="centerMonth">' . $this->year .  $this->htmlMonth.'</label>' . '
+
+          <p></p>
+
+
             <a class="right" href="?action='.NavigationView::$actionShowCalendar."&".
             NavigationView::$actionMonthToShow."=".$this->getNextMonth()."&".
             NavigationView::$actionYearToShow."=".$this->getNextYear().'">Nästa månad</a>
@@ -196,12 +191,8 @@ class CalendarView {
             NavigationView::$actionYearToShow."=".$this->getPreviousYear().
             '">Föregående månad</a>
             </div>
-           <div class="centerMonth">
-           <div>
-            <label>' . $this->year . '</label>' . '
-             <label>' . $this->htmlMonth . '</label>' . '
-             </div>
-             </div>' .
+
+             ' .
             $calendar .'
         ';
 

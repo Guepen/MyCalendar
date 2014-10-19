@@ -214,13 +214,13 @@ class EventFormView {
     #region default values for eventForm
 
     private function setDefaultValues() {
-        $this->defaultMonthValue = $this->month;
-        $this->defaultYearValue = $this->year;
+        $this->defaultMonthValue = $this->getMonthDefaultValue();
+        $this->defaultYearValue = $this->getYearDefaultValue();
         $this->defaultStartMinuteValue = "Ange Startminut";
         $this->defaultStartHourValue = "Ange Starttimme";
         $this->defaultEndMinuteValue = "Ange Slutminut";
         $this->defaultEndHourValue = "Ange Sluttimme";
-        $this->defaultDayValue = $this->getDate();
+        $this->defaultDayValue = $this->getDateDefaultValue();
 
         if($this->hasUserPressedAddEvent() === true){
             $this->setPostValuesAsDefault();
@@ -275,7 +275,21 @@ class EventFormView {
         return false;
     }
 
-    public function getDate(){
+    private function getYearDefaultValue(){
+        if(isset($_GET[NavigationView::$actionYearToShow])){
+            return $_GET[NavigationView::$actionYearToShow];
+        }
+        return $this->year;
+    }
+
+    private function getMonthDefaultValue(){
+        if(isset($_GET[NavigationView::$actionMonthToShow])){
+            return $_GET[NavigationView::$actionMonthToShow];
+        }
+        return $this->month;
+    }
+
+    private function getDateDefaultValue(){
         if(isset($_GET["date"])){
             return $_GET["date"];
         }
@@ -378,7 +392,7 @@ class EventFormView {
         return false;
     }
 
-    public function getMonth(){
+    public function getMonthInput(){
         if (isset($_POST[$this->monthInput])) {
             return $_POST[$this->monthInput];
         }

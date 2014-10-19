@@ -9,41 +9,15 @@ class LoginView{
     private $keepMeInput = "keepMeInput";
     private $submitInput = "submitInput";
 
-    #region Messages
-    public function setRegistrationSuccesMessae(){
-        $this->message = "Registrering av ny användare lyckades";
-    }
-
-    public function setLoggedOutMessage(){
-        $this->message = "Du är nu utloggad";
-    }
-
-    public function setWrongInformationInCookieMessage(){
-        $this->message = "Fel information i cookies";
-    }
-
-    public function setMissingUsernameMessage(){
-        $this->message = "Användarnamn saknas";
-    }
-
-    public function setMissingPasswordMessage(){
-        $this->message = "Lösenord saknas";
-    }
-
-    public function setWrongUserinformationMessage(){
-        $this->message = "Felaktigt användarnamn och/eller lösenord";
-    }
-    #endregion
-
     /**
      * @return string with HTML for login form
      */
-    public function showLoginForm(){
+    public function renderLoginForm(){
 
         $html = "
               <div class='center'>
                 <h3>Logga in</h3>
-
+                <a href='?action=".NavigationView::$actionShowRegisterForm."'>Registrera ny användare</a>
                 <form action='?action=".NavigationView::$actionLogin."' method='post'>
                    <legend class='center'>Skriv in användarnamn och lösenord</legend>
                    <fieldset>
@@ -75,6 +49,32 @@ class LoginView{
 
         return $html;
     }
+
+    #region Messages
+    public function setRegistrationSuccesMessae(){
+        $this->message = "Registrering av ny användare lyckades";
+    }
+
+    public function setLoggedOutMessage(){
+        $this->message = "Du är nu utloggad";
+    }
+
+    public function setWrongInformationInCookieMessage(){
+        $this->message = "Fel information i cookies";
+    }
+
+    public function setMissingUsernameMessage(){
+        $this->message = "Användarnamn saknas";
+    }
+
+    public function setMissingPasswordMessage(){
+        $this->message = "Lösenord saknas";
+    }
+
+    public function setWrongUserinformationMessage(){
+        $this->message = "Felaktigt användarnamn och/eller lösenord";
+    }
+    #endregion
 
     #region Posts
     public function getUsername(){

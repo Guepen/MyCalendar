@@ -8,9 +8,14 @@ class NavigationView{
     public static $actionShowCalendar = "calendar";
     public static $actionMonthToShow = "month";
     public static $actionYearToShow = "year";
+    public static $actionDateToShow = "date";
     public static $actionShowEventForm = "modal";
     public static $actionShowEvent = "title";
     public static $actionShowEventList = "eventList";
+
+    public static $actionShowRegisterForm = "registerForm";
+    public static $actionSubmitRegisterForm = "submitRegister";
+
     public static $actionShowErrorPage = "error";
 
     public static $actionCalendarEvent = "event";

@@ -91,11 +91,24 @@ textarea{
     text-shadow:1px 2px 3px #2b542c;
 }
 
-.centerMonth{
-    width: 120px;
-    padding: 5px;
+.quickAdd:hover{
+    background-color:#ffffff;
+    color:#449d44;
     font-weight: bold;
-    margin-left: 480px;
+    text-align: center;
+    text-decoration:none;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    font-size: 16px;
+    text-shadow:1px 2px 3px #2b542c;
+}
+
+.centerMonth{
+   font-weight: bold;
+    color: #ffffff;
+    margin-left: 47px;
+    text-shadow:1px 3px 1px #2b542c;
 }
 
 .calendarDay{

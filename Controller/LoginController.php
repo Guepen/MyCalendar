@@ -22,7 +22,7 @@ class LoginController{
     }
 
     public function showLogInForm(){
-        return $this->loginView->showLoginForm();
+        return $this->loginView->renderLoginForm();
     }
 
     /**
@@ -43,7 +43,7 @@ class LoginController{
         } catch(WrongUserInformationException $e){
             $this->loginView->setWrongUserinformationMessage();
         }
-        return $this->loginView->showLoginForm();
+        return $this->loginView->renderLoginForm();
     }
 
     public function checkIfUserExists(){

@@ -22,6 +22,29 @@ class UserRepository extends Repository{
         $this->db = $this->connection();
     }
 
+    public function add(User $user){
+        try{
+
+            $sql = "INSERT INTO ". $this->dbTable." (" . self::$username . ", " . self::$password . ") VALUES (?,?)";
+            $params = array($user->getUsername(), $user->getPassword());
+
+            $query = $this->db->prepare($sql);
+            $query->execute($params);
+
+        }catch (\PDOException $e){
+            /**
+             * if a user already has wished username
+             */
+            if($e->getCode() === "23000"){
+                var_dump("dfs");
+                throw new UserExistsException();
+            }
+            else{
+               throw new DbException();
+            }
+        }
+    }
+
     public function getUser($username){
         try {
 
