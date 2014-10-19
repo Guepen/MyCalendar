@@ -69,7 +69,7 @@ class RegisterController{
      */
     private function addNewUser(){
         try {
-            $user = new User($this->registerView->getUserName(), $this->registerView->getPassword());
+            $user = new User($this->registerView->getUserName(), $this->registerModel->getCryptedPassword());
             $this->userRepository->add($user);
             $this->loginView->setRegistrationSuccesMessae();
             return $this->loginView->renderLoginForm();

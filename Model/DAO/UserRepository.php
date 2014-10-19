@@ -63,11 +63,11 @@ class UserRepository extends Repository{
                 return new User($result[self::$username], $result[self::$password]);
             }
 
-            return null;
-
         } catch (\PDOException $e) {
             throw new DbException();
         }
+        return null;
+
     }
 
     public function getUserId($username){

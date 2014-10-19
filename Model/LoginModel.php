@@ -36,7 +36,7 @@ class LoginModel{
      * @throws WrongUserInformationException if the values from inputs in the login form don´t matches a user in the db
      */
     public function doLogIn($username, $password, $dbUsername, $dbPassword){
-        if ($username === $dbUsername && $password === $dbPassword) {
+        if ($username === $dbUsername && password_verify($password, $dbPassword) == true) {
             $_SESSION[$this->sessionUser] = $username;
             return true;
 
@@ -59,4 +59,20 @@ class LoginModel{
         }
         return false;
     }
+
+    public function getCookieExpireTime(){
+        return time()+200;
+    }
+
+    public function checkIfCookieExpireTimeIsValid($cookieExpireTime){
+        if(time() < $cookieExpireTime){
+            return true;
+        }
+        return false;
+    }
+
+    public function getCryptPassword(){
+
+    }
+
 }

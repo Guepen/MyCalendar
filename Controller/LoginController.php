@@ -50,8 +50,15 @@ class LoginController{
         $dbUser = $this->userRepository->getUser($this->loginView->getUsername());
         if ($this->loginModel->doLogin($this->loginView->getUsername(), $this->loginView->getPassword(),
             $dbUser->getUsername(), $dbUser->getPassword())) {
+            $this->checkIfUserHasCheckedKeepMe();
             NavigationView::redirectToCalendar();
 
+        }
+    }
+
+    private function checkIfUserHasCheckedKeepMe(){
+        if($this->loginView->hasUserCheckedKeepMe() == true ){
+            $this->loginView->setCookie();
         }
     }
 

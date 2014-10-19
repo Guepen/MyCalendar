@@ -4,10 +4,18 @@ namespace view;
 
 class LoginView{
     private $message;
+
     private $usernameInput = "usernameInput";
     private $passwordInput = "passwordInput";
     private $keepMeInput = "keepMeInput";
     private $submitInput = "submitInput";
+
+    private $cookieUserName = "cookieUsername";
+    private $cookiePassword = "cookiePassword";
+
+    public function __construct(){
+        $this->cookieStorage = new CookieStorage();
+    }
 
     /**
      * @return string with HTML for login form
@@ -105,4 +113,23 @@ class LoginView{
         return false;
     }
     #endregion
+
+    public function setCookie(){
+        if (isset($_POST[$this->keepMeInput]) == true) {
+            $this->cookieStorage->save('loginView::pass', $this->loginModel->getCryptPassword(),
+                $this->loginModel->getCookieExpireTime());
+
+            $this->cookieStorage->save('loginView::user', $this->getUserName(),
+                $this->loginModel->getCookieExpireTime());
+        }
+    }
+
+    public function loadPasswordCookie(){
+        return $this->cookieStorage->load('loginView::pass');
+    }
+
+    public function loadUsernameCookie(){
+        return $this->cookieStorage->load('loginView::user');
+    }
+
 }

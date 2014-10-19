@@ -10,6 +10,7 @@ require_once("./View/CalendarView.php");
 require_once("./View/ErrorView.php");
 require_once("./View/EventListView.php");
 require_once("./View/EventFormView.php");
+require_once("./Common/CookieStorage.php");
 
 //Controllers
 require_once("./Controller/CalendarController.php");
