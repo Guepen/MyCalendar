@@ -10,6 +10,7 @@ namespace model;
 
 
 class EventRepository extends Repository {
+    //columns in the db
     private static $userId = 'userId';
     private static $eventId = 'eventId';
     private static $title = 'title';
@@ -52,10 +53,8 @@ class EventRepository extends Repository {
             $query = $this->db->prepare($sql);
             $query->execute($params);
 
-        }catch (\PDOException $e){
-            //var_dump($e->getMessage());
+        } catch (\PDOException $e){
             throw new DbException();
-
         }
     }
 
@@ -91,6 +90,7 @@ class EventRepository extends Repository {
      * tries to get all the users events
      * @param $userId string containing the users ID
      * @throws DbException if something goes wrong
+     * @return Array with all events
      */
     public function getEvents($userId){
         try {
@@ -117,14 +117,17 @@ class EventRepository extends Repository {
                                                $endHour, $endMinute, $description, $eventId);
             }
 
-            return $this->eventList;
-
         } catch (\PDOException $e) {
             throw new DbException();
-
         }
+        return $this->eventList;
     }
 
+    /**
+     * @param $eventTitle string
+     * @param $userId string
+     * @throws DbException if something goes wrong
+     */
     public function deleteEvent($eventTitle, $userId){
         try {
             $sql = "DELETE FROM " . $this->dbTable . " WHERE " . self::$title . " =? AND ".self::$userId. "=?";

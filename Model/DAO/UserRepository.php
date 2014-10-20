@@ -15,6 +15,8 @@ class UserRepository extends Repository{
     private static $username = 'username';
     private static $password = 'password';
     private static $userId = 'userId';
+    private static $cookieExpireTimeColumn = "cookieExpireTime";
+    private static $cookiePasswordColumn = "cookiePassword";
     private $db;
 
     public function __construct(){
@@ -70,6 +72,29 @@ class UserRepository extends Repository{
 
     }
 
+    public function getUsernameByCookie($cookiePassword){
+        try {
+
+            $sql = "SELECT ".self::$username." FROM $this->dbTable WHERE " . self::$cookiePasswordColumn . " =?";
+            $params = array($cookiePassword);
+
+            $query = $this->db->prepare($sql);
+            $query->execute($params);
+
+            $result = $query->fetch();
+
+            if ($result) {
+                return $result[self::$username];
+            }
+
+        } catch (\PDOException $e) {
+            throw new DbException();
+        }
+        return null;
+
+    }
+
+
     public function getUserId($username){
         try {
 
@@ -85,11 +110,49 @@ class UserRepository extends Repository{
                 return $result[self::$userId];
             }
 
-            return null;
+        } catch (\PDOException $e) {
+            throw new DbException();
+        }
+        return null;
+}
+
+    public function saveCookie($username, $expireTime, $cookiePassword){
+        try{
+
+            $sql = "UPDATE ". $this->dbTable." SET ". self::$cookieExpireTimeColumn." =?,".
+                              self::$cookiePasswordColumn." =? WHERE ". self::$username ."=?";
+
+            $params = array($expireTime, $cookiePassword, $username);
+
+            $query = $this->db->prepare($sql);
+            $query->execute($params);
+
+        }catch (\PDOException $e){
+           throw new DbException();
+        }
+    }
+
+    public function getCookie($cookiePassword){
+        try {
+
+            $sql = "SELECT ". self::$cookieExpireTimeColumn.",".self::$username."
+                    FROM $this->dbTable WHERE " . self::$cookiePasswordColumn . " =?";
+            $params = array($cookiePassword);
+
+            $query = $this->db->prepare($sql);
+            $query->execute($params);
+
+            $result = $query->fetch();
+
+            if ($result) {
+                return $result[self::$cookieExpireTimeColumn];
+            }
 
         } catch (\PDOException $e) {
-            throw new \Exception($e->getMessage());
+           throw new DbException();
         }
-}
+        return null;
+
+    }
 }
 

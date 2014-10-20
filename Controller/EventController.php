@@ -8,7 +8,6 @@
 
 namespace Controller;
 
-
 use model\DbException;
 use model\EmptyDescriptionException;
 use model\EmptyTitleException;
@@ -60,7 +59,6 @@ class EventController {
         if($this->isInputValid()){
             $this->addEvent();
         }
-
         return $this->calendarView->renderCalendar() . $this->eventFormView->renderAddEventForm();
     }
 
@@ -143,6 +141,9 @@ class EventController {
         NavigationView::redirectToLoginForm();
     }
 
+    /**
+     * tries to alter an event
+     */
     public function alterEvent(){
         $event = new Event($this->eventFormView->getTitle(), $this->eventFormView->getMonthInput(),
             $this->eventFormView->getYear(), $this->eventFormView->getDay(), $this->eventFormView->getStartHour(),
@@ -161,8 +162,7 @@ class EventController {
     }
 
     /**
-     * tries to add en event
-     * @throws DbException
+     * tries to add an event
      */
     private  function addEvent(){
 
@@ -185,6 +185,9 @@ class EventController {
 
     }
 
+    /**
+     * tries to delete an event
+     */
     public function deleteEvent(){
         try {
             $userId = $this->userRepository->getUserId($this->loginModel->getUserName());
@@ -198,6 +201,11 @@ class EventController {
 
     }
 
+    /**
+     * tries to get all events belonging the user
+     * @return array events if all goes fine
+     * redirects to the error page if something goes wrong
+     */
     private function getEvents(){
         try {
             $userId = $this->userRepository->getUserId($this->loginModel->getUserName());
@@ -209,10 +217,11 @@ class EventController {
         return false;
     }
 
+    /**
+     * TODO we should only ha to set the events at one place
+     */
     private function setEvents(){
         $this->calendarView->setEvents($this->getEvents());
         $this->eventFormView->setEvents($this->getEvents());
     }
-
-
 }

@@ -10,6 +10,11 @@ use model\UsernameToShortException;
 
 class RegisterModel{
     private $passwordSession = "passwordSession";
+    private $passwordHandler;
+
+    public function __construct(){
+        $this->passwordHandler = new PasswordHandler();
+    }
 
     public function validateInput($username, $password, $password2){
         //$regex = '/^[a-z0-9]+$/i';
@@ -35,18 +40,17 @@ class RegisterModel{
         }
 
         else if(mb_strlen($username) > 2 && mb_strlen($password) > 5 && mb_strlen($password2) >5 && $password === $password2){
-            $this->cryptPassword($password);
+            $this->setCryptPassword($password);
             return true;
         }
     }
 
-    private function cryptPassword($password){
-        $password = password_hash($password, PASSWORD_BCRYPT);
-        $_SESSION[$this->passwordSession] = $password;
+    private function setCryptPassword($password){
+        $_SESSION[$this->passwordSession] = $this->passwordHandler->getCryptPassword($password);
 
     }
 
-    public function getCryptedPassword(){
+    public function getCryptPassword(){
         return $_SESSION[$this->passwordSession];
     }
 

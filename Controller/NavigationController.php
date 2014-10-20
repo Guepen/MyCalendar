@@ -81,7 +81,13 @@ class NavigationController{
 
             default:
                 $controller = new LoginController();
-                return $controller->showLogInForm();
+                if($controller->isCookiesSet() === true){
+                    $controller = new CalendarController();
+                    return $controller->render();
+
+                } else {
+                    return $controller->showLogInForm();
+                }
         }
         return null;
     }

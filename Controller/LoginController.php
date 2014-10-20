@@ -2,6 +2,7 @@
 
 namespace controller;
 
+use model\DbException;
 use model\LoginModel;
 use model\MissingPasswordException;
 use model\MissingUsernameException;
@@ -32,7 +33,7 @@ class LoginController{
     public function isInputValid(){
         try{
             if($this->loginModel->validateInput($this->loginView->getUsername(),
-               $this->loginView->getPassword()) === true){
+                    $this->loginView->getPassword()) === true){
                 $this->checkIfUserExists();
             }
 
@@ -46,24 +47,66 @@ class LoginController{
         return $this->loginView->renderLoginForm();
     }
 
+    /**
+     * Gets the usercredentials from the db and if they match the input redirect to calendar
+     */
     public function checkIfUserExists(){
-        $dbUser = $this->userRepository->getUser($this->loginView->getUsername());
-        if ($this->loginModel->doLogin($this->loginView->getUsername(), $this->loginView->getPassword(),
-            $dbUser->getUsername(), $dbUser->getPassword())) {
-            $this->checkIfUserHasCheckedKeepMe();
-            NavigationView::redirectToCalendar();
+        try {
+            $dbUser = $this->userRepository->getUser($this->loginView->getUsername());
+            if ($this->loginModel->doLogin($this->loginView->getUsername(), $this->loginView->getPassword(),
+                $dbUser->getUsername(), $dbUser->getPassword())){
+                $this->checkIfUserHasCheckedKeepMe();
+                NavigationView::redirectToCalendar();
 
+            }
+        } catch (DbException $e) {
+            NavigationView::redirectToErrorPage();
+            return false;
         }
     }
 
+    /**
+     * saves a cookie if the user checked keep me
+     */
     private function checkIfUserHasCheckedKeepMe(){
         if($this->loginView->hasUserCheckedKeepMe() == true ){
             $this->loginView->setCookie();
+            try {
+                $this->userRepository->saveCookie($this->loginView->getUsername(), $this->loginModel->getCookieExpireTime(),
+                    $this->loginView->getAutoLoginCookie());
+            } catch (DbException $e) {
+                NavigationView::redirectToErrorPage();
+            }
         }
+    }
+
+    /**
+     * tries to log in with cookies if there is a cookie
+     * @return bool
+     */
+    public function isCookiesSet(){
+        if($this->loginView->isCookieSet() === true){
+            try {
+                $cookieExpireTime = $this->userRepository->getCookie($this->loginView->getAutoLoginCookie());
+                $username = $this->userRepository->getUsernameByCookie($this->loginView->getAutoLoginCookie());
+
+                if($this->loginModel->checkIfCookieExpireTimeIsValid($cookieExpireTime) === true){
+                    $this->loginModel->setUsername($username);
+                    return true;
+                }
+                $this->loginView->deleteCookie();
+
+            } catch (DbException $e) {
+                NavigationView::redirectToErrorPage();
+                return false;
+            }
+        }
+        return false;
     }
 
     public function doLogOut(){
         $this->loginModel->doLogout();
+        $this->loginView->deleteCookie();
         NavigationView::redirectToLoginForm();
     }
 }

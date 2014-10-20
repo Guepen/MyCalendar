@@ -2,18 +2,9 @@
 
 namespace view;
 
-use model\loginModel;
-
 class CookieStorage{
-    private $name;
-    private $loginModel;
-
-    public function __construct(){
-        $this->loginModel = new loginModel();
-    }
 
     public function save($name, $value, $expire){
-        $this->name = $name;
         setcookie($name, $value, $expire);
 
         /**
@@ -21,7 +12,7 @@ class CookieStorage{
          * i do this workaround so i can get the cookie and save it to the database
          * when its created
          */
-        if(!isset($_COOKIE[$name])){
+        if(isset($_COOKIE[$name]) === false){
             $_COOKIE[$name] = $value;
         }
     }
@@ -33,9 +24,13 @@ class CookieStorage{
         return false;
     }
 
+    public function deleteCookie($name){
+        setcookie($name, null, -1);
+    }
 
-    public function cookiesIsSet(){
-        if (isset($_COOKIE['loginView::pass']) && isset($_COOKIE['loginView::user'])) {
+
+    public function isCookieSet($cookieName){
+        if (isset($_COOKIE[$cookieName]) === true) {
             return true;
         }
         return false;

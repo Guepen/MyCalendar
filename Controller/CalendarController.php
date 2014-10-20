@@ -3,18 +3,10 @@
 namespace controller;
 
 use model\DbException;
-use model\EmptyDescriptionException;
-use model\EmptyTitleException;
-use Model\Event;
-
 use model\EventRepository;
 use model\LoginModel;
 use model\UserRepository;
-use model\WrongDayFormatException;
-use model\WrongMonthFormatException;
-use model\WrongTimeFormatException;
 use view\CalendarView;
-use View\EventView;
 use view\NavigationView;
 
 class CalendarController{
@@ -38,6 +30,10 @@ class CalendarController{
         NavigationView::redirectToLoginForm();
     }
 
+    /**
+     * tries to get all the events belonging the user
+     * redirects to the error page if something goes wrong
+     */
     public function getEvents(){
         try {
             $userId = $this->userRepository->getUserId($this->loginModel->getUserName());
@@ -48,6 +44,5 @@ class CalendarController{
             NavigationView::redirectToErrorPage();
         }
     }
-
 
 }

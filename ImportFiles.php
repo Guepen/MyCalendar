@@ -21,6 +21,7 @@ require_once("./Controller/NavigationController.php");
 
 //Models
 require_once("./Model/EventModel.php");
+require_once("./Common/PasswordHandler.php");
 require_once("./Model/RegisterModel.php");
 require_once("./Model/Event.php");
 require_once("./Model/LoginModel.php");

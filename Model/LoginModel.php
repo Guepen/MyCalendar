@@ -5,6 +5,11 @@ namespace model;
 class LoginModel{
 
     private $sessionUser = "user";
+    private $passwordHandler;
+
+    public function __construct(){
+        $this->passwordHandler = new PasswordHandler();
+    }
 
     /**
      * Validates the input from the login form
@@ -27,7 +32,7 @@ class LoginModel{
     }
 
     /**
-     * tries to log in
+     * verifies the log in
      * @param $username string
      * @param $password string
      * @param $dbUsername string
@@ -36,8 +41,8 @@ class LoginModel{
      * @throws WrongUserInformationException if the values from inputs in the login form don´t matches a user in the db
      */
     public function doLogIn($username, $password, $dbUsername, $dbPassword){
-        if ($username === $dbUsername && password_verify($password, $dbPassword) == true) {
-            $_SESSION[$this->sessionUser] = $username;
+        if ($username === $dbUsername && $this->passwordHandler->verifyPassword($password, $dbPassword) === true) {
+            $this->setUsername($username);
             return true;
 
         } else {
@@ -47,6 +52,13 @@ class LoginModel{
 
     public function doLogout(){
         unset($_SESSION[$this->sessionUser]);
+    }
+
+    /**
+     * @param $username string
+     */
+    public function setUsername($username){
+        $_SESSION[$this->sessionUser] = $username;
     }
 
     public function getUserName(){
@@ -64,14 +76,25 @@ class LoginModel{
         return time()+200;
     }
 
+    /**
+     * @param $cookieExpireTime string
+     * @return bool true if the cookie hasn't expired
+     * @return bool false if the cookie has expired
+     */
     public function checkIfCookieExpireTimeIsValid($cookieExpireTime){
+        var_dump($cookieExpireTime);
         if(time() < $cookieExpireTime){
             return true;
         }
         return false;
     }
 
-    public function getCryptPassword(){
+    /**
+     * @param $password string
+     * @return string the crypted password
+     */
+    public function getCryptPassword($password){
+        return $this->passwordHandler->getCryptPassword($password);
 
     }
 

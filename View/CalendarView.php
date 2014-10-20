@@ -214,7 +214,7 @@ class CalendarView {
 
     }
 
-    public function setEvents($events){
+    public function setEvents(Array $events){
         $this->events = $events;
 
     }

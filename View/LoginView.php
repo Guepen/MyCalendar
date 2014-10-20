@@ -2,19 +2,22 @@
 
 namespace view;
 
+use model\LoginModel;
+
 class LoginView{
     private $message;
+    private $loginModel;
 
     private $usernameInput = "usernameInput";
     private $passwordInput = "passwordInput";
     private $keepMeInput = "keepMeInput";
     private $submitInput = "submitInput";
 
-    private $cookieUserName = "cookieUsername";
-    private $cookiePassword = "cookiePassword";
+    private $autoLogin = "autologin";
 
     public function __construct(){
         $this->cookieStorage = new CookieStorage();
+        $this->loginModel = new LoginModel();
     }
 
     /**
@@ -115,21 +118,25 @@ class LoginView{
     #endregion
 
     public function setCookie(){
-        if (isset($_POST[$this->keepMeInput]) == true) {
-            $this->cookieStorage->save('loginView::pass', $this->loginModel->getCryptPassword(),
-                $this->loginModel->getCookieExpireTime());
-
-            $this->cookieStorage->save('loginView::user', $this->getUserName(),
+        if (isset($_POST[$this->keepMeInput]) === true) {
+            $this->cookieStorage->save($this->autoLogin, $this->loginModel->getCryptPassword($this->getPassword()),
                 $this->loginModel->getCookieExpireTime());
         }
     }
 
-    public function loadPasswordCookie(){
-        return $this->cookieStorage->load('loginView::pass');
+    public function deleteCookie(){
+        $this->cookieStorage->deleteCookie($this->autoLogin);
     }
 
-    public function loadUsernameCookie(){
-        return $this->cookieStorage->load('loginView::user');
+    public function isCookieSet(){
+        if($this->cookieStorage->isCookieSet($this->autoLogin) === true){
+            return true;
+        }
+        return false;
+    }
+
+    public function getAutoLoginCookie(){
+        return $this->cookieStorage->load($this->autoLogin);
     }
 
 }
