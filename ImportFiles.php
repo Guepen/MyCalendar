@@ -2,6 +2,7 @@
 
 //Views
 require_once("./View/EventView.php");
+require_once("./View/DateHelper.php");
 require_once("./View/RegisterView.php");
 require_once("./Common/HtmlView.php");
 require_once("./View/NavigationView.php");

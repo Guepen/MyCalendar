@@ -39,7 +39,8 @@ class RegisterModel{
             throw new ProhibitedCharacterInUsernameException($username);
         }
 
-        else if(mb_strlen($username) > 2 && mb_strlen($password) > 5 && mb_strlen($password2) >5 && $password === $password2){
+        else if(mb_strlen($username) > 2 && mb_strlen($password) > 5 && mb_strlen($password2) >5
+            && $password === $password2){
             $this->setCryptPassword($password);
             return true;
         }

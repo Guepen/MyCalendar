@@ -4,69 +4,18 @@ namespace view;
 
 class CalendarView {
 
-    private $month;
-    private $year;
-    private $htmlMonth;
     private $firstDayInMonth;
     private $dayOfTheWeek;
     private $events;
     private $currentDay;
+    private $dateHelper;
 
     public function __construct(){
+        $this->dateHelper = new DateHelper();
         $this->dayOfTheWeek = 1;
-        $this->setMonth();
-        $this->setYear();
-        $this->firstDayInMonth = date('w', mktime(0, 0, 0, $this->month, 0, $this->year));
+        $this->firstDayInMonth = date('w', mktime(0, 0, 0, $this->dateHelper->getMonthToShow(),
+                                                  0, $this->dateHelper->getYearToShow()));
         $this->currentDay = date("j");
-    }
-
-    private function setYear(){
-        if(isset($_GET[NavigationView::$actionYearToShow])){
-            $this->year = $_GET[NavigationView::$actionYearToShow];
-        } else{
-            $this->year = date("Y");
-        }
-    }
-
-    private function getNextYear(){
-        if ($this->month == 12) {
-            return $this->year + 1;
-        }
-        return $this->year;
-    }
-
-    private function getPreviousYear(){
-        if($this->month == 1){
-            return $this->year - 1;
-        }
-        return $this->year;
-    }
-
-
-    private function setMonth(){
-        if(isset($_GET[NavigationView::$actionMonthToShow])){
-            $this->month = $_GET[NavigationView::$actionMonthToShow];
-        } else{
-            $this->month = date("n");
-        }
-        $this->htmlMonth = strftime("%B",mktime(0,0,0,$this->month));
-        $this->htmlMonth = ucfirst($this->htmlMonth);
-    }
-
-    private function getNextMonth(){
-        if ($this->month < 12) {
-            return $this->month + 1;
-        } else {
-            return 1;
-        }
-    }
-
-    private function getPreviousMonth(){
-        if($this->month > 1){
-            return $this->month - 1;
-        } else{
-            return 12;
-        }
     }
 
     /**
@@ -109,12 +58,16 @@ class CalendarView {
      * @return string HTML with date columns/td and date boxes/div
      */
     private function getDates(){
-        $numberOfDays = cal_days_in_month(CAL_GREGORIAN, $this->month, $this->year);
+        $numberOfDays = cal_days_in_month(CAL_GREGORIAN, $this->dateHelper->getMonthToShow(),
+                                          $this->dateHelper->getYearToShow());
         $dayCounter = 0;
         $ret = "";
+
         for ($i = 1; $i <= $numberOfDays; $i++) {
             $eventBox = $this->getEvents($i);
-            if($i == $this->currentDay && $this->month == date("n") && $this->year == date("Y")){
+            if($i == $this->currentDay && $this->dateHelper->getMonthToShow() == date("n") &&
+                     $this->dateHelper->getYearToShow() == date("Y")){
+
                 $ret .= '<td class="currentDay">';
 
             } else {
@@ -124,8 +77,9 @@ class CalendarView {
 
             $ret .=  '<div class="dayNumber">
                     <label class="right"><a class="quickAdd" href="?action='.NavigationView::$actionShowEventForm.
-                       '&'.NavigationView::$actionDateToShow.'='.$i.'&'.NavigationView::$actionMonthToShow.'='.$this->month.
-                       '&'.NavigationView::$actionYearToShow.'='.$this->year.'">+</a>
+                       '&'.NavigationView::$actionDateToShow.'='.$i.'&'.NavigationView::$actionMonthToShow.'='.
+                           $this->dateHelper->getMonthToShow().
+                       '&'.NavigationView::$actionYearToShow.'='.$this->dateHelper->getYearToShow().'">+</a>
                     </label>
             ' . $i . '
                       <p class="event">' . $eventBox . '</p>
@@ -155,6 +109,7 @@ class CalendarView {
      * @return string with HTML containing the calendar
      */
     public function renderCalendar(){
+        $this->dateHelper->setAction(NavigationView::$actionShowCalendar);
 
         $calendar = "<table class='table'>";
         $calendar .= '<tr class="row">' . $this->getWeekDays() . '</tr>';
@@ -169,29 +124,8 @@ class CalendarView {
         $calendar .= '</table>';
 
         $html = '
-       <div id="menu">
-        <a class="right" href="?action=logOut">Logga Ut</a>
-           <a class="addEvent" href="?action='.NavigationView::$actionShowEventForm . '">
-           Lägg till händelse
-           </a>
-           <a href="?action='.NavigationView::$actionShowEventList.'">Ändra en händelse</a>
-
-           <a href="?action='.NavigationView::$actionShowEventList.'">Ta bort en händelse</a>
-             <label class="centerMonth">' . $this->year .  $this->htmlMonth.'</label>' . '
-
-          <p></p>
-
-
-            <a class="right" href="?action='.NavigationView::$actionShowCalendar."&".
-            NavigationView::$actionMonthToShow."=".$this->getNextMonth()."&".
-            NavigationView::$actionYearToShow."=".$this->getNextYear().'">Nästa månad</a>
-
-                <a class="left" href="?action='.NavigationView::$actionShowCalendar."&".
-            NavigationView::$actionMonthToShow."=".$this->getPreviousMonth()."&".
-            NavigationView::$actionYearToShow."=".$this->getPreviousYear().
-            '">Föregående månad</a>
-            </div>
-
+          '.$this->getMenu().'
+          '.$this->dateHelper->getMonthNavigation().'
              ' .
             $calendar .'
         ';
@@ -199,11 +133,41 @@ class CalendarView {
         return $html;
     }
 
+    private function getMenu(){
+        $ret = ' <div id="menu">
+        <a class="right" href="?action=logOut">Logga Ut</a>
+           <a class="addEvent" href="?action='.NavigationView::$actionShowEventForm . '">
+           Lägg till händelse
+           </a>
+
+           <a href="?action='.NavigationView::$actionShowEventList.'&'.NavigationView::$actionMonthToShow.'='.
+            $this->dateHelper->getMonthToShow().'&'.NavigationView::$actionYearToShow.'='.
+            $this->dateHelper->getYearToShow().'">
+            Ändra en händelse
+            </a>
+
+             <a href="?action='.NavigationView::$actionShowEventList.'&'.NavigationView::$actionMonthToShow.'='.
+            $this->dateHelper->getMonthToShow().'&'.NavigationView::$actionYearToShow.'='.$this->dateHelper->getYearToShow().'">
+            Ta bort en händelse
+            </a>
+
+             <label class="centerMonth">'.$this->dateHelper->getMonthInText()
+                ." ". $this->dateHelper->getYearToShow() . '
+                </label>' . '
+
+          <p></p>
+          </div>';
+
+        return $ret;
+    }
+
     private function getEvents($currentDay){
+        $dateHelper = new DateHelper();
         $eventBox = "";
         foreach ($this->events as $event) {
             //var_dump($event->getDay());
-            if ($event->getDay() == $currentDay && $event->getMonth() == $this->month) {
+            if ($event->getDay() == $currentDay && $event->getMonth() == $dateHelper->getMonthToShow() &&
+                $event->getYear() === $dateHelper->getYearToShow()) {
                 $eventBox .= "<div class='eventBox'><a class='event' href='?action="
                     .NavigationView::$actionCalendarEvent . "&".
                     NavigationView::$actionShowEvent ."=". $event->getTitle() . "'>

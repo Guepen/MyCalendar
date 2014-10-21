@@ -15,6 +15,7 @@ use Model\Event;
 use Model\EventModel;
 use model\EventRepository;
 use model\LoginModel;
+use model\ProhibitedCharacterInDescriptionException;
 use model\ProhibitedCharacterInTitleException;
 use model\TitleToLongException;
 use model\UserRepository;
@@ -124,6 +125,8 @@ class EventController {
             } catch (EmptyDescriptionException $e) {
                 $this->eventFormView->setMissingDescriptionMessage();
 
+            } catch (ProhibitedCharacterInDescriptionException $e){
+                $this->eventFormView->setProhibitedCharacterInDescriptionMessage();
             } catch (WrongDayFormatException $e) {
                 $this->eventFormView->setUnexpectedErrorMessage();
 

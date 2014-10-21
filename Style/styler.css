@@ -1,5 +1,5 @@
 #Container{
-    width: 900px;
+    width: 1080px;
     margin-left: auto;
     margin-right: auto;
     z-index: 0;
@@ -30,6 +30,10 @@
     text-shadow:1px 2px 3px #2b542c;
 }
 
+#monthNav a{
+    text-decoration: none;
+}
+
 #navigation{
     margin: auto 0;
     width: 1070px;
@@ -53,6 +57,11 @@
     color:#f5f5f5;
 }
 
+#monthNav{
+    margin-top:7px;
+    margin-bottom: 7px;
+}
+
 h1{
     margin-left: 420px;
 }
@@ -70,12 +79,65 @@ textarea{
     width: 250px;
 }
 
+.eventList{
+    margin-top: 5px;
+}
+
+#eventList{
+    clear: left;
+    display: table;
+    margin-left: 20px;
+}
+
+#eventList a{
+
+}
+
+#eventList li{
+    display:table-row;
+    font-weight: bold;
+}
+
+#eventList label{
+    font-weight: bold;
+}
+
+#eventList a, #eventList label{
+    display:table-cell;
+    padding: 3px;
+    border: 4px solid #ffffff;
+    text-decoration: none;
+}
+
+.delete{
+    background-color: red;
+    color: #ffffff;
+}
+
+.delete:hover{
+    background-color:darkred;
+}
+
 .right{
     float: right;
+    margin-right: 9px;
+}
+
+.modal .right{
+    float: right;
+    margin-right: 0;
 }
 
 .left{
     float: left;
+}
+
+.center{
+    margin-left: 307px;
+}
+
+.modal .center{
+    margin-left: 40px;
 }
 
 .quickAdd{
@@ -105,10 +167,19 @@ textarea{
 }
 
 .centerMonth{
-   font-weight: bold;
+    background-color: #44c767;
+    font-weight: bold;
     color: #ffffff;
-    margin-left: 47px;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-bottom: 3px;
+    margin-left: 50px;
     text-shadow:1px 3px 1px #2b542c;
+}
+
+.modal .centerMonth{
+    font-weight: 100;
+    margin-left: 75px;
 }
 
 .calendarDay{
@@ -126,7 +197,7 @@ textarea{
     background-color: #5e5e5e;
     height: 80px;
     width: auto;
-    box-shadow: inset 0 0 0 10px orange;
+    box-shadow: inset 0 0 0 10px goldenrod;
 }
 
 .calendarDay, .emptyDay, .currentDay{
@@ -146,6 +217,18 @@ textarea{
     border-bottom:1px solid #999;
     border-top:1px solid #999;
     border-right:1px solid #999;
+}
+
+.orange{
+    background-color:#44c767;
+    color:#ffffff;
+    width: 150px;
+    text-align: center;
+    text-decoration:none;
+    padding-bottom: 3px;
+    padding-left: 7px;
+    padding-right: 7px;
+    text-shadow:1px 2px 3px #2b542c;
 }
 
 .dayNumber{
@@ -175,7 +258,13 @@ textarea{
     position: absolute;
     z-index: 10;
     top:210px;
-    left: 38%;
+    left: 33%;
+    max-height: 600px;
+    overflow: hidden;
+}
+
+.modal label, .modal p, textarea, .modal .inputSubmit, .modal h3{
+    margin-left: 42px;
 }
 
 .modalBody, .modalHeader{
@@ -208,10 +297,12 @@ textarea{
     padding-bottom: 3px;
     padding-left: 7px;
     padding-right: 7px;
+    margin-bottom: 5px;
+    margin-top: 5px;
     text-shadow:1px 2px 3px #2b542c;
 }
 
-.addEvent:hover{
+.addEvent:hover, .orange:hover{
     background-color:#44a767;
     text-shadow:1px 2px 3px #2b542c;
 }

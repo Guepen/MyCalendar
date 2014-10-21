@@ -181,9 +181,9 @@ class EventFormView {
                              name='$this->eventIdInput'
                    </div></div>
 
-                   <div class='formGroup'>
-                     <input type='submit' value='Uppdatera'
-                             name=$this->submitAlterEvent>
+                   <div class='inputSubmit'>
+                     <lablel><input type='submit' value='Uppdatera'
+                             name=$this->submitAlterEvent></lablel>
                    </div>";
         $modal .= "</form></div>";
 
@@ -202,7 +202,7 @@ class EventFormView {
                   <h3>Lägg till händelse</h3>
                    <form action='?action=".NavigationView::$actionAddEvent."' method='post'>";
         $modal .=$this->getEventForm();
-        $modal .= "<div class='formGroup'>
+        $modal .= "<div class='inputSubmit'>
                              <input type='submit' value='Lägg till'
                              name=$this->submitEvent>
                            </div>";
@@ -464,6 +464,10 @@ class EventFormView {
     }
     public function setMissingDescriptionMessage(){
         $this->errorMessage = "Beskrivning får inte lämnas tomt!";
+    }
+
+    public function setProhibitedCharacterInDescriptionMessage(){
+        $this->errorMessage = "Otillåtna tecken hittade i beskrivningen!";
     }
 
     public function setWrongTimeFormatMessage(){

@@ -23,6 +23,13 @@ class CalendarController{
         $this->getEvents();
     }
 
+    public function isUserLoggedIn(){
+        if ($this->loginModel->isUserLoggedIn() === true) {
+            return true;
+        }
+        NavigationView::redirectToLoginForm();
+    }
+
     public function render(){
         if ($this->loginModel->isUserLoggedIn() === true) {
             return $this->calendarView->renderCalendar();
