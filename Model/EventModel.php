@@ -12,7 +12,7 @@ namespace Model;
 class EventModel {
 
     public function validateInput($title, $month, $currentMonth, $day, $currentDay, $startHour,
-                                  $startMinute, $endHour, $endMinute, $description){
+                                  $startMinute, $endHour, $endMinute, $description, $year, $currentYear){
         if(empty($title)){
             throw new EmptyTitleException();
 
@@ -25,13 +25,20 @@ class EventModel {
 
         if(empty($description)){
             throw new EmptyDescriptionException();
-        } else if(preg_match('/[^a-z0-9-_ åäö]+/i', $description)){
+        } else if(preg_match('/[^a-z0-9-_ åäö.,()]+/i', $description)){
             throw new ProhibitedCharacterInDescriptionException();
 
+        } else if(mb_strlen($description) >= 255){
+            throw new DescriptionToLongException();
         }
 
         if(!preg_match('/^([1-9]|1[012])$/', $month)){
-            throw new WrongMonthFormatException();
+            throw new MonthNotSelectedException();
+        }
+
+        if($year <= $currentYear && $month < $currentMonth ||
+            $year <= $currentYear && $month <= $currentMonth && $day <= $currentDay) {
+            throw new DateHasAlredayBeenException();
         }
 
         if(!preg_match('/^([1-9]|[1-2][0-9]|3[0-1])$/', $day)){
@@ -39,17 +46,16 @@ class EventModel {
         }
 
         if(!preg_match('/^(0[0-9]|1[0-9]|2[0-3])$/',$startHour)){
-            throw new WrongTimeFormatException();
+            throw new StartHourNotSelectedException();
         }
         if(!preg_match('/^(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])$/',$startMinute)){
-            var_dump($startMinute);
-            throw new WrongTimeFormatException();
+            throw new StartMinuteNotSelectedException();
         }
         if(!preg_match('/^(0[0-9]|1[0-9]|2[0-3])$/',$endHour)){
-            throw new WrongTimeFormatException();
+            throw new EndHourNotSelectedException();
         }
         if(!preg_match('/^(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])$/',$endMinute)){
-            throw new WrongTimeFormatException();
+            throw new EndMinuteNotSelectedException();
         }
         return true;
     }

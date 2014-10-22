@@ -8,15 +8,22 @@
 
 namespace Controller;
 
+use model\DateHasAlredayBeenException;
 use model\DbException;
+use model\DescriptionToLongException;
 use model\EmptyDescriptionException;
 use model\EmptyTitleException;
+use model\EndHourNotSelectedException;
+use model\EndMinuteNotSelectedException;
 use Model\Event;
 use Model\EventModel;
 use model\EventRepository;
 use model\LoginModel;
+use model\MonthNotSelectedException;
 use model\ProhibitedCharacterInDescriptionException;
 use model\ProhibitedCharacterInTitleException;
+use model\StartHourNotSelectedException;
+use model\StartMinuteNotSelectedException;
 use model\TitleToLongException;
 use model\UserRepository;
 use model\WrongDayFormatException;
@@ -98,7 +105,9 @@ class EventController {
     }
 
     /**
-     * checks if input from the add event form or update event form is valid
+     * TODO this function should call multiple validate functions in model instead of just one
+     * @return bool true if input from the add event form or update event form is valid
+     * @return bool false if the input isn't valid
      */
     public function isInputValid(){
         if ($this->loginModel->isUserLoggedIn() === true) {
@@ -108,11 +117,13 @@ class EventController {
                         $this->eventFormView->getDay(), $this->eventFormView->getCurrentDay(),
                         $this->eventFormView->getStartHour(), $this->eventFormView->getStartMinute(),
                         $this->eventFormView->getEndHour(), $this->eventFormView->getEndMinute(),
-                        $this->eventFormView->getDescription()) === true){
+                        $this->eventFormView->getDescription(), $this->eventFormView->getYear(),
+                        $this->eventFormView->getCurrentYear()) === true){
 
                     return true;
 
                 }
+                //catch different kind of errors
             } catch (EmptyTitleException $e) {
                 $this->eventFormView->setMissingTitleMessage();
 
@@ -127,15 +138,30 @@ class EventController {
 
             } catch (ProhibitedCharacterInDescriptionException $e){
                 $this->eventFormView->setProhibitedCharacterInDescriptionMessage();
-            } catch (WrongDayFormatException $e) {
+
+            } catch(DescriptionToLongException $e){
+                $this->eventFormView->setDescriptionToLongMessage();
+
+            } catch(MonthNotSelectedException $e){
                 $this->eventFormView->setUnexpectedErrorMessage();
 
-            } catch (WrongTimeFormatException $e) {
-                $this->eventFormView->setWrongTimeFormatMessage();
+            } catch(DateHasAlredayBeenException $e){
+                $this->eventFormView->setDateHasAlreadyBeenMessage();
+            }
+            catch (WrongDayFormatException $e) {
+                $this->eventFormView->setDayNotSelectedMessage();
 
-            } catch (WrongMonthFormatException $e) {
-                $this->eventFormView->setUnexpectedErrorMessage();
+            } catch(StartHourNotSelectedException $e){
+                $this->eventFormView->setStartHourNotSelectedMessage();
 
+            } catch(StartMinuteNotSelectedException $e){
+                $this->eventFormView->setStartMinuteNotSelectedMessage();
+
+            } catch(EndHourNotSelectedException $e){
+                $this->eventFormView->setEndHourNotSelectedMessage();
+
+            } catch(EndMinuteNotSelectedException $e){
+                $this->eventFormView->setEndMinuteNotSelectedMessage();
             }
             $this->setEvents();
             return false;

@@ -68,7 +68,7 @@ h1{
 
 textarea{
     max-height: 100px;
-    max-width: 200px;
+    max-width: 400px;
 }
 
 .error {
@@ -111,6 +111,7 @@ textarea{
 
 .delete{
     background-color: red;
+    text-decoration: none;
     color: #ffffff;
 }
 
@@ -123,7 +124,7 @@ textarea{
     margin-right: 9px;
 }
 
-.modal .right{
+.eventModal .right{
     float: right;
     margin-right: 0;
 }
@@ -136,7 +137,7 @@ textarea{
     margin-left: 307px;
 }
 
-.modal .center{
+.eventModal .center{
     margin-left: 40px;
 }
 
@@ -146,24 +147,15 @@ textarea{
     font-weight: bold;
     text-align: center;
     text-decoration:none;
-    padding-bottom: 3px;
-    padding-left: 7px;
-    padding-right: 7px;
-    font-size: 16px;
+    padding-left: 3px;
+    padding-right: 3px;
+    font-size: 12px;
     text-shadow:1px 2px 3px #2b542c;
 }
 
 .quickAdd:hover{
     background-color:#ffffff;
     color:#449d44;
-    font-weight: bold;
-    text-align: center;
-    text-decoration:none;
-    padding-bottom: 3px;
-    padding-left: 7px;
-    padding-right: 7px;
-    font-size: 16px;
-    text-shadow:1px 2px 3px #2b542c;
 }
 
 .centerMonth{
@@ -222,7 +214,7 @@ textarea{
 .orange{
     background-color:#44c767;
     color:#ffffff;
-    width: 150px;
+    width: 160px;
     text-align: center;
     text-decoration:none;
     padding-bottom: 3px;
@@ -249,7 +241,7 @@ textarea{
     text-align: center;
 }
 
-.modal{
+.eventModal{
     -webkit-box-shadow: 17px 7px 5px 0 rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    17px 7px 5px 0 rgba(50, 50, 50, 0.75);
     box-shadow:         17px 10px 5px 0 rgba(50, 50, 50, 0.75);
@@ -263,11 +255,11 @@ textarea{
     overflow: hidden;
 }
 
-.modal label, .modal p, textarea, .modal .inputSubmit, .modal h3{
+.eventModal label, .eventModal p, textarea, .eventModal .inputSubmit, .eventModal h3{
     margin-left: 42px;
 }
 
-.modalBody, .modalHeader{
+.eventModal .modalBody, .eventModal .modalHeader{
     margin: 5px;
 }
 
@@ -340,4 +332,5 @@ textarea{
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
 }
+
 

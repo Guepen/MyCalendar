@@ -8,13 +8,8 @@
 
 namespace View;
 
-
-use Model\EventModel;
-
 class EventFormView {
     private $events;
-
-    private $eventModel;
 
     private $submitEvent = "submitEvent";
     private $submitAlterEvent = "submitAlterEvent";
@@ -46,7 +41,6 @@ class EventFormView {
     private $month;
 
     public function __construct(){
-        $this->eventModel = new EventModel();
         $this->year = date("Y");
         $this->month = date("n");
     }
@@ -71,7 +65,6 @@ class EventFormView {
         $hours = $this->getHours();
         $minutes = $this->getMinutes();
 
-        //$message = $this->eventModel->getMessage();
         $modal = "
                       <div class='modalBody'>
                       <p class='error'>$this->errorMessage</p>
@@ -196,7 +189,7 @@ class EventFormView {
      * @return string with HTML for add event form
      */
     public function renderAddEventForm(){
-        $modal = "<div class='modal'>
+        $modal = "<div class='eventModal'>
                   <a class='right, addEvent' href='?action=".NavigationView::$actionShowCalendar."'>
                      Tillbaka till kalendern</a>
                   <h3>Lägg till händelse</h3>
@@ -213,6 +206,9 @@ class EventFormView {
 
     #region default values for eventForm
 
+    /**
+     * TODO we should break out this function to multiple functions
+     */
     private function setDefaultValues() {
         $this->defaultMonthValue = $this->getMonthDefaultValue();
         $this->defaultYearValue = $this->getYearDefaultValue();
@@ -289,11 +285,19 @@ class EventFormView {
         return $this->month;
     }
 
+    /**
+     * TODO strängberoende
+     * @return string
+     */
     private function getDateDefaultValue(){
         if(isset($_GET["date"])){
             return $_GET["date"];
         }
         return "Ange datum";
+    }
+
+    public function getCurrentYear(){
+        return date("Y");
     }
 
     public function getCurrentMonth(){
@@ -466,12 +470,36 @@ class EventFormView {
         $this->errorMessage = "Beskrivning får inte lämnas tomt!";
     }
 
+    public function setDescriptionToLongMessage(){
+        $this->errorMessage = "Beskrivning får max innehålla 255 tecken!";
+    }
+
     public function setProhibitedCharacterInDescriptionMessage(){
         $this->errorMessage = "Otillåtna tecken hittade i beskrivningen!";
     }
 
-    public function setWrongTimeFormatMessage(){
-        $this->errorMessage = "Fel format på tiden! Exempel på godkänt format: 16.00";
+    public function setDateHasAlreadyBeenMessage(){
+        $this->errorMessage = "Det här datumet har redan varit!";
+    }
+
+    public function setDayNotSelectedMessage(){
+        $this->errorMessage = "Du måste välja ett datum!";
+    }
+
+    public function setStartHourNotSelectedMessage(){
+        $this->errorMessage = "Du måste välja en starttime!";
+    }
+
+    public function setStartMinuteNotSelectedMessage(){
+        $this->errorMessage = "Du måste välja en startminut!";
+    }
+
+    public function setEndHourNotSelectedMessage(){
+        $this->errorMessage = "Du måste välja en sluttime!";
+    }
+
+    public function setEndMinuteNotSelectedMessage(){
+        $this->errorMessage = "Du måste välja en slutminut!";
     }
 
     public function setUnexpectedErrorMessage(){

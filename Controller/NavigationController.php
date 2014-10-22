@@ -3,6 +3,7 @@
 namespace controller;
 
 use view\ErrorView;
+use view\HtmlView;
 use view\NavigationView;
 
 class NavigationController{

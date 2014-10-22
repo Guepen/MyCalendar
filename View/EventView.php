@@ -21,7 +21,7 @@ class EventView{
             $htmlMonth = ucfirst($htmlMonth);
             if ($event->getTitle() === $title) {
                 $ret = "
-                <div class='modal'>
+                <div class='eventModal'>
                  <a class='orange' href='?action=" .
                     NavigationView::$actionShowCalendar . "'>Tillbaka till kalendern</a>
                   <h3 class='center'>" . $event->getTitle() . "</h3>
@@ -32,7 +32,7 @@ class EventView{
 
                     <a class='orange' href='?action=" . NavigationView::$actionAlterEventForm . "&" .
                     NavigationView::$actionShowEvent . "=" . $event->getTitle() . "'>Ändra Händelsen</a>
-                     <a class='right red' href='?action=" . NavigationView::$actionDeleteEvent . "&" .
+                     <a class='right delete' href='?action=" . NavigationView::$actionDeleteEvent . "&" .
                     NavigationView::$actionShowEvent . "=" . $event->getTitle() . "'>Ta bort Händelse</a>
                 </div>
                 ";

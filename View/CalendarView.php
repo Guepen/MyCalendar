@@ -14,7 +14,7 @@ class CalendarView {
         $this->dateHelper = new DateHelper();
         $this->dayOfTheWeek = 1;
         $this->firstDayInMonth = date('w', mktime(0, 0, 0, $this->dateHelper->getMonthToShow(),
-                                                  0, $this->dateHelper->getYearToShow()));
+            0, $this->dateHelper->getYearToShow()));
         $this->currentDay = date("j");
     }
 
@@ -59,14 +59,14 @@ class CalendarView {
      */
     private function getDates(){
         $numberOfDays = cal_days_in_month(CAL_GREGORIAN, $this->dateHelper->getMonthToShow(),
-                                          $this->dateHelper->getYearToShow());
+            $this->dateHelper->getYearToShow());
         $dayCounter = 0;
         $ret = "";
 
         for ($i = 1; $i <= $numberOfDays; $i++) {
             $eventBox = $this->getEvents($i);
             if($i == $this->currentDay && $this->dateHelper->getMonthToShow() == date("n") &&
-                     $this->dateHelper->getYearToShow() == date("Y")){
+                $this->dateHelper->getYearToShow() == date("Y")){
 
                 $ret .= '<td class="currentDay">';
 
@@ -77,9 +77,9 @@ class CalendarView {
 
             $ret .=  '<div class="dayNumber">
                     <label class="right"><a class="quickAdd" href="?action='.NavigationView::$actionShowEventForm.
-                       '&'.NavigationView::$actionDateToShow.'='.$i.'&'.NavigationView::$actionMonthToShow.'='.
-                           $this->dateHelper->getMonthToShow().
-                       '&'.NavigationView::$actionYearToShow.'='.$this->dateHelper->getYearToShow().'">+</a>
+                '&'.NavigationView::$actionDateToShow.'='.$i.'&'.NavigationView::$actionMonthToShow.'='.
+                $this->dateHelper->getMonthToShow().
+                '&'.NavigationView::$actionYearToShow.'='.$this->dateHelper->getYearToShow().'">+</a>
                     </label>
             ' . $i . '
                       <p class="event">' . $eventBox . '</p>
@@ -152,7 +152,7 @@ class CalendarView {
             </a>
 
              <label class="centerMonth">'.$this->dateHelper->getMonthInText()
-                ." ". $this->dateHelper->getYearToShow() . '
+            ." ". $this->dateHelper->getYearToShow() . '
                 </label>' . '
 
           <p></p>

@@ -16,7 +16,7 @@ class EventListView {
     public function renderEventList(){
         $eventList = $this->getEventList();
 
-        $ret ="<div class='modal'>
+        $ret ="<div class='eventModal'>
                   $eventList
 
                </div>";
