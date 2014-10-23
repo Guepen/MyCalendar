@@ -11,8 +11,39 @@ namespace Model;
 
 class EventModel {
 
-    public function validateInput($title, $month, $currentMonth, $day, $currentDay, $startHour,
-                                  $startMinute, $endHour, $endMinute, $description, $year, $currentYear){
+    public function validateTimeInput($startHour, $startMinute, $endHour, $endMinute){
+        if(!preg_match('/^(0[0-9]|1[0-9]|2[0-3])$/',$startHour)){
+            throw new StartHourNotSelectedException();
+        }
+        if(!preg_match('/^(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])$/',$startMinute)){
+            throw new StartMinuteNotSelectedException();
+        }
+        if(!preg_match('/^(0[0-9]|1[0-9]|2[0-3])$/',$endHour)){
+            throw new EndHourNotSelectedException();
+        }
+        if(!preg_match('/^(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])$/',$endMinute)){
+            throw new EndMinuteNotSelectedException();
+        }
+        return true;
+    }
+
+    public function validateDateInput($year, $currentYear, $month, $currentMonth, $day, $currentDay){
+        if(!preg_match('/^([1-9]|1[012])$/', $month)){
+            throw new MonthNotSelectedException();
+        }
+
+        if($year <= $currentYear && $month < $currentMonth ||
+            $year <= $currentYear && $month <= $currentMonth && $day <= $currentDay) {
+            throw new DateHasAlredayBeenException();
+        }
+
+        if(!preg_match('/^([1-9]|[1-2][0-9]|3[0-1])$/', $day)){
+            throw new WrongDayFormatException();
+        }
+        return true;
+    }
+
+    public function validateTextInput($title, $description){
         if(empty($title)){
             throw new EmptyTitleException();
 
@@ -28,36 +59,11 @@ class EventModel {
         } else if(preg_match('/[^a-z0-9-_ åäö.,()]+/i', $description)){
             throw new ProhibitedCharacterInDescriptionException();
 
-        } else if(mb_strlen($description) >= 255){
+        } else if(mb_strlen($description) > 255){
             throw new DescriptionToLongException();
         }
-
-        if(!preg_match('/^([1-9]|1[012])$/', $month)){
-            throw new MonthNotSelectedException();
-        }
-
-        if($year <= $currentYear && $month < $currentMonth ||
-            $year <= $currentYear && $month <= $currentMonth && $day <= $currentDay) {
-            throw new DateHasAlredayBeenException();
-        }
-
-        if(!preg_match('/^([1-9]|[1-2][0-9]|3[0-1])$/', $day)){
-            throw new WrongDayFormatException();
-        }
-
-        if(!preg_match('/^(0[0-9]|1[0-9]|2[0-3])$/',$startHour)){
-            throw new StartHourNotSelectedException();
-        }
-        if(!preg_match('/^(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])$/',$startMinute)){
-            throw new StartMinuteNotSelectedException();
-        }
-        if(!preg_match('/^(0[0-9]|1[0-9]|2[0-3])$/',$endHour)){
-            throw new EndHourNotSelectedException();
-        }
-        if(!preg_match('/^(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])$/',$endMinute)){
-            throw new EndMinuteNotSelectedException();
-        }
         return true;
+
     }
 
 } 

@@ -104,70 +104,87 @@ class EventController {
         return false;
     }
 
-    /**
-     * TODO this function should call multiple validate functions in model instead of just one
-     * @return bool true if input from the add event form or update event form is valid
-     * @return bool false if the input isn't valid
-     */
     public function isInputValid(){
         if ($this->loginModel->isUserLoggedIn() === true) {
-            try {
-                if ($this->eventModel->validateInput($this->eventFormView->getTitle(),
-                        $this->eventFormView->getMonthInput(), $this->eventFormView->getCurrentMonth(),
-                        $this->eventFormView->getDay(), $this->eventFormView->getCurrentDay(),
-                        $this->eventFormView->getStartHour(), $this->eventFormView->getStartMinute(),
-                        $this->eventFormView->getEndHour(), $this->eventFormView->getEndMinute(),
-                        $this->eventFormView->getDescription(), $this->eventFormView->getYear(),
-                        $this->eventFormView->getCurrentYear()) === true){
-
-                    return true;
-
-                }
-                //catch different kind of errors
-            } catch (EmptyTitleException $e) {
-                $this->eventFormView->setMissingTitleMessage();
-
-            } catch (TitleToLongException $e){
-                $this->eventFormView->setTitleToLongMessage();
-
-            } catch(ProhibitedCharacterInTitleException $e){
-                $this->eventFormView->setProhibitedCharacterInTitleMessage();
-
-            } catch (EmptyDescriptionException $e) {
-                $this->eventFormView->setMissingDescriptionMessage();
-
-            } catch (ProhibitedCharacterInDescriptionException $e){
-                $this->eventFormView->setProhibitedCharacterInDescriptionMessage();
-
-            } catch(DescriptionToLongException $e){
-                $this->eventFormView->setDescriptionToLongMessage();
-
-            } catch(MonthNotSelectedException $e){
-                $this->eventFormView->setUnexpectedErrorMessage();
-
-            } catch(DateHasAlredayBeenException $e){
-                $this->eventFormView->setDateHasAlreadyBeenMessage();
-            }
-            catch (WrongDayFormatException $e) {
-                $this->eventFormView->setDayNotSelectedMessage();
-
-            } catch(StartHourNotSelectedException $e){
-                $this->eventFormView->setStartHourNotSelectedMessage();
-
-            } catch(StartMinuteNotSelectedException $e){
-                $this->eventFormView->setStartMinuteNotSelectedMessage();
-
-            } catch(EndHourNotSelectedException $e){
-                $this->eventFormView->setEndHourNotSelectedMessage();
-
-            } catch(EndMinuteNotSelectedException $e){
-                $this->eventFormView->setEndMinuteNotSelectedMessage();
+            if($this->isTextInputValid() === true && $this->isDateInputValid() === true &&
+                $this->isTimeInputValid() === true){
+                return true;
             }
             $this->setEvents();
             return false;
-
         }
         NavigationView::redirectToLoginForm();
+    }
+
+    private function isTimeInputValid(){
+        try {
+            if ($this->eventModel->validateTimeInput($this->eventFormView->getStartHour(),
+                    $this->eventFormView->getStartMinute(), $this->eventFormView->getEndHour(),
+                    $this->eventFormView->getEndMinute()) === true) {
+                return true;
+            }
+        } catch (StartHourNotSelectedException $e) {
+            $this->eventFormView->setStartHourNotSelectedMessage();
+
+        }catch (StartMinuteNotSelectedException $e) {
+            $this->eventFormView->setStartMinuteNotSelectedMessage();
+
+        }catch (EndHourNotSelectedException $e) {
+            $this->eventFormView->setEndHourNotSelectedMessage();
+
+        }catch (EndMinuteNotSelectedException $e) {
+            $this->eventFormView->setEndMinuteNotSelectedMessage();
+        }
+     return false;
+    }
+
+    private function isDateInputValid(){
+        try {
+            if ($this->eventModel->validateDateInput($this->eventFormView->getYear(),
+                $this->eventFormView->getCurrentYear(), $this->eventFormView->getMonthInput(),
+                $this->eventFormView->getCurrentMonth(), $this->eventFormView->getDay(),
+                $this->eventFormView->getCurrentDay())) {
+                return true;
+
+            }
+        } catch(MonthNotSelectedException $e){
+            $this->eventFormView->setUnexpectedErrorMessage();
+
+        } catch(DateHasAlredayBeenException $e){
+            $this->eventFormView->setDateHasAlreadyBeenMessage();
+        }
+        catch (WrongDayFormatException $e) {
+            $this->eventFormView->setDayNotSelectedMessage();
+
+        }
+        return false;
+    }
+
+    private function isTextInputValid(){
+        try {
+            if($this->eventModel->validateTextInput($this->eventFormView->getTitle(),
+                    $this->eventFormView->getDescription()) === true){
+                return true;
+            }
+        } catch (EmptyTitleException $e) {
+            $this->eventFormView->setMissingTitleMessage();
+
+        } catch (TitleToLongException $e){
+            $this->eventFormView->setTitleToLongMessage();
+
+        } catch(ProhibitedCharacterInTitleException $e){
+            $this->eventFormView->setProhibitedCharacterInTitleMessage();
+
+        } catch (EmptyDescriptionException $e) {
+            $this->eventFormView->setMissingDescriptionMessage();
+
+        } catch (ProhibitedCharacterInDescriptionException $e){
+            $this->eventFormView->setProhibitedCharacterInDescriptionMessage();
+
+        } catch(DescriptionToLongException $e){
+            $this->eventFormView->setDescriptionToLongMessage();
+        }
+        return false;
     }
 
     /**
