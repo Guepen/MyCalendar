@@ -28,7 +28,6 @@ class CookieStorage{
         setcookie($name, null, -1);
     }
 
-
     public function isCookieSet($cookieName){
         if (isset($_COOKIE[$cookieName]) === true) {
             return true;

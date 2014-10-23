@@ -10,6 +10,7 @@ namespace View;
 
 class EventFormView {
     private $events;
+    private $dateHelper;
 
     private $submitEvent = "submitEvent";
     private $submitAlterEvent = "submitAlterEvent";
@@ -37,12 +38,9 @@ class EventFormView {
     private $defaultYearValue;
 
     private $errorMessage;
-    private $year;
-    private $month;
 
     public function __construct(){
-        $this->year = date("Y");
-        $this->month = date("n");
+        $this->dateHelper = new DateHelper();
     }
 
     public function hasUserPressedShowEventForm(){
@@ -71,7 +69,7 @@ class EventFormView {
 
                              <div class='formGroup'>
                              <label class='center'>Titel: </label>
-                             <input  placeholder='Ex. Kalas hos kalle' type='text' value='$this->defaultTitleValue'
+                             <input  placeholder='Ex. Kalas' type='text' value='$this->defaultTitleValue'
                              name=$this->titleInput>
                            </div>
 
@@ -163,9 +161,13 @@ class EventFormView {
      * @return string With HTML for alter event form
      */
     public function renderAlterEventForm(){
-        $modal="<div class='modal'>
-                <a class='right, addEvent' href='?action=".NavigationView::$actionShowCalendar."'>
-                     Tillbaka till kalendern</a>
+        $modal="<div class='eventModal'>
+                <a class='right, addEvent' href='?action=".NavigationView::$actionShowCalendar.'&'.
+            NavigationView::$actionMonthToShow.'='. $this->dateHelper->getMonthToShow().'&'.
+            NavigationView::$actionYearToShow.'='. $this->dateHelper->getYearToShow()."'>
+                     Tillbaka till kalendern
+                     </a>
+
                 <h3>Ändra händelse</h3>
             <form action='?action=".NavigationView::$actionSubmitAlteredEvent."' method='post'>";
         $modal .= $this->getEventForm();
@@ -190,9 +192,14 @@ class EventFormView {
      */
     public function renderAddEventForm(){
         $modal = "<div class='eventModal'>
-                  <a class='right, addEvent' href='?action=".NavigationView::$actionShowCalendar."'>
-                     Tillbaka till kalendern</a>
+                  <a class='right, addEvent' href='?action=".NavigationView::$actionShowCalendar.'&'.
+            NavigationView::$actionMonthToShow.'='. $this->dateHelper->getMonthToShow().'&'.
+            NavigationView::$actionYearToShow.'='. $this->dateHelper->getYearToShow()."'>
+                     Tillbaka till kalendern
+                     </a>
+
                   <h3>Lägg till händelse</h3>
+
                    <form action='?action=".NavigationView::$actionAddEvent."' method='post'>";
         $modal .=$this->getEventForm();
         $modal .= "<div class='inputSubmit'>
@@ -206,12 +213,9 @@ class EventFormView {
 
     #region default values for eventForm
 
-    /**
-     * TODO we should break out this function to multiple functions
-     */
     private function setDefaultValues() {
-        $this->defaultMonthValue = $this->getMonthDefaultValue();
-        $this->defaultYearValue = $this->getYearDefaultValue();
+        $this->defaultMonthValue = $this->dateHelper->getMonthToShow();
+        $this->defaultYearValue = $this->dateHelper->getYearToShow();
         $this->defaultStartMinuteValue = "Ange Startminut";
         $this->defaultStartHourValue = "Ange Starttimme";
         $this->defaultEndMinuteValue = "Ange Slutminut";
@@ -221,6 +225,10 @@ class EventFormView {
         if($this->hasUserPressedAddEvent() === true){
             $this->setPostValuesAsDefault();
         }
+        $this->setDefaultValuesFromEvent();
+    }
+
+    private function setDefaultValuesFromEvent(){
         foreach ($this->events as $event) {
             if ($this->getEventTitle() === $event->getTitle()) {
                 $this->defaultTitleValue = $event->getTitle();
@@ -235,6 +243,7 @@ class EventFormView {
                 $this->defaultEventIdValue = $event->getEventId();
             }
         }
+
     }
 
     private function setPostValuesAsDefault(){
@@ -252,7 +261,7 @@ class EventFormView {
     #endregion
 
     /**
-     * TODO put this in a base class?
+     * TODO put this in a base class? We use this exact function in multiple views
      * @param array $events
      */
     public function setEvents(Array $events){
@@ -271,31 +280,20 @@ class EventFormView {
         return false;
     }
 
-    private function getYearDefaultValue(){
-        if(isset($_GET[NavigationView::$actionYearToShow])){
-            return $_GET[NavigationView::$actionYearToShow];
-        }
-        return $this->year;
-    }
-
-    private function getMonthDefaultValue(){
-        if(isset($_GET[NavigationView::$actionMonthToShow])){
-            return $_GET[NavigationView::$actionMonthToShow];
-        }
-        return $this->month;
-    }
-
     /**
-     * TODO strängberoende
      * @return string
      */
     private function getDateDefaultValue(){
-        if(isset($_GET["date"])){
-            return $_GET["date"];
+        if(isset($_GET[NavigationView::$actionDateToShow])){
+            return $_GET[NavigationView::$actionDateToShow];
         }
         return "Ange datum";
     }
 
+    /**
+     * TODO put these three getters in DateHelper??
+     * @return bool|string
+     */
     public function getCurrentYear(){
         return date("Y");
     }
@@ -314,7 +312,7 @@ class EventFormView {
      * @return string with HTML options for dropDown list containing all dates in the month for EventForm
      */
     public function getDates(){
-        $days = cal_days_in_month(CAL_GREGORIAN, $this->month, $this->year);
+        $days = cal_days_in_month(CAL_GREGORIAN, $this->dateHelper->getMonthToShow(), $this->dateHelper->getYearToShow());
         $ret="";
 
         for($i = 1; $i <= $days; $i++){
@@ -325,10 +323,11 @@ class EventFormView {
 
     private function getYears(){
         $ret="";
-        $endYear = $this->year + 5;
+        $year = $this->dateHelper->getYearToShow();
+        $endYear = $year + 5;
 
-        for($this->year; $this->year <= $endYear; $this->year++){
-            $ret .= "<option value='$this->year'>$this->year</option>";
+        for($year; $year <= $endYear; $year++){
+            $ret .= "<option value='$year'>$year</option>";
         }
         return $ret;
     }

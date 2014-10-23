@@ -136,7 +136,9 @@ class CalendarView {
     private function getMenu(){
         $ret = ' <div id="menu">
         <a class="right" href="?action=logOut">Logga Ut</a>
-           <a class="addEvent" href="?action='.NavigationView::$actionShowEventForm . '">
+           <a class="addEvent" href="?action='.NavigationView::$actionShowEventForm .'&'.
+            NavigationView::$actionMonthToShow.'='.$this->dateHelper->getMonthToShow().'&'.
+            NavigationView::$actionYearToShow.'='. $this->dateHelper->getYearToShow(). '">
            Lägg till händelse
            </a>
 
@@ -165,12 +167,13 @@ class CalendarView {
         $dateHelper = new DateHelper();
         $eventBox = "";
         foreach ($this->events as $event) {
-            //var_dump($event->getDay());
             if ($event->getDay() == $currentDay && $event->getMonth() == $dateHelper->getMonthToShow() &&
                 $event->getYear() === $dateHelper->getYearToShow()) {
                 $eventBox .= "<div class='eventBox'><a class='event' href='?action="
                     .NavigationView::$actionCalendarEvent . "&".
-                    NavigationView::$actionShowEvent ."=". $event->getTitle() . "'>
+                    NavigationView::$actionShowEvent ."=". $event->getTitle() . '&'.
+                    NavigationView::$actionMonthToShow.'='.$this->dateHelper->getMonthToShow().'&'.
+                    NavigationView::$actionYearToShow.'='. $this->dateHelper->getYearToShow(). "'>
                            <h4 class='event'>'" . $event->getTitle() . "'</h4></a></div>";
             }
         }

@@ -12,8 +12,8 @@ namespace View;
 class EventView{
     private $events;
 
-    public function renderEvent()
-    {
+    public function renderEvent() {
+        $dateHelper = new DateHelper();
         $ret = "";
         $title = $this->getEventTitle();
         foreach ($this->events as $event) {
@@ -22,8 +22,12 @@ class EventView{
             if ($event->getTitle() === $title) {
                 $ret = "
                 <div class='eventModal'>
-                 <a class='orange' href='?action=" .
-                    NavigationView::$actionShowCalendar . "'>Tillbaka till kalendern</a>
+                 <a class='orange' href='?action=" . NavigationView::$actionShowCalendar .'&'.
+                    NavigationView::$actionMonthToShow.'='.$dateHelper->getMonthToShow().'&'.
+                    NavigationView::$actionYearToShow.'='. $dateHelper->getYearToShow(). "'>
+                    Tillbaka till kalendern
+                    </a>
+
                   <h3 class='center'>" . $event->getTitle() . "</h3>
                   <p class='center'>" . $event->getDescription() . "</p>
                   <p class='center'>Händelsen inträffar den " . $event->getDay() . " " . $htmlMonth . "</p>

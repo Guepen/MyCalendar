@@ -12,7 +12,7 @@ namespace Model;
 class PasswordHandler {
 
     /**
-     * @param $password string
+     * @param $password string the password that should be crypted
      * @return string the crypted password
      */
     public function getCryptPassword($password){
