@@ -4,9 +4,6 @@ namespace view;
 
 class HtmlView{
     public function echoHTML($body) {
-        if ($body === NULL) {
-        }
-
 
         echo "
 				<!DOCTYPE html>

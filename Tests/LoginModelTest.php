@@ -38,7 +38,8 @@ class LoginModelTest extends \PHPUnit_Framework_TestCase {
 
     public function testDoLoginWithCorrectValues(){
         $loginModel = new LoginModel();
-        $this->assertTrue($loginModel->doLogIn("username", "password", "username", "password"));
+        $password = password_hash("password", PASSWORD_BCRYPT);
+        $this->assertTrue($loginModel->doLogIn("username", "password", "username", $password));
         $this->assertTrue($loginModel->isUserLoggedIn());
     }
 
@@ -47,7 +48,8 @@ class LoginModelTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDoLoginWithOnlyMatchingUsername(){
         $loginModel = new LoginModel();
-        $loginModel->doLogIn("username", "Password", "username", "password");
+        $password = password_hash("password", PASSWORD_BCRYPT);
+        $loginModel->doLogIn("username", "Password", "username", $password);
     }
 
     /**
@@ -55,7 +57,8 @@ class LoginModelTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDoLoginWithOnlyMatchingPassword(){
         $loginModel = new LoginModel();
-        $loginModel->doLogIn("Username", "password", "username", "password");
+        $password = password_hash("password", PASSWORD_BCRYPT);
+        $loginModel->doLogIn("Username", "password", "username", $password);
     }
 
     /**
@@ -63,12 +66,21 @@ class LoginModelTest extends \PHPUnit_Framework_TestCase {
      */
     public function testDoLoginWithIncorrectValues(){
         $loginModel = new LoginModel();
-        $loginModel->doLogIn("Username", "Password", "username", "password");
+        $password = password_hash("password", PASSWORD_BCRYPT);
+        $loginModel->doLogIn("Username", "Password", "username", $password);
     }
 
     public function checkThatUserIsNotLoggedIn(){
         $loginModel = new LoginModel();
         $this->assertFalse($loginModel->isUserLoggedIn());
+    }
+
+    public function testLogOut(){
+        $_SESSION["user"] = "username";
+        $loginModel = new LoginModel();
+        $loginModel->doLogout();
+        $this->assertFalse(isset($_SESSION["user"]));
+
     }
 }
  

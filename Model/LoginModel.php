@@ -73,7 +73,7 @@ class LoginModel{
     }
 
     public function getCookieExpireTime(){
-        return time()+200;
+        return strtotime("+1 week");
     }
 
     /**

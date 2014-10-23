@@ -6,7 +6,7 @@ use model\User;
 
 require_once("./ImportFiles.php");
 
-class UserModelTest extends \PHPUnit_Framework_TestCase {
+class UserTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetUsername(){
         $userModel = new User("username", "password");

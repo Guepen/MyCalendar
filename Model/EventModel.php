@@ -11,6 +11,18 @@ namespace Model;
 
 class EventModel {
 
+    /**
+     * TODO validate that endtime is later than starttime
+     * @param $startHour
+     * @param $startMinute
+     * @param $endHour
+     * @param $endMinute
+     * @return bool
+     * @throws EndHourNotSelectedException
+     * @throws EndMinuteNotSelectedException
+     * @throws StartHourNotSelectedException
+     * @throws StartMinuteNotSelectedException
+     */
     public function validateTimeInput($startHour, $startMinute, $endHour, $endMinute){
         if(!preg_match('/^(0[0-9]|1[0-9]|2[0-3])$/',$startHour)){
             throw new StartHourNotSelectedException();
@@ -25,6 +37,7 @@ class EventModel {
             throw new EndMinuteNotSelectedException();
         }
         return true;
+
     }
 
     public function validateDateInput($year, $currentYear, $month, $currentMonth, $day, $currentDay){
@@ -33,7 +46,7 @@ class EventModel {
         }
 
         if($year <= $currentYear && $month < $currentMonth ||
-            $year <= $currentYear && $month <= $currentMonth && $day <= $currentDay) {
+            $year <= $currentYear && $month <= $currentMonth && $day < $currentDay) {
             throw new DateHasAlredayBeenException();
         }
 
