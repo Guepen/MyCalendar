@@ -6,6 +6,7 @@ use model\DbException;
 use model\LoginModel;
 use model\MissingPasswordException;
 use model\MissingUsernameException;
+use model\UserDontExistException;
 use model\UserRepository;
 use model\WrongUserInformationException;
 use view\LoginView;
@@ -61,6 +62,9 @@ class LoginController{
             }
         } catch (DbException $e) {
             NavigationView::redirectToErrorPage();
+            return false;
+        } catch (UserDontExistException $e) {
+            $this->loginView->setUserDontExistMessage();
             return false;
         }
     }

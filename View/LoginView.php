@@ -26,35 +26,45 @@ class LoginView{
     public function renderLoginForm(){
 
         $html = "
-              <div class='center'>
                 <h3>Logga in</h3>
                 <a href='?action=".NavigationView::$actionShowRegisterForm."'>Registrera ny användare</a>
-                <form action='?action=".NavigationView::$actionLogin."' method='post'>
+                <form action='?action=".NavigationView::$actionLogin."' method='post' class='form-horizontal'>
+                  <fieldset>
                    <legend class='center'>Skriv in användarnamn och lösenord</legend>
-                   <fieldset>
                    <p>$this->message</p>
 
                    <div class='formGroup'>
-                      <label>Användarnamn: </label>
-                      <input placeholder='Skriv in ditt användarnamn' type='text' value='".$this->getUsername()."'
-                       name=$this->usernameInput>
+                      <label class='col-sm-2 control-label'>Användarnamn: </label>
+                       <div class='col-sm-10'>
+                      <input  class='form-control' placeholder='Skriv in ditt användarnamn' type='text'
+                      value='".$this->getUsername()."' name=$this->usernameInput>
+                   </div>
                    </div>
 
                      <div class='formGroup'>
-                      <label>Lösenord: </label>
-                      <input placeholder='Skriv in ditt lösenord' type='password' name=$this->passwordInput>
+                      <label class='col-sm-2 control-label'>Lösenord: </label>
+                      <div class='col-sm-10'>
+                      <input class='form-control' placeholder='Skriv in ditt lösenord' type='password'
+                      name=$this->passwordInput>
+                      </div>
                    </div>
 
                      <div class='formGroup'>
-                      <label>
-                          <input type='checkbox' name=$this->keepMeInput> Håll mig inloggad
+                      <label class='col-sm-2 control-label'>
+                       <div class='col-sm-10'>
+                          <input class='form-control' type='checkbox' name=$this->keepMeInput>
+                          Håll mig inloggad
                       </label>
+                      </div>
                    </div>
-
-                    <input type='submit' class='button' name='$this->submitInput' value='Logga in'/>
+                   <div class='form-group'>
+                    <div class='col-sm-offset-2 col-sm-10'>
+                    <input class='btn btn-default' type='submit' class='button' name='$this->submitInput'
+                    value='Logga in'/>
+                    </div>
+                    </div>
                    </fieldset>
                 </form>
-            </div>
 
                 ";
 
@@ -83,6 +93,10 @@ class LoginView{
     }
 
     public function setWrongUserinformationMessage(){
+        $this->message = "Felaktigt användarnamn och/eller lösenord";
+    }
+
+    public function setUserDontExistMessage(){
         $this->message = "Felaktigt användarnamn och/eller lösenord";
     }
     #endregion

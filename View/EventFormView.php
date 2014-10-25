@@ -261,7 +261,7 @@ class EventFormView {
     #endregion
 
     /**
-     * TODO put this in a base class? We use this exact function in multiple views
+     * TODO put this in a helper-class or even base class? We use this exact function in multiple views
      * @param array $events
      */
     public function setEvents(Array $events){
@@ -270,7 +270,7 @@ class EventFormView {
     }
 
     /**
-     * TODO put this in a base class??
+     * TODO put this in a helper-class or even base class? We use this exact function in multiple views
      * @return string|bool The title of chosen event
      */
     public function getEventTitle(){

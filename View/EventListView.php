@@ -60,7 +60,7 @@ class EventListView {
     }
 
     /**
-     * TODO put this in a base class??
+     *  TODO put this in a helper-class or even base class? We use this exact function in multiple views
      * @param array $events
      */
     public function setEvents(Array $events){

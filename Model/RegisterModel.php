@@ -17,7 +17,6 @@ class RegisterModel{
     }
 
     public function validateInput($username, $password, $password2){
-        //$regex = '/^[a-z0-9]+$/i';
         if(mb_strlen($username) < 3 && mb_strlen($password) < 6 && mb_strlen($password2) < 6){
             throw new UsernameAndPasswordToShortException();
         }

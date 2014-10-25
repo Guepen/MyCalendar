@@ -36,7 +36,7 @@ class NavigationController{
 
             case NavigationView::$actionSubmitAlteredEvent;
                 $controller = new EventController();
-                $controller->userPressedAlterEvent();
+                return $controller->userPressedAlterEvent();
                 break;
 
             case NavigationView::$actionCalendarEvent;

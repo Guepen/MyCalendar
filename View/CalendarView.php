@@ -164,11 +164,10 @@ class CalendarView {
     }
 
     private function getEvents($currentDay){
-        $dateHelper = new DateHelper();
         $eventBox = "";
         foreach ($this->events as $event) {
-            if ($event->getDay() == $currentDay && $event->getMonth() == $dateHelper->getMonthToShow() &&
-                $event->getYear() === $dateHelper->getYearToShow()) {
+            if ($event->getDay() == $currentDay && $event->getMonth() == $this->dateHelper->getMonthToShow() &&
+                $event->getYear() === $this->dateHelper->getYearToShow()) {
                 $eventBox .= "<div class='eventBox'><a class='event' href='?action="
                     .NavigationView::$actionCalendarEvent . "&".
                     NavigationView::$actionShowEvent ."=". $event->getTitle() . '&'.

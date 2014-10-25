@@ -82,7 +82,6 @@ class LoginModel{
      * @return bool false if the cookie has expired
      */
     public function checkIfCookieExpireTimeIsValid($cookieExpireTime){
-        var_dump($cookieExpireTime);
         if(time() < $cookieExpireTime){
             return true;
         }

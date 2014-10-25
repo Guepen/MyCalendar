@@ -264,7 +264,7 @@ class EventController {
     }
 
     /**
-     * TODO we should only ha to set the events at one place
+     * TODO we should only have to set the events at one place
      */
     private function setEvents(){
         $this->calendarView->setEvents($this->getEvents());

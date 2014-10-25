@@ -169,7 +169,7 @@ textarea{
     text-shadow:1px 3px 1px #2b542c;
 }
 
-.modal .centerMonth{
+.eventModal .centerMonth{
     font-weight: 100;
     margin-left: 75px;
 }
@@ -250,9 +250,12 @@ textarea{
     position: absolute;
     z-index: 10;
     top:210px;
-    left: 33%;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
     max-height: 600px;
-    overflow: hidden;
+    overflow-y:hidden;
 }
 
 .eventModal label, .eventModal p, textarea, .eventModal .inputSubmit, .eventModal h3{

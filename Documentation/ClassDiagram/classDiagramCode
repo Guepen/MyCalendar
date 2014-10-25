@@ -1,0 +1,84 @@
+%2F%2FCalendarController
+[controller: CalendarController{bg:yellow}]->[view: CalendarView{bg:green}]
+[controller: CalendarController{]->[model: UserRepository{bg:red}]
+[controller: CalendarController]->[model: EventRepository{bg:red}]
+[controller: CalendarController]->[model: LoginModel{bg:red}]
+[controller: CalendarController]-.->[view: NavigationView{bg:green}]
+
+%2F%2FEventController
+[controller: EventController{bg:yellow}]->[view: CalendarView{bg:green}]
+[controller: EventController{]->[model: UserRepository{bg:red}]
+[controller: EventController{]->[model: EventModel{bg:red}]
+[controller: EventController{]-.->[model: Event{bg:red}]
+[controller: EventController]->[model: EventRepository{bg:red}]
+[controller: EventController]->[model: LoginModel{bg:red}]
+[controller: EventController]-.->[view: NavigationView{bg:green}]
+[controller: EventController]->[view: EventFormView{bg:green}]
+[controller: EventController]->[view: EventListView{bg:green}]
+[controller: EventController]->[view: EventView{bg:green}]
+
+%2F%2FLogincontroller
+[controller: LoginController{bg:yellow}]->[view: LoginView{bg:green}]
+[controller: LoginController{bg:yellow}]->[model: LoginModel]
+[controller: LoginController{bg:yellow}]->[model: UserRepository]
+[controller: LoginController]-.->[view: NavigationView{bg:green}]
+
+%2F%2FNavigationController
+[controller: NavigationController{bg:yellow}]-.->[view: NavigationView]
+[controller: NavigationController]-.->[controller: RegisterController{bg:yellow}]
+[controller: NavigationController]-.->[controller: EventController]
+[controller: NavigationController]-.->[controller: CalendarController]
+[controller: NavigationController]-.->[controller: LoginController]
+[controller: NavigationController]-.->[view: ErrorView{bg:green}]
+
+%2F%2FRegisterController
+[controller: RegisterController]->[model: RegisterModel{bg:red}]
+[controller: RegisterController]->[model: UserRepository]
+[controller: RegisterController]-.->[model: User{bg:red}]
+[controller: RegisterController]->[view: RegisterView{bg:green}]
+[controller: RegisterController]->[view: LoginView]
+[controller: RegisterController{bg:yellow}]-.->[view: NavigationView]
+
+%2F%2FRepository
+[model: Repository{bg:red}]-.->[Settings]
+
+%2F%2FRepository
+[model: EventRepository]-^[model: Repository]
+[model: EventRepository]-.->[model: Event]
+
+%2F%2FEventRepository
+[model: UserRepository]-^[model: Repository]
+[model: UserRepository]-.->[model: User]
+%2F%2FLoginModel
+[model: LoginModel]->[model: PasswordHandler{bg:red}]
+[model: RegisterModel]->[model: PasswordHandler]
+
+%2F%2FCalendarView
+[view: CalendarView]->[view: DateHelper{bg:green}]
+[view: CalendarView]->[view: NavigationView]
+
+%2F%2FDateHelper
+[view: DateHelper]-.->[view: NavigationView]
+
+%2F%2FErrorView
+[view: ErrorView]-.->[view: NavigationView]
+
+%2F%2FEventFormView
+[view: EventFormView]->[view: DateHelper]
+[view: EventFormView]-.->[view: NavigationView]
+
+%2F%2FEventListView
+[view: EventListView]-.->[view: NavigationView]
+[view: EventListView]-.->[view: DateHelper]
+
+%2F%2FEventView
+[view: EventView]-.->[view: NavigationView]
+[view: EventView]-.->[view: DateHelper]
+
+%2F%2FLoginView
+[view: LoginView]-.->[view: NavigationView]
+[view: LoginView]->[view: CookieStorage{bg:green}]
+[view: LoginView]->[model: LoginModel]
+
+%2F%2FRegisterView
+[view: RegisterView]-.->[view: NavigationView]

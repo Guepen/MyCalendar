@@ -63,12 +63,13 @@ class UserRepository extends Repository{
                  * username and password are columns in the db
                  */
                 return new User($result[self::$username], $result[self::$password]);
+            } else{
+                throw new UserDontExistException();
             }
 
         } catch (\PDOException $e) {
             throw new DbException();
         }
-        return null;
 
     }
 
