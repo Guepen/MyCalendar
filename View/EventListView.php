@@ -41,7 +41,7 @@ class EventListView {
             if ($event->getMonth() === $dateHelper->getMonthToShow() && $event->getYear() === $dateHelper->getYearToShow()) {
                 $ret .= "
                      <li>" . $event->getTitle() . "
-                     <a class='btn btn-primary' href='?action=" . NavigationView::$actionAlterEventForm . "&" .
+                     <a class='btn btn-success' href='?action=" . NavigationView::$actionAlterEventForm . "&" .
                     NavigationView::$actionShowEvent . "=" . $event->getTitle() . "'>Ändra händele</a>
 
                      <a class='btn btn-danger' href='?action=" . NavigationView::$actionDeleteEvent . "&" .

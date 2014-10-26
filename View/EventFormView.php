@@ -202,7 +202,7 @@ class EventFormView {
 
                    <div class='form-group'>
                      <div class='col-sm-offset-2 col-sm-10'>
-                     <input class='btn btn-primary' type='submit' value='Uppdatera'
+                     <input class='btn btn-success' type='submit' value='Uppdatera'
                              name=$this->submitAlterEvent>
                    </div>
                    </div>";
@@ -231,7 +231,7 @@ class EventFormView {
         $modal .=$this->getEventForm();
         $modal .= "<div class='form-group'>
                        <div class='col-sm-offset-2 col-sm-10'>
-                             <input class='btn btn-primary' type='submit' value='Lägg till'
+                             <input class='btn btn-succes' type='submit' value='Lägg till'
                              name=$this->submitEvent>
                            </div>
                            </div>";
