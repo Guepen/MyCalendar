@@ -29,6 +29,7 @@ class RegisterView {
         $html = "
                      <a class='btn btn-primary' href='?action=".NavigationView::$actionShowLoginForm."'>Tillbaka</a>
                      <p></p>
+                      $this->message
                      <form method='post' action='?action=".NavigationView::$actionSubmitRegisterForm."' class='form-horizontal'>
                      <fieldset>
 					 <legend>Registrera ny användare - Skriv in användarnamn och lösenord</legend>
@@ -64,7 +65,6 @@ class RegisterView {
 					 </div>
 					 </fieldset>
 					 </form>
-					 <p class='error center'>$this->message<p>
 					 " ;
 
         return $html;
@@ -72,25 +72,37 @@ class RegisterView {
     }
 
     #region Messages
+    private function getDangerAlert(){
+        $ret = "<div class='alert alert-danger alert-error'>
+                  <a href='#' class='close' data-dismiss='alert'>&times;</a>";
+
+        return $ret;
+    }
+
     public function setToShortUsernameMessage(){
-        $this->message = "Användarnamnet har för få tecken. Minst 3 tecken";
+        $this->message = $this->getDangerAlert();
+        $this->message .= "Användarnamnet har för få tecken. Minst 3 tecken</div>";
     }
 
     public function setUsernameAndPasswordToShortMessage(){
-        $this->message = " Användarnamnet har för få tecken. Minst 3 tecken.
-                          <p class='error center'>Lösenorden har för få tecken. Minst 6 tecken</p>";
+        $this->message = $this->getDangerAlert();
+        $this->message .= " Användarnamnet har för få tecken. Minst 3 tecken.
+                          <p>Lösenorden har för få tecken. Minst 6 tecken</p></div>";
     }
 
     public function setToShortPasswordMessage(){
-        $this->message = "Lösenorden har för få tecken. Minst 6 tecken";
+        $this->message = $this->getDangerAlert();
+        $this->message .= "Lösenorden har för få tecken. Minst 6 tecken</div>";
     }
 
     public function setPasswordsDontMatchMessage(){
-        $this->message = "Lösenorden matchar inte";
+        $this->message = $this->getDangerAlert();
+        $this->message .= "Lösenorden matchar inte";
     }
 
     public function setUserExistsMessage(){
-        $this->message = "Användarnamnet är upptaget";
+        $this->message = $this->getDangerAlert();
+        $this->message .= "Användarnamnet är upptaget</div>";
     }
 
     /**
@@ -98,7 +110,8 @@ class RegisterView {
      */
     public function setProhibitedCharacterMessage($username){
         $this->username = $username;
-        $this->message = "Användarnamnet innehåller ogiltliga tecken";
+        $this->message = $this->getDangerAlert();
+        $this->message .= "Användarnamnet innehåller ogiltliga tecken</div>";
     }
     #endregion
 

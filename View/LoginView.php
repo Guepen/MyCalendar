@@ -27,7 +27,7 @@ class LoginView{
 
         $html = "
 
-
+               $this->message
                 <form action='?action=".NavigationView::$actionLogin."' method='post' class='form-horizontal'>
                   <fieldset>
                    <legend>Logga in - Skriv in användarnamn och lösenord</legend>
@@ -70,7 +70,6 @@ class LoginView{
                     </div>
                    </fieldset>
                 </form>
-                  <p class='error center'>$this->message</p>
 
                 ";
 
@@ -78,8 +77,22 @@ class LoginView{
     }
 
     #region Messages
+    private function getDangerAlert(){
+        $ret = "<div class='alert alert-danger alert-error'>
+                  <a href='#' class='close' data-dismiss='alert'>&times;</a>";
+
+        return $ret;
+    }
+
+    private function getSuccessAlert(){
+        $ret = "<div class='alert alert-success'>
+                  <a href='#' class='close' data-dismiss='alert'>&times;</a>";
+
+        return $ret;
+    }
     public function setRegistrationSuccesMessae(){
-        $this->message = "Registrering av ny användare lyckades";
+        $this->message = $this->getSuccessAlert();
+        $this->message .= "Registrering av ny användare lyckades</div>";
     }
 
     public function setLoggedOutMessage(){
@@ -91,19 +104,23 @@ class LoginView{
     }
 
     public function setMissingUsernameMessage(){
-        $this->message = "Användarnamn saknas";
+        $this->message = $this->getDangerAlert();
+        $this->message .= "Användarnamn saknas</div>";
     }
 
     public function setMissingPasswordMessage(){
-        $this->message = "Lösenord saknas";
+        $this->message = $this->getDangerAlert();
+        $this->message .= "Lösenord saknas</div>";
     }
 
     public function setWrongUserinformationMessage(){
-        $this->message = "Felaktigt användarnamn och/eller lösenord";
+        $this->message = $this->getDangerAlert();
+        $this->message .= "Felaktigt användarnamn och/eller lösenord</div>";
     }
 
     public function setUserDontExistMessage(){
-        $this->message = "Felaktigt användarnamn och/eller lösenord";
+        $this->message = $this->getDangerAlert();
+        $this->message .= "Felaktigt användarnamn och/eller lösenord</div>";
     }
     #endregion
 
