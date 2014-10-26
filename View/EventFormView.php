@@ -507,7 +507,7 @@ class EventFormView {
 
     public function setProhibitedCharacterInTitleMessage(){
         $this->errorMessage = $this->getAlert();
-        $this->errorMessage .= "Otillåtna tecken hittade i titeln!</div>";
+        $this->errorMessage .= "Otillåtna tecken hittade i titeln!  Ex.<></div>";
     }
 
     public function setMissingDescriptionMessage(){
@@ -522,7 +522,7 @@ class EventFormView {
 
     public function setProhibitedCharacterInDescriptionMessage(){
         $this->errorMessage = $this->getAlert();
-        $this->errorMessage .= "Otillåtna tecken hittade i beskrivningen!</div>";
+        $this->errorMessage .= "Otillåtna tecken hittade i beskrivningen! Ex.<></div>";
     }
 
     public function setDateHasAlreadyBeenMessage(){
