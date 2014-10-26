@@ -186,14 +186,18 @@ class EventFormView {
      */
     public function renderAlterEventForm(){
         $modal="<div class='eventModal'>
-                <a class='right, addEvent' href='?action=".NavigationView::$actionShowCalendar.'&'.
+                <a class='addEvent' href='?action=".NavigationView::$actionShowCalendar.'&'.
             NavigationView::$actionMonthToShow.'='. $this->dateHelper->getMonthToShow().'&'.
             NavigationView::$actionYearToShow.'='. $this->dateHelper->getYearToShow()."'>
                      Tillbaka till kalendern
                      </a>
-
+                 $this->errorMessage
                 <h3>Ändra händelse</h3>
-            <form action='?action=".NavigationView::$actionSubmitAlteredEvent."' method='post'>";
+            <form action='?action=".NavigationView::$actionSubmitAlteredEvent.'&'.
+            NavigationView::$actionMonthToShow.'='. $this->dateHelper->getMonthToShow().'&'.
+            NavigationView::$actionYearToShow.'='. $this->dateHelper->getYearToShow().'&'.
+            NavigationView::$actionShowEvent.'='.$this->getEventTitle()."' method='post'>";
+
         $modal .= $this->getEventForm();
         $modal .= "<div class='hidden'>
                      <input type='hidden' value='".$this->defaultEventIdValue."'

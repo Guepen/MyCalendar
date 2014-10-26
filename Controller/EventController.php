@@ -187,9 +187,6 @@ class EventController {
         return false;
     }
 
-    /**
-     * tries to alter an event
-     */
     public function alterEvent(){
         $event = new Event($this->eventFormView->getTitle(), $this->eventFormView->getMonthInput(),
             $this->eventFormView->getYear(), $this->eventFormView->getDay(), $this->eventFormView->getStartHour(),
