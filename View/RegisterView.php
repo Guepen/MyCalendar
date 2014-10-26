@@ -27,7 +27,7 @@ class RegisterView {
     public function renderRegisterForm(){
 
         $html = "
-                     <a class='btn btn-primary' href='?action=".NavigationView::$actionShowLoginForm."'>Tillbaka</a>
+
                      <p></p>
                       $this->message
                      <form method='post' action='?action=".NavigationView::$actionSubmitRegisterForm."' class='form-horizontal'>
@@ -61,6 +61,7 @@ class RegisterView {
 					 <div class='form-group'>
 					 <div class='col-sm-offset-2 col-sm-10'>
 					 <input class='btn btn-success' type='submit' name='".$this->submitInput."' value='Registrera'/>
+					  <a class='btn btn-primary' href='?action=".NavigationView::$actionShowLoginForm."'>Tillbaka</a>
 					 </div>
 					 </div>
 					 </fieldset>
