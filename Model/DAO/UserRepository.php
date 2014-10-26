@@ -38,7 +38,6 @@ class UserRepository extends Repository{
              * if a user already has wished username
              */
             if($e->getCode() === "23000"){
-                var_dump("dfs");
                 throw new UserExistsException();
             }
             else{
