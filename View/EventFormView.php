@@ -224,7 +224,9 @@ class EventFormView {
                      Tillbaka till kalendern
                      </a>
                     $this->errorMessage
-                   <form action='?action=".NavigationView::$actionAddEvent."' method='post'>
+                   <form action='?action=".NavigationView::$actionAddEvent.'&'.
+            NavigationView::$actionMonthToShow.'='. $this->dateHelper->getMonthToShow().'&'.
+            NavigationView::$actionYearToShow.'='. $this->dateHelper->getYearToShow()."' method='post'>
                    <legend>Lägg till händelse</legend>";
         $modal .=$this->getEventForm();
         $modal .= "<div class='form-group'>
@@ -350,7 +352,7 @@ class EventFormView {
 
     private function getYears(){
         $ret="";
-        $year = $this->dateHelper->getYearToShow();
+        $year = $this->getCurrentYear();
         $endYear = $year + 5;
 
         for($year; $year <= $endYear; $year++){
@@ -495,50 +497,63 @@ class EventFormView {
     }
 
     public function setTitleToLongMessage(){
-        $this->errorMessage = "Titeln får max vara 20 tecken!";
+        $this->errorMessage = $this->getAlert();
+        $this->errorMessage .= "Titeln får max vara 20 tecken!</div>";
     }
 
     public function setProhibitedCharacterInTitleMessage(){
-        $this->errorMessage = "Otillåtna tecken hittade i titeln!";
+        $this->errorMessage = $this->getAlert();
+        $this->errorMessage .= "Otillåtna tecken hittade i titeln!</div>";
     }
+
     public function setMissingDescriptionMessage(){
-        $this->errorMessage = "Beskrivning får inte lämnas tomt!";
+        $this->errorMessage = $this->getAlert();
+        $this->errorMessage .= "Beskrivning får inte lämnas tomt!</div>";
     }
 
     public function setDescriptionToLongMessage(){
-        $this->errorMessage = "Beskrivning får max innehålla 255 tecken!";
+        $this->errorMessage = $this->getAlert();
+        $this->errorMessage .= "Beskrivning får max innehålla 255 tecken!</div>";
     }
 
     public function setProhibitedCharacterInDescriptionMessage(){
-        $this->errorMessage = "Otillåtna tecken hittade i beskrivningen!";
+        $this->errorMessage = $this->getAlert();
+        $this->errorMessage .= "Otillåtna tecken hittade i beskrivningen!</div>";
     }
 
     public function setDateHasAlreadyBeenMessage(){
-        $this->errorMessage = "Det här datumet har redan varit!";
+        $this->errorMessage = $this->getAlert();
+        $this->errorMessage .= "Det här datumet har redan varit!</div>";
     }
 
     public function setDayNotSelectedMessage(){
-        $this->errorMessage = "Du måste välja ett datum!";
+        $this->errorMessage = $this->getAlert();
+        $this->errorMessage .= "Du måste välja ett datum!</div>";
     }
 
     public function setStartHourNotSelectedMessage(){
-        $this->errorMessage = "Du måste välja en starttime!";
+        $this->errorMessage = $this->getAlert();
+        $this->errorMessage .= "Du måste välja en starttime!</div>";
     }
 
     public function setStartMinuteNotSelectedMessage(){
-        $this->errorMessage = "Du måste välja en startminut!";
+        $this->errorMessage = $this->getAlert();
+        $this->errorMessage .= "Du måste välja en startminut!</div>";
     }
 
     public function setEndHourNotSelectedMessage(){
-        $this->errorMessage = "Du måste välja en sluttime!";
+        $this->errorMessage = $this->getAlert();
+        $this->errorMessage .= "Du måste välja en sluttime!</div>";
     }
 
     public function setEndMinuteNotSelectedMessage(){
-        $this->errorMessage = "Du måste välja en slutminut!";
+        $this->errorMessage = $this->getAlert();
+        $this->errorMessage .= "Du måste välja en slutminut!</div>";
     }
 
     public function setUnexpectedErrorMessage(){
-        $this->errorMessage = "Ett oväntat fel inträffade! Försök igen";
+        $this->errorMessage = $this->getAlert();
+        $this->errorMessage .= "Ett oväntat fel inträffade! Försök igen</div>";
     }
     #endregion
 }

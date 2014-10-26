@@ -41,10 +41,10 @@ class EventListView {
             if ($event->getMonth() === $dateHelper->getMonthToShow() && $event->getYear() === $dateHelper->getYearToShow()) {
                 $ret .= "
                      <li>" . $event->getTitle() . "
-                     <a class='addEvent' href='?action=" . NavigationView::$actionAlterEventForm . "&" .
+                     <a class='btn btn-primary' href='?action=" . NavigationView::$actionAlterEventForm . "&" .
                     NavigationView::$actionShowEvent . "=" . $event->getTitle() . "'>Ändra händele</a>
 
-                     <a class='delete deleteButton' href='?action=" . NavigationView::$actionDeleteEvent . "&" .
+                     <a class='btn btn-danger' href='?action=" . NavigationView::$actionDeleteEvent . "&" .
                     NavigationView::$actionShowEvent . "=" . $event->getTitle() . "'>Ta bort Händelse</a>
 
                      </li>";
