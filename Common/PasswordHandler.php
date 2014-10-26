@@ -20,9 +20,8 @@ class PasswordHandler {
     }
 
     /**
-     * Verifies the password
      * @param $password string the input from the user
-     * @param $cryptedPassword string the crypted password in the db
+     * @param $cryptedPassword string
      * @return bool true if the password is correct
      * @return bool false if the password is incorrect
      */

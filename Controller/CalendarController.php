@@ -30,7 +30,7 @@ class CalendarController{
         NavigationView::redirectToLoginForm();
     }
 
-    public function render(){
+    public function renderCalendar(){
         if ($this->loginModel->isUserLoggedIn() === true) {
             return $this->calendarView->renderCalendar();
         }

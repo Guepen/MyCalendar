@@ -4,6 +4,11 @@ namespace view;
 
 class CookieStorage{
 
+    /**
+     * @param $name string
+     * @param $value string
+     * @param $expire string
+     */
     public function save($name, $value, $expire){
         setcookie($name, $value, $expire);
 
@@ -17,6 +22,10 @@ class CookieStorage{
         }
     }
 
+    /**
+     * @param $name string
+     * @return bool
+     */
     public function load($name){
         if(isset($_COOKIE[$name])){
             return $_COOKIE[$name];
@@ -24,6 +33,10 @@ class CookieStorage{
         return false;
     }
 
+    /**
+     * sets the cookie to a time that has already been
+     * @param $name string
+     */
     public function deleteCookie($name){
         setcookie($name, null, -1);
     }

@@ -25,13 +25,13 @@ class NavigationController{
             case NavigationView::$actionShowEventList;
                 $eventController = new EventController();
                 $controller = new CalendarController();
-                return $controller->render() . $eventController->renderEventList();
+                return $controller->renderCalendar() . $eventController->renderEventList();
                 break;
 
             case NavigationView::$actionAlterEventForm;
                 $controller = new EventController();
                 $calendarController = new CalendarController();
-                return $calendarController->render() . $controller->renderAlterEventForm();
+                return $calendarController->renderCalendar() . $controller->renderAlterEventForm();
                 break;
 
             case NavigationView::$actionSubmitAlteredEvent;
@@ -42,7 +42,7 @@ class NavigationController{
             case NavigationView::$actionCalendarEvent;
                 $controller = new CalendarController();
                 $eventController = new EventController();
-                return $controller->render().$eventController->renderEvent();
+                return $controller->renderCalendar().$eventController->renderEvent();
                 break;
 
             case NavigationView::$actionDeleteEvent;
@@ -58,12 +58,12 @@ class NavigationController{
             case NavigationView::$actionShowEventForm;
                 $controller = new CalendarController();
                 $eventController = new EventController();
-                return $controller->render().$eventController->hasUserPressedShowEventForm();
+                return $controller->renderCalendar().$eventController->hasUserPressedShowEventForm();
                 break;
 
             case NavigationView::$actionShowCalendar;
                 $controller = new CalendarController();
-                return $controller->render();
+                return $controller->renderCalendar();
                 break;
 
             case NavigationView::$actionLogin;
@@ -84,7 +84,7 @@ class NavigationController{
                 $controller = new LoginController();
                 if($controller->isCookiesSet() === true){
                     $controller = new CalendarController();
-                    return $controller->render();
+                    return $controller->renderCalendar();
 
                 } else {
                     return $controller->showLogInForm();

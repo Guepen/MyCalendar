@@ -57,16 +57,18 @@ class EventController {
     }
 
     public function userPressedAlterEvent(){
-        if($this->isInputValid()){
+        if($this->isInputValid() === true){
             $this->alterEvent();
         }
+        //fulhack
         return $this->calendarView->renderCalendar() . $this->eventFormView->renderAlterEventForm();
     }
 
     public function userPressedAddEvent(){
-        if($this->isInputValid()){
+        if($this->isInputValid() === true){
             $this->addEvent();
         }
+        //fulhack
         return $this->calendarView->renderCalendar() . $this->eventFormView->renderAddEventForm();
     }
 
@@ -91,10 +93,6 @@ class EventController {
         return $this->eventFormView->renderAlterEventForm();
     }
 
-    /**
-     * if user has pressed the add event link @return string the modal/popup
-     * else @return bool false
-     */
     public function hasUserPressedShowEventForm(){
         if ($this->eventFormView->hasUserPressedShowEventForm() && $this->loginModel->isUserLoggedIn() === true) {
             $this->setEvents();
@@ -229,6 +227,7 @@ class EventController {
     }
 
     /**
+     * TODO should pass an Event as argument instead of just a title
      * tries to delete an event
      */
     public function deleteEvent(){

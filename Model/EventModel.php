@@ -13,10 +13,10 @@ class EventModel {
 
     /**
      * TODO validate that endtime is later than starttime
-     * @param $startHour
-     * @param $startMinute
-     * @param $endHour
-     * @param $endMinute
+     * @param $startHour string
+     * @param $startMinute string
+     * @param $endHour string
+     * @param $endMinute string
      * @return bool
      * @throws EndHourNotSelectedException
      * @throws EndMinuteNotSelectedException
