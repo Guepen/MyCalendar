@@ -26,14 +26,13 @@ class LoginView{
     public function renderLoginForm(){
 
         $html = "
-                <h3>Logga in</h3>
-                <a href='?action=".NavigationView::$actionShowRegisterForm."'>Registrera ny användare</a>
+
+
                 <form action='?action=".NavigationView::$actionLogin."' method='post' class='form-horizontal'>
                   <fieldset>
-                   <legend class='center'>Skriv in användarnamn och lösenord</legend>
-                   <p>$this->message</p>
+                   <legend>Logga in - Skriv in användarnamn och lösenord</legend>
 
-                   <div class='formGroup'>
+                   <div class='form-group'>
                       <label class='col-sm-2 control-label'>Användarnamn: </label>
                        <div class='col-sm-10'>
                       <input  class='form-control' placeholder='Skriv in ditt användarnamn' type='text'
@@ -41,7 +40,7 @@ class LoginView{
                    </div>
                    </div>
 
-                     <div class='formGroup'>
+                     <div class='form-group'>
                       <label class='col-sm-2 control-label'>Lösenord: </label>
                       <div class='col-sm-10'>
                       <input class='form-control' placeholder='Skriv in ditt lösenord' type='password'
@@ -49,22 +48,29 @@ class LoginView{
                       </div>
                    </div>
 
-                     <div class='formGroup'>
-                      <label class='col-sm-2 control-label'>
-                       <div class='col-sm-10'>
-                          <input class='form-control' type='checkbox' name=$this->keepMeInput>
+                     <div class='form-group'>
+                     <div class='col-sm-offset-2 col-sm-10'>
+                       <div class='checkbox'>
+                        <label>
+                          <input class='checkbox' type='checkbox' name=$this->keepMeInput>
                           Håll mig inloggad
                       </label>
                       </div>
                    </div>
+                   </div>
+
                    <div class='form-group'>
                     <div class='col-sm-offset-2 col-sm-10'>
-                    <input class='btn btn-default' type='submit' class='button' name='$this->submitInput'
+                    <input class='btn btn-success' type='submit' name='$this->submitInput'
                     value='Logga in'/>
+                       <a class='btn btn-primary' href='?action=".NavigationView::$actionShowRegisterForm."'>
+                       Registrera ny användare
+                       </a>
                     </div>
                     </div>
                    </fieldset>
                 </form>
+                  <p class='error center'>$this->message</p>
 
                 ";
 

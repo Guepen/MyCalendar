@@ -65,88 +65,112 @@ class EventFormView {
 
         $modal = "
                       <div class='modalBody'>
-                      <p class='error'>$this->errorMessage</p>
 
-                             <div class='formGroup'>
-                             <label class='center'>Titel: </label>
-                             <input  placeholder='Ex. Kalas' type='text' value='$this->defaultTitleValue'
-                             name=$this->titleInput>
+                             <div class='form-group'>
+                             <label class='col-sm-2 control-label'>Titel: </label>
+                              <div class='col-sm-10'>
+                             <input class='form-control'  placeholder='Ex. Kalas' type='text'
+                             value='$this->defaultTitleValue' name=$this->titleInput>
+                             </div>
                            </div>
+                           <p></p>
 
-                            <p></p>
-                           <div class='formGroup'>
-                             <label>År: </label>
-                             <select name='$this->yearInput'>
+                           <div class='form-group'>
+                             <label class='col-sm-2 control-label'>År: </label>
+                               <div class='col-sm-10'>
+                             <select class='form-control' name='$this->yearInput'>
                               <option selected='selected' value='$this->defaultYearValue'>
                               $this->defaultYearValue
                               </option>
                                $years
                              </select>
+                             </div>
                            </div>
-
                            <p></p>
-                           <div class='formGroup'>
-                             <label>Månad: </label>
-                             <select name='$this->monthInput'>
+
+                           <div class='form-group'>
+                             <label class='col-sm-2 control-label' >Månad: </label>
+                               <div class='col-sm-10'>
+                             <select class='form-control' name='$this->monthInput'>
                               <option selected='selected' value='$this->defaultMonthValue'>
                               $this->defaultMonthValue
                               </option>
                                $months
                              </select>
+                             </div>
                            </div>
-
                            <p></p>
-                             <div class='formGroup'>
-                             <label>Datum:</label>
-                             <select name=$this->dayInput>
+
+                             <div class='form-group'>
+                             <label class='col-sm-2 control-label'>Datum:</label>
+                               <div class='col-sm-10'>
+                             <select class='form-control' name=$this->dayInput>
                              <option selected='selected' value='$this->defaultDayValue'>
                              $this->defaultDayValue
                              </option>
                                $dates
                              </select>
+                             </div>
                            </div>
+                           <p></p>
 
-                           <div class='formGroup'>
-                             <p>Starttid:</p>
-                             <label>Timme: </label>
-                             <select name=$this->startHourInput>
+                            <p class='center'><label>Starttid:</label></p>
+
+                           <div class='form-group'>
+                             <label class='col-sm-2 control-label'>Timme: </label>
+                              <div class='col-sm-10'>
+                             <select class='form-control' name=$this->startHourInput>
                              <option selected='selected' value='$this->defaultStartHourValue'>
                              $this->defaultStartHourValue
                              </option>
                                $hours
                              </select>
-                              <label>Minut: </label>
-                             <select name=$this->startMinuteInput>
+                             </div>
+                             </div>
+                             <p></p>
+
+                             <div class='form-group'>
+                              <label class='col-sm-2 control-label'>Minut: </label>
+                                <div class='col-sm-10'>
+                             <select class='form-control' name=$this->startMinuteInput>
                              <option selected='selected' value='$this->defaultStartMinuteValue'>
                              $this->defaultStartMinuteValue
                              </option>
                                $minutes
                              </select>
+                             </div>
                            </div>
+                           <p></p>
+                             <p class='center'><label>Sluttid:</label></p>
 
-                            <div class='formGroup'>
-                             <p>Sluttid:</p>
-                             <label>Timme: </label>
-                             <select name=$this->endHourInput>
+                            <div class='form-group'>
+                             <label class='col-sm-2 control-label'>Timme: </label>
+                             <div class='col-sm-10'>
+                             <select class='form-control' name=$this->endHourInput>
                              <option value='$this->defaultEndHourValue' selected='selected'>
                              $this->defaultEndHourValue
                              </option>
                                $hours
                              </select>
-
-                              <label>Minut: </label>
-                             <select name=$this->endMinuteInput>
+                             </div>
+                             </div>
+                             <p></p>
+                             <div class='form-group'>
+                              <label class='col-sm-2 control-label'>Minut: </label>
+                              <div class='col-sm-10'>
+                             <select class='form-control' name=$this->endMinuteInput>
                              <option selected='selected' value='$this->defaultEndMinuteValue'>
                              $this->defaultEndMinuteValue
                              </option>
                                $minutes
                              </select>
+                             </div>
                            </div>
-
-                            <div class='formGroup'>
-                            <p></p>
-                             <label class='description'>Beskrivning: </label>
-                             <textarea rows='5' placeholder='Ex. Kalas hos kalle'
+                           <p></p>
+                            <div class='form-group'>
+                             <label class='col-sm-2 control-label'>Beskrivning:</label>
+                              <div class='col-sm-10'>
+                             <textarea class='form-control' rows='5' placeholder='Ex. Kalas hos kalle'
                              name=$this->descriptionInput>$this->defaultDescriptionValue</textarea>
                            </div>
                       </div>
@@ -176,9 +200,11 @@ class EventFormView {
                              name='$this->eventIdInput'
                    </div></div>
 
-                   <div class='inputSubmit'>
-                     <lablel><input type='submit' value='Uppdatera'
-                             name=$this->submitAlterEvent></lablel>
+                   <div class='form-group'>
+                     <div class='col-sm-offset-2 col-sm-10'>
+                     <input class='btn btn-primary' type='submit' value='Uppdatera'
+                             name=$this->submitAlterEvent>
+                   </div>
                    </div>";
         $modal .= "</form></div>";
 
@@ -197,14 +223,15 @@ class EventFormView {
             NavigationView::$actionYearToShow.'='. $this->dateHelper->getYearToShow()."'>
                      Tillbaka till kalendern
                      </a>
-
-                  <h3>Lägg till händelse</h3>
-
-                   <form action='?action=".NavigationView::$actionAddEvent."' method='post'>";
+                    $this->errorMessage
+                   <form action='?action=".NavigationView::$actionAddEvent."' method='post'>
+                   <legend>Lägg till händelse</legend>";
         $modal .=$this->getEventForm();
-        $modal .= "<div class='inputSubmit'>
-                             <input type='submit' value='Lägg till'
+        $modal .= "<div class='form-group'>
+                       <div class='col-sm-offset-2 col-sm-10'>
+                             <input class='btn btn-primary' type='submit' value='Lägg till'
                              name=$this->submitEvent>
+                           </div>
                            </div>";
         $modal .= "</form></div>";
 
@@ -453,8 +480,17 @@ class EventFormView {
     #endregion
 
     #region messages
+
+    private function getAlert(){
+        $ret = "<div class='alert alert-danger alert-error'>
+                  <a href='#' class='close' data-dismiss='alert'>&times;</a>";
+
+        return $ret;
+    }
     public function setMissingTitleMessage(){
-        $this->errorMessage = "Titel får inte lämnas tomt!";
+        $this->errorMessage = $this->getAlert();
+        $this->errorMessage .= "Titel får inte lämnas tomt!
+                                </div>";
 
     }
 

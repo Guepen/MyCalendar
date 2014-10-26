@@ -33,7 +33,7 @@ require_once("./Model/DAO/EventRepository.php");
 
 //Exceptions
 require_once("./Common/Exceptions/UsernameAndPasswordToShortException.php");
-require_once("./Common/Exceptions/UserDoNtExistException.php");
+require_once("./Common/Exceptions/UserDontExistException.php");
 require_once("./Common/Exceptions/DbException.php");
 require_once("./Common/Exceptions/EndHourNotSelectedException.php");
 require_once("./Common/Exceptions/EndMinuteNotSelectedException.php");

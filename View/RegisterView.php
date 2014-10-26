@@ -27,12 +27,11 @@ class RegisterView {
     public function renderRegisterForm(){
 
         $html = "
-                     <a href='?action=".NavigationView::$actionShowLoginForm."'>Tillbaka</a>
-                     <H3>Ej inloggad, registrear användare</H3>
+                     <a class='btn btn-primary' href='?action=".NavigationView::$actionShowLoginForm."'>Tillbaka</a>
+                     <p></p>
                      <form method='post' action='?action=".NavigationView::$actionSubmitRegisterForm."' class='form-horizontal'>
                      <fieldset>
 					 <legend>Registrera ny användare - Skriv in användarnamn och lösenord</legend>
-					  <p class='error'>$this->message<p>
 
  					 <div class='form-group'>
  					 <label class='col-sm-2 control-label' for='username'>Användarnamn : </label>
@@ -60,12 +59,13 @@ class RegisterView {
 
 					 <div class='form-group'>
 					 <div class='col-sm-offset-2 col-sm-10'>
-					 <input class='btn btn-default' type='submit' name='".$this->submitInput."' value='Registrera'/>
+					 <input class='btn btn-success' type='submit' name='".$this->submitInput."' value='Registrera'/>
 					 </div>
 					 </div>
-
 					 </fieldset>
-					 </form>" ;
+					 </form>
+					 <p class='error center'>$this->message<p>
+					 " ;
 
         return $html;
 
@@ -78,7 +78,7 @@ class RegisterView {
 
     public function setUsernameAndPasswordToShortMessage(){
         $this->message = " Användarnamnet har för få tecken. Minst 3 tecken.
-                          <p class='error'>Lösenorden har för få tecken. Minst 6 tecken</p>";
+                          <p class='error center'>Lösenorden har för få tecken. Minst 6 tecken</p>";
     }
 
     public function setToShortPasswordMessage(){
