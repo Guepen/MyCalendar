@@ -147,6 +147,7 @@ h1{
 
 .eventModal .center{
     margin-left: 200px;
+    word-wrap: break-word;
 }
 
 .quickAdd{
