@@ -75,12 +75,34 @@ class LoginModelTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($loginModel->isUserLoggedIn());
     }
 
+
     public function testLogOut(){
         $_SESSION["user"] = "username";
         $loginModel = new LoginModel();
         $loginModel->doLogout();
         $this->assertFalse(isset($_SESSION["user"]));
 
+    }
+
+    public function testGetCryptPassword(){
+        $loginModel = new LoginModel();
+        $password = "password";
+        $this->assertTrue(password_verify($password,$loginModel->getCryptPassword($password)));
+    }
+
+    public function testCookieExpireTimeIsValid(){
+        $loginModel = new LoginModel();
+        $this->assertTrue($loginModel->checkIfCookieExpireTimeIsValid(time()+200));
+    }
+
+    public function testCookieExpireTimeIsNotValid(){
+        $loginModel = new LoginModel();
+        $this->assertFalse($loginModel->checkIfCookieExpireTimeIsValid(time()-200));
+    }
+
+    public function testGetCookieExpireTime(){
+        $loginModel = new LoginModel();
+        $this->assertEquals(strtotime("+1 week"),$loginModel->getCookieExpireTime());
     }
 }
  

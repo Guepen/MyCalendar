@@ -24,6 +24,11 @@ class EventTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals("10", $event->getMonth());
     }
 
+    public function testGetYear(){
+        $event = new Event("","","2014","","","","","","","");
+        $this->assertEquals("2014", $event->getYear());
+    }
+
     public function testGetDay(){
         $event = new Event("","","","1","","","","","","","");
         $this->assertEquals("1", $event->getDay());
